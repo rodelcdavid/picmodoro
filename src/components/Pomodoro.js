@@ -1,11 +1,31 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback, useRef } from "react";
+import { ImageBlocker } from "./Pomodoro.styled";
 
 function Pomodoro({ goalImg, defaultImg, setGoalImg, setScreenState }) {
   const [numPomodoro, setNumPomodoro] = useState(2);
+  const [reveal, setReveal] = useState(
+    // [false, false].concat(Array(numPomodoro - 2).fill(false))
+    Array(numPomodoro).fill(false)
+  );
+  const [isDone, setIsDone] = useState(false);
+
   const onPlus = () => {
     setNumPomodoro(numPomodoro + 2);
+    // const tempReveal = [...reveal];
+
+    // const totalReveal = tempReveal.filter((x) => x === true).length;
+    // console.log("plusreveal", totalReveal, numPomodoro);
+    // if (totalReveal === numPomodoro) {
+    //   setIsDone(true);
+    // } else {
+    //   setIsDone(false);
+    // }
+
+    // console.log("isDone", totalReveal === numPomodoro);
   };
 
+  const imgWidth = 350;
+  const imgHeight = 300;
   let gridColumn, gridRow;
   if (numPomodoro % 5 === 0 && numPomodoro > 10) {
     gridColumn = numPomodoro / 5;
@@ -20,8 +40,9 @@ function Pomodoro({ goalImg, defaultImg, setGoalImg, setScreenState }) {
     gridColumn = numPomodoro / 2;
     gridRow = 2;
   }
-  const gridColumnSize = 350 / gridColumn;
-  const gridRowSize = 300 / gridRow;
+  const gridColumnSize = imgWidth / gridColumn;
+  // console.log("px", gridColumnSize);
+  const gridRowSize = imgHeight / gridRow;
 
   const onMinus = () => {
     if (numPomodoro === 2) {
@@ -30,23 +51,62 @@ function Pomodoro({ goalImg, defaultImg, setGoalImg, setScreenState }) {
       setNumPomodoro(numPomodoro - 2);
     }
   };
+  // const tile = useRef();
 
-  const Tiles = () => {
+  const onReveal = () => {
+    const tempReveal = [...reveal];
+    console.log("temp", tempReveal);
+    const totalReveal = tempReveal.filter((x) => x === true).length;
+    if (totalReveal + 1 === numPomodoro) {
+      setIsDone(true);
+    }
+    if (totalReveal !== numPomodoro) {
+      tempReveal[totalReveal] = true;
+    }
+
+    setReveal(tempReveal);
+  };
+
+  const onRevealRandom = () => {
+    const tempReveal = { ...reveal };
+    //select item from array that is still false
+    // let randomReveal = Math.floor(Math.random() * numPomodoro) + 1;
+
+    // while (tempReveal[randomReveal]) {
+    //   tempReveal.filter;
+    //   randomReveal = Math.floor(Math.random() * numPomodoro) + 1;
+    // }
+    // tempReveal[randomReveal] = true;
+    // setReveal(tempReveal);
+
+    // console.log("ran", randomReveal);
+    // console.log("ref", tile.current);
+    //map tilesarray and change background color
+    // if (tilesArray) {
+    //   // tilesArray[0].props.style.backgroundColor = "none";
+    //   console.log("tilesarray", tilesArray[0].props.style.backgroundColor);
+    // }
+  };
+  // const tilesArray = []; // should be a state
+  // const [tilesArray, setTilesArray] = useState([]);
+
+  const Tiles = useCallback(() => {
     console.log("num", numPomodoro);
+
+    // useEffect(() => {
+    //   setTilesArray(tempTiles);
+    // }, [tempTiles]);
     const tilesArray = [];
+
     for (let i = 1; i <= numPomodoro; i++) {
       tilesArray.push(
-        <div
-          style={{
-            backgroundColor: "rgba(255, 255, 255, 0.8)",
-            border: "solid 1px black",
-          }}
-          key={i}
-        ></div>
+        <ImageBlocker key={i} index={i} reveal={reveal[i - 1]} />
       );
     }
-    return tilesArray;
-  };
+
+    return tilesArray; // how to access this
+  });
+
   return (
     <div
       style={{
@@ -58,6 +118,7 @@ function Pomodoro({ goalImg, defaultImg, setGoalImg, setScreenState }) {
       }}
     >
       <h1>Goal Name</h1>
+      {isDone && <h2>Congratulations. You finished it!</h2>}
       {/* <div style={{ width: "400px" }} className="img-holder">
         {console.log(goalImg)}
         <img src={goalImg} width="100%" alt="" id="img" className="img" />
@@ -66,9 +127,9 @@ function Pomodoro({ goalImg, defaultImg, setGoalImg, setScreenState }) {
         style={{
           display: "grid",
           gridTemplateColumns: `repeat( ${gridColumn}, ${gridColumnSize}px`,
-          gridTemplateRows: `repeat( ${gridRow}, ${gridRowSize} )`,
-          width: "350px",
-          height: "300px",
+          gridTemplateRows: `repeat( ${gridRow}, ${gridRowSize}px )`,
+          width: imgWidth,
+          height: imgHeight,
           background: `url(${goalImg})`,
           backgroundSize: "cover",
           backgroundRepeat: "no-repeat",
@@ -76,8 +137,9 @@ function Pomodoro({ goalImg, defaultImg, setGoalImg, setScreenState }) {
           border: "solid 1px black",
         }}
       >
-        <Tiles />
+        <Tiles reveal={reveal} />
       </div>
+      <button onClick={onReveal}>Reveal</button>
       <h3>How many Pomodoros to finish this goal?</h3>
       <div style={{ display: "flex", alignItems: "center" }}>
         <button onClick={onMinus} style={{ height: "20px" }}>
