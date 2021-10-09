@@ -1,18 +1,33 @@
 import { useState, useEffect } from "react";
 
 function Pomodoro({ goalImg, defaultImg, setGoalImg, setScreenState }) {
-  const [numPomodoro, setNumPomodoro] = useState(3);
+  const [numPomodoro, setNumPomodoro] = useState(2);
   const onPlus = () => {
-    setNumPomodoro(numPomodoro + 3);
+    setNumPomodoro(numPomodoro + 2);
   };
 
-  const gridColumn = numPomodoro / 3;
+  let gridColumn, gridRow;
+  if (numPomodoro % 5 === 0 && numPomodoro > 10) {
+    gridColumn = numPomodoro / 5;
+    gridRow = 5;
+  } else if (numPomodoro % 4 === 0 && numPomodoro > 8) {
+    gridColumn = numPomodoro / 4;
+    gridRow = 4;
+  } else if (numPomodoro % 3 === 0 && numPomodoro > 6) {
+    gridColumn = numPomodoro / 3;
+    gridRow = 3;
+  } else {
+    gridColumn = numPomodoro / 2;
+    gridRow = 2;
+  }
   const gridColumnSize = 350 / gridColumn;
+  const gridRowSize = 300 / gridRow;
+
   const onMinus = () => {
-    if (numPomodoro === 3) {
+    if (numPomodoro === 2) {
       return;
     } else {
-      setNumPomodoro(numPomodoro - 3);
+      setNumPomodoro(numPomodoro - 2);
     }
   };
 
@@ -51,8 +66,9 @@ function Pomodoro({ goalImg, defaultImg, setGoalImg, setScreenState }) {
         style={{
           display: "grid",
           gridTemplateColumns: `repeat( ${gridColumn}, ${gridColumnSize}px`,
-          gridTemplateRows: "repeat( 3, 100px )",
+          gridTemplateRows: `repeat( ${gridRow}, ${gridRowSize} )`,
           width: "350px",
+          height: "300px",
           background: `url(${goalImg})`,
           backgroundSize: "cover",
           backgroundRepeat: "no-repeat",
