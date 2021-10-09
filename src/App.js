@@ -1,10 +1,10 @@
 import { useEffect, useState } from "react";
 import Pomodoro from "./components/Pomodoro";
 import Upload from "./components/Upload";
+import placeholder from "./assets/placeholder.jpg";
 
 function App() {
-  const defaultImg =
-    "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png";
+  const defaultImg = placeholder;
   const [goalImg, setGoalImg] = useState(defaultImg);
   const [screenState, setScreenState] = useState(0);
 
@@ -33,7 +33,6 @@ function App() {
       }
       if (reader.readyState === 2) {
         setGoalImg(reader.result);
-        setScreenState(1);
       } else {
         return <h1>Loading</h1>;
       }
@@ -46,8 +45,23 @@ function App() {
     }
   };
 
+  const onSubmit = () => {
+    if (goalImg === defaultImg) {
+      alert("Please choose an image first");
+    } else {
+      setScreenState(1);
+    }
+  };
+
   if (screenState === 0) {
-    return <Upload goalImg={goalImg} imageHandler={imageHandler} />;
+    return (
+      <Upload
+        goalImg={goalImg}
+        imageHandler={imageHandler}
+        setScreenState={setScreenState}
+        onSubmit={onSubmit}
+      />
+    );
   } else {
     return (
       <Pomodoro
