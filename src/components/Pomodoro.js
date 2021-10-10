@@ -9,21 +9,6 @@ function Pomodoro({ goalImg, defaultImg, setGoalImg, setScreenState }) {
   );
   const [isDone, setIsDone] = useState(false);
 
-  const onPlus = () => {
-    setNumPomodoro(numPomodoro + 2);
-    // const tempReveal = [...reveal];
-
-    // const totalReveal = tempReveal.filter((x) => x === true).length;
-    // console.log("plusreveal", totalReveal, numPomodoro);
-    // if (totalReveal === numPomodoro) {
-    //   setIsDone(true);
-    // } else {
-    //   setIsDone(false);
-    // }
-
-    // console.log("isDone", totalReveal === numPomodoro);
-  };
-
   const imgWidth = 350;
   const imgHeight = 300;
   let gridColumn, gridRow;
@@ -44,11 +29,35 @@ function Pomodoro({ goalImg, defaultImg, setGoalImg, setScreenState }) {
   // console.log("px", gridColumnSize);
   const gridRowSize = imgHeight / gridRow;
 
+  const onPlus = () => {
+    const tempNum = numPomodoro + 2;
+    setNumPomodoro(tempNum);
+    const tempReveal = [...reveal];
+
+    const totalReveal = tempReveal.filter((x) => x === true).length;
+    console.log("plusreveal", totalReveal, tempNum);
+    if (totalReveal >= tempNum) {
+      setIsDone(true);
+    } else {
+      setIsDone(false);
+    }
+  };
+
   const onMinus = () => {
     if (numPomodoro === 2) {
       return;
     } else {
-      setNumPomodoro(numPomodoro - 2);
+      const tempNum = numPomodoro - 2;
+      setNumPomodoro(tempNum);
+      const tempReveal = [...reveal];
+
+      const totalReveal = tempReveal.filter((x) => x === true).length;
+      console.log("plusreveal", totalReveal, tempNum);
+      if (totalReveal >= tempNum) {
+        setIsDone(true);
+      } else {
+        setIsDone(false);
+      }
     }
   };
   // const tile = useRef();
@@ -135,6 +144,9 @@ function Pomodoro({ goalImg, defaultImg, setGoalImg, setScreenState }) {
           backgroundRepeat: "no-repeat",
           backgroundPosition: "center",
           border: "solid 1px black",
+          boxShadow: "0 10px 20px grey",
+          overflow: "hidden",
+          boxSizing: "content-box",
         }}
       >
         <Tiles reveal={reveal} />
@@ -142,19 +154,23 @@ function Pomodoro({ goalImg, defaultImg, setGoalImg, setScreenState }) {
       <button onClick={onReveal}>Reveal</button>
       <h3>How many Pomodoros to finish this goal?</h3>
       <div style={{ display: "flex", alignItems: "center" }}>
-        <button onClick={onMinus} style={{ height: "20px" }}>
+        <button
+          disabled={isDone || numPomodoro === 2 ? true : false}
+          onClick={onMinus}
+          style={{ width: "30px", padding: "5px" }}
+        >
           -
         </button>
         <p style={{ margin: "0 5px" }}>{numPomodoro}</p>
-        <button onClick={onPlus} style={{ height: "20px" }}>
+        <button onClick={onPlus} style={{ width: "30px", padding: "5px" }}>
           +
         </button>
       </div>
       <h3>How many minutes each Pomodoro?</h3>
       <div style={{ display: "flex", alignItems: "center" }}>
-        <button style={{ height: "20px" }}>-</button>
+        <button style={{ width: "30px", padding: "5px" }}>-</button>
         <h2 style={{ margin: "0 5px" }}>25:00</h2>
-        <button style={{ height: "20px" }}>+</button>
+        <button style={{ width: "30px", padding: "5px" }}>+</button>
       </div>
       <button>Start timer!</button>
 
