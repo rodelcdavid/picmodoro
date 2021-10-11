@@ -1,8 +1,9 @@
 import { useState, useEffect, useCallback, useRef } from "react";
 import { ImageBlocker } from "./Pomodoro.styled";
+import Timer from "./Timer";
 
 function Pomodoro({ goalImg, defaultImg, setGoalImg, setScreenState }) {
-  const [numPomodoro, setNumPomodoro] = useState(2);
+  const [numPomodoro, setNumPomodoro] = useState(1);
   const [reveal, setReveal] = useState(
     // [false, false].concat(Array(numPomodoro - 2).fill(false))
     Array(numPomodoro).fill(false)
@@ -12,25 +13,56 @@ function Pomodoro({ goalImg, defaultImg, setGoalImg, setScreenState }) {
   const imgWidth = 350;
   const imgHeight = 300;
   let gridColumn, gridRow;
-  if (numPomodoro % 5 === 0 && numPomodoro > 10) {
-    gridColumn = numPomodoro / 5;
-    gridRow = 5;
-  } else if (numPomodoro % 4 === 0 && numPomodoro > 8) {
-    gridColumn = numPomodoro / 4;
-    gridRow = 4;
-  } else if (numPomodoro % 3 === 0 && numPomodoro > 6) {
-    gridColumn = numPomodoro / 3;
-    gridRow = 3;
-  } else {
-    gridColumn = numPomodoro / 2;
-    gridRow = 2;
+
+  //use switch case
+  //for loop?
+  // useEffect(() => {
+  //   for (let i = 5; i >= 1; i--) {
+  //     if (numPomodoro % i === 0 && numPomodoro > i * 2) {
+  //       gridColumn = numPomodoro / i;
+  //       gridRow = i;
+  //       return;
+  //     }
+  //   }
+  // }, [numPomodoro]);
+
+  for (let i = 10; i > 1; i--) {
+    if (numPomodoro === 4) {
+      gridColumn = 2;
+      gridRow = 2;
+      break;
+    } else if (numPomodoro % i === 0 && numPomodoro >= i * 3) {
+      gridColumn = numPomodoro / i;
+      gridRow = i;
+      break;
+    } else {
+      gridColumn = numPomodoro;
+      gridRow = 1;
+    }
   }
+
+  // if (numPomodoro % 5 === 0 && numPomodoro > 10) {
+  //   gridColumn = numPomodoro / 5;
+  //   gridRow = 5;
+  // } else if (numPomodoro % 4 === 0 && numPomodoro > 8) {
+  //   gridColumn = numPomodoro / 4;
+  //   gridRow = 4;
+  // } else if (numPomodoro % 3 === 0 && numPomodoro > 6) {
+  //   gridColumn = numPomodoro / 3;
+  //   gridRow = 3;
+  // } else if (numPomodoro % 2 === 0) {
+  //   gridColumn = numPomodoro / 2;
+  //   gridRow = 2;
+  // } else {
+  //   gridColumn = numPomodoro;
+  //   gridRow = 1;
+  // }
   const gridColumnSize = imgWidth / gridColumn;
   // console.log("px", gridColumnSize);
   const gridRowSize = imgHeight / gridRow;
 
   const onPlus = () => {
-    const tempNum = numPomodoro + 2;
+    const tempNum = numPomodoro + 1;
     setNumPomodoro(tempNum);
     const tempReveal = [...reveal];
 
@@ -44,10 +76,10 @@ function Pomodoro({ goalImg, defaultImg, setGoalImg, setScreenState }) {
   };
 
   const onMinus = () => {
-    if (numPomodoro === 2) {
+    if (numPomodoro === 1) {
       return;
     } else {
-      const tempNum = numPomodoro - 2;
+      const tempNum = numPomodoro - 1;
       setNumPomodoro(tempNum);
       const tempReveal = [...reveal];
 
@@ -109,12 +141,17 @@ function Pomodoro({ goalImg, defaultImg, setGoalImg, setScreenState }) {
 
     for (let i = 1; i <= numPomodoro; i++) {
       tilesArray.push(
-        <ImageBlocker key={i} index={i} reveal={reveal[i - 1]} />
+        <ImageBlocker
+          key={i}
+          index={i}
+          reveal={reveal[i - 1]}
+          isDone={isDone}
+        />
       );
     }
 
     return tilesArray; // how to access this
-  });
+  }, [numPomodoro, reveal]);
 
   return (
     <div
@@ -127,7 +164,8 @@ function Pomodoro({ goalImg, defaultImg, setGoalImg, setScreenState }) {
       }}
     >
       <h1>Goal Name</h1>
-      {isDone && <h2>Congratulations. You finished it!</h2>}
+      {isDone ? <h2>Congrats</h2> : <h2>Progress: totalReveal/numPomodoro</h2>}
+      {/* {isDone && <h2>Congratulations. You finished it!</h2>} */}
       {/* <div style={{ width: "400px" }} className="img-holder">
         {console.log(goalImg)}
         <img src={goalImg} width="100%" alt="" id="img" className="img" />
@@ -149,13 +187,13 @@ function Pomodoro({ goalImg, defaultImg, setGoalImg, setScreenState }) {
           boxSizing: "content-box",
         }}
       >
-        <Tiles reveal={reveal} />
+        <Tiles />
       </div>
       <button onClick={onReveal}>Reveal</button>
       <h3>How many Pomodoros to finish this goal?</h3>
       <div style={{ display: "flex", alignItems: "center" }}>
         <button
-          disabled={isDone || numPomodoro === 2 ? true : false}
+          disabled={isDone || numPomodoro === 1 ? true : false}
           onClick={onMinus}
           style={{ width: "30px", padding: "5px" }}
         >
@@ -166,13 +204,7 @@ function Pomodoro({ goalImg, defaultImg, setGoalImg, setScreenState }) {
           +
         </button>
       </div>
-      <h3>How many minutes each Pomodoro?</h3>
-      <div style={{ display: "flex", alignItems: "center" }}>
-        <button style={{ width: "30px", padding: "5px" }}>-</button>
-        <h2 style={{ margin: "0 5px" }}>25:00</h2>
-        <button style={{ width: "30px", padding: "5px" }}>+</button>
-      </div>
-      <button>Start timer!</button>
+      <Timer />
 
       <button
         onClick={() => {
