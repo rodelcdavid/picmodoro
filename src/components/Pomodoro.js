@@ -151,7 +151,7 @@ function Pomodoro({ goalImg, defaultImg, setGoalImg, setScreenState }) {
     }
 
     return tilesArray; // how to access this
-  }, [numPomodoro, reveal]);
+  }, [numPomodoro, reveal, isDone]);
 
   return (
     <div
@@ -204,7 +204,7 @@ function Pomodoro({ goalImg, defaultImg, setGoalImg, setScreenState }) {
           +
         </button>
       </div>
-      <Timer />
+      <Timer onReveal={onReveal} />
 
       <button
         onClick={() => {
