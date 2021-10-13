@@ -1,12 +1,16 @@
 import React, { useState, useEffect, useRef } from "react";
 
 export default function CountdownTimer({ onReveal }) {
-  // const [presetMin, setPresetMin] = useState(25);
+  const [presetMin, setPresetMin] = useState(25);
 
   const [minutes, setMinutes] = useState(25);
   const [seconds, setSeconds] = useState(0);
   // const [displayMessage, setDisplayMessage] = useState(false);
   const [isActive, setIsActive] = useState(false);
+
+  useEffect(() => {
+    setMinutes(presetMin);
+  }, [presetMin]);
 
   // useEffect(() => {
   //   if (isActive) {
@@ -70,31 +74,40 @@ export default function CountdownTimer({ onReveal }) {
       {/* <div className="message">
         {displayMessage && <div>Break time! New session starts in:</div>}
       </div> */}
-      <div className="timer">
-        {timerMinutes}:{timerSeconds}
+      <div
+        style={{
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+        }}
+      >
+        <button
+          style={{ width: "30px", height: "30px" }}
+          onClick={() => {
+            setPresetMin(presetMin - 5);
+          }}
+          disabled={presetMin === 25 || isActive ? true : false}
+        >
+          -
+        </button>
+        <div className="timer">
+          {timerMinutes}:{timerSeconds}
+        </div>
+        <button
+          disabled={isActive ? true : false}
+          style={{ width: "30px", height: "30px" }}
+          onClick={() => {
+            setPresetMin(presetMin + 5);
+          }}
+        >
+          +
+        </button>
       </div>
-      {/* <button
-        onClick={() => {
-          setPresetMin((prev) => prev - 5);
-          setMinutes(presetMin);
-        }}
-      >
-        -
-      </button>
-      <button
-        onClick={() => {
-          const prevMin = presetMin;
-          setPresetMin(prevMin + 5);
-          setMinutes(presetMin);
-        }}
-      >
-        +
-      </button>
-      <br /> */}
+      <br />
       {!isActive && <button onClick={() => setIsActive(true)}>Start!</button>}
       <button
         onClick={() => {
-          setMinutes(25);
+          setMinutes(presetMin);
           setSeconds(0);
           setIsActive(false);
         }}
