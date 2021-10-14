@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from "react";
 
-function Timer({ onReveal }) {
+function Timer({ onReveal, isActive, setIsActive }) {
   const [presetMin, setPresetMin] = useState(25);
 
   // const savedTime = {
@@ -10,8 +10,6 @@ function Timer({ onReveal }) {
 
   const [minutes, setMinutes] = useState(presetMin);
   const [seconds, setSeconds] = useState(0);
-
-  const [isActive, setIsActive] = useState(false); // move this to the nearest parent so that numPomodoro buttons have access
 
   useEffect(() => {
     setMinutes(presetMin);

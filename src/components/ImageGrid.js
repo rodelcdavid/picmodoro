@@ -1,23 +1,13 @@
 import React, { useCallback } from "react";
-import { ImageBlocker } from "./ImageGrid.styled";
+import { Tiles } from "./ImageGrid.styled";
 
 export default function ImageGrid({ numPomodoro, reveal, isDone, goalImg }) {
-  const Tiles = useCallback(() => {
-    console.log("num", numPomodoro);
-
-    // useEffect(() => {
-    //   setTilesArray(tempTiles);
-    // }, [tempTiles]);
+  const ImageBlocker = useCallback(() => {
     const tilesArray = [];
 
     for (let i = 1; i <= numPomodoro; i++) {
       tilesArray.push(
-        <ImageBlocker
-          key={i}
-          index={i}
-          reveal={reveal[i - 1]}
-          isDone={isDone}
-        />
+        <Tiles key={i} index={i} reveal={reveal[i - 1]} isDone={isDone} />
       );
     }
 
@@ -56,13 +46,6 @@ export default function ImageGrid({ numPomodoro, reveal, isDone, goalImg }) {
         textAlign: "center",
       }}
     >
-      <h1>Goal Name</h1>
-      {isDone ? <h2>Congrats</h2> : <h2>Progress: totalReveal/numPomodoro</h2>}
-      {/* {isDone && <h2>Congratulations. You finished it!</h2>} */}
-      {/* <div style={{ width: "400px" }} className="img-holder">
-        {console.log(goalImg)}
-        <img src={goalImg} width="100%" alt="" id="img" className="img" />
-      </div> */}
       <div
         style={{
           display: "grid",
@@ -80,7 +63,7 @@ export default function ImageGrid({ numPomodoro, reveal, isDone, goalImg }) {
           boxSizing: "content-box",
         }}
       >
-        <Tiles />
+        <ImageBlocker />
       </div>
     </div>
   );

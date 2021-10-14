@@ -11,8 +11,11 @@ function Pomodoro({ goalImg, defaultImg, setGoalImg, setScreenState }) {
     Array(numPomodoro).fill(false)
   );
   const [isDone, setIsDone] = useState(false);
+  const [isActive, setIsActive] = useState(false); // move this to the nearest parent so that numPomodoro buttons have access
 
   // const tile = useRef();
+
+  // const computeReveal = () => {};
 
   const onReveal = () => {
     const tempReveal = [...reveal];
@@ -57,6 +60,8 @@ function Pomodoro({ goalImg, defaultImg, setGoalImg, setScreenState }) {
         textAlign: "center",
       }}
     >
+      <h1>Goal Name</h1>
+      {isDone ? <h2>Congrats</h2> : <h2>Progress: totalReveal/numPomodoro</h2>}
       <ImageGrid
         numPomodoro={numPomodoro}
         reveal={reveal}
@@ -71,8 +76,13 @@ function Pomodoro({ goalImg, defaultImg, setGoalImg, setScreenState }) {
         isDone={isDone}
         setIsDone={setIsDone}
         reveal={reveal}
+        isActive={isActive}
       />
-      <Timer onReveal={onReveal} />
+      <Timer
+        onReveal={onReveal}
+        isActive={isActive}
+        setIsActive={setIsActive}
+      />
 
       <button
         onClick={() => {

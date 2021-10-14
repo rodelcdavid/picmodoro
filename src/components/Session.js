@@ -6,6 +6,7 @@ export default function Session({
   reveal,
   isDone,
   setIsDone,
+  isActive,
 }) {
   const onPlus = () => {
     const tempNum = numPomodoro + 1;
@@ -50,14 +51,18 @@ export default function Session({
         }}
       >
         <button
-          disabled={isDone || numPomodoro === 1 ? true : false}
+          disabled={isDone || numPomodoro === 1 || isActive ? true : false}
           onClick={onMinus}
           style={{ width: "30px", padding: "5px" }}
         >
           -
         </button>
         <p style={{ margin: "0 5px" }}>{numPomodoro}</p>
-        <button onClick={onPlus} style={{ width: "30px", padding: "5px" }}>
+        <button
+          disabled={isActive ? true : false}
+          onClick={onPlus}
+          style={{ width: "30px", padding: "5px" }}
+        >
           +
         </button>
       </div>
