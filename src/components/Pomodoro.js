@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect, useCallback } from "react";
 import ImageGrid from "./ImageGrid";
 import Session from "./Session";
 
@@ -11,51 +11,56 @@ function Pomodoro({ goalImg, defaultImg, setGoalImg, setScreenState }) {
     Array(numPomodoro).fill(false)
   );
   const [isDone, setIsDone] = useState(false);
-  const [isActive, setIsActive] = useState(false); // move this to the nearest parent so that numPomodoro buttons have access
-
-  // const tile = useRef();
-
+  const [isActive, setIsActive] = useState(false);
   const computeReveal = () => {
     const tempReveal = [...reveal];
-    console.log("temp", tempReveal);
     const totalReveal = tempReveal.filter((x) => x === true).length;
     return [totalReveal, tempReveal];
   };
 
-  const onReveal = () => {
-    const [totalReveal, tempReveal] = computeReveal();
-    if (totalReveal + 1 === numPomodoro) {
+  useEffect(() => {
+    console.log("reveal", reveal);
+    const tempReveal = [...reveal];
+    const totalReveal = tempReveal.filter((x) => x === true).length;
+
+    if (totalReveal === numPomodoro) {
       setIsDone(true);
     }
-    if (totalReveal !== numPomodoro) {
-      tempReveal[totalReveal] = true;
+  }, [reveal]);
+
+  const onReveal = () => {
+    // const [totalReveal, tempReveal] = computeReveal();
+
+    //if reveal still has false, set one to true
+    const tempReveal = [...reveal];
+
+    // if (totalReveal !== numPomodoro) {
+    //   tempReveal[tempReveal.indexOf(false)] = true;
+    // }
+
+    if (tempReveal.indexOf(false) != null) {
+      tempReveal[tempReveal.indexOf(false)] = true;
     }
 
     setReveal(tempReveal);
   };
 
-  // const onRevealRandom = () => {
-  //   const tempReveal = { ...reveal };
-  //   //select item from array that is still false
-  //   // let randomReveal = Math.floor(Math.random() * numPomodoro) + 1;
+  const onRandomReveal = () => {
+    const prevReveal = [...reveal];
 
-  //   // while (tempReveal[randomReveal]) {
-  //   //   tempReveal.filter;
-  //   //   randomReveal = Math.floor(Math.random() * numPomodoro) + 1;
-  //   // }
-  //   // tempReveal[randomReveal] = true;
-  //   // setReveal(tempReveal);
+    const unrevealed = prevReveal.reduce((arr, item, i) => {
+      if (item === false) {
+        arr.push(i);
+      }
+      return arr;
+    }, []);
+    console.log(prevReveal);
+    console.log("unrevealed", unrevealed);
 
-  //   // console.log("ran", randomReveal);
-  //   // console.log("ref", tile.current);
-  //   //map tilesarray and change background color
-  //   // if (tilesArray) {
-  //   //   // tilesArray[0].props.style.backgroundColor = "none";
-  //   //   console.log("tilesarray", tilesArray[0].props.style.backgroundColor);
-  //   // }
-  // };
-  // const tilesArray = []; // should be a state
-  // const [tilesArray, setTilesArray] = useState([]);
+    const random = Math.floor(Math.random() * unrevealed.length);
+    prevReveal[unrevealed[random]] = true;
+    setReveal(prevReveal);
+  };
 
   return (
     <div
@@ -65,7 +70,12 @@ function Pomodoro({ goalImg, defaultImg, setGoalImg, setScreenState }) {
     >
       <h1>Goal Name</h1>
       {isDone ? (
-        <h2>Congrats</h2>
+        <>
+          <h2>
+            Progress: {computeReveal()}/{numPomodoro}
+          </h2>
+          <h2>Congrats</h2>
+        </>
       ) : (
         <h2>
           Progress: {computeReveal()}/{numPomodoro}
@@ -79,6 +89,7 @@ function Pomodoro({ goalImg, defaultImg, setGoalImg, setScreenState }) {
       />
 
       <button onClick={onReveal}>Reveal</button>
+      <button onClick={onRandomReveal}>Random Reveal</button>
       <Session
         numPomodoro={numPomodoro}
         setNumPomodoro={setNumPomodoro}
@@ -86,6 +97,7 @@ function Pomodoro({ goalImg, defaultImg, setGoalImg, setScreenState }) {
         setIsDone={setIsDone}
         reveal={reveal}
         isActive={isActive}
+        setReveal={setReveal}
       />
       <Timer
         onReveal={onReveal}

@@ -7,12 +7,20 @@ export default function Session({
   isDone,
   setIsDone,
   isActive,
+  setReveal,
 }) {
   const onPlus = () => {
+    //Add 1 to numPomodoro
     const tempNum = numPomodoro + 1;
     setNumPomodoro(tempNum);
-    const tempReveal = [...reveal];
-    // const tempReveal = reveal;
+
+    //add false to reveal array
+    let tempReveal = [...reveal];
+
+    tempReveal.push(false);
+
+    setReveal(tempReveal);
+    // console.log("tempreveal", tempReveal);
 
     const totalReveal = tempReveal.filter((x) => x === true).length;
     console.log("plusreveal", totalReveal, tempNum);
@@ -27,9 +35,30 @@ export default function Session({
     if (numPomodoro === 1) {
       return;
     } else {
+      //subtract 1 to numPomodoro
       const tempNum = numPomodoro - 1;
       setNumPomodoro(tempNum);
-      const tempReveal = [...reveal];
+
+      //remove last false
+      //what if last element is true?
+      let tempReveal = [...reveal];
+      console.log("lastindex", tempReveal.lastIndexOf(false));
+
+      if (tempReveal[tempReveal.length - 1] === true) {
+        // tempReveal.reduce((arr, item, i) => {
+        //   if (item === false) {
+        //     arr.push(i);
+        //   }
+        //   return arr;
+        // }, []);
+        tempReveal.splice(tempReveal.lastIndexOf(false), 1);
+      } else {
+        tempReveal.pop();
+      }
+      console.log("tempReveal on splice", tempReveal);
+
+      setReveal(tempReveal);
+      console.log("reveal on minus", reveal);
 
       const totalReveal = tempReveal.filter((x) => x === true).length;
       console.log("plusreveal", totalReveal, tempNum);
