@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect } from "react";
 
 function Timer({ onReveal, isActive, setIsActive }) {
   const [presetMin, setPresetMin] = useState(25);
@@ -77,16 +77,19 @@ function Timer({ onReveal, isActive, setIsActive }) {
         </button>
       </div>
       <br />
-      {!isActive && <button onClick={() => setIsActive(true)}>Start!</button>}
-      <button
-        onClick={() => {
-          setMinutes(presetMin);
-          setSeconds(0);
-          setIsActive(false);
-        }}
-      >
-        Reset timer
-      </button>
+      {isActive ? (
+        <button
+          onClick={() => {
+            setMinutes(presetMin);
+            setSeconds(0);
+            setIsActive(false);
+          }}
+        >
+          Discard session
+        </button>
+      ) : (
+        <button onClick={() => setIsActive(true)}>Start timer</button>
+      )}
     </div>
   );
 }

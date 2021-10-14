@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback, useRef } from "react";
+import { useState } from "react";
 import ImageGrid from "./ImageGrid";
 import Session from "./Session";
 
@@ -34,26 +34,26 @@ function Pomodoro({ goalImg, defaultImg, setGoalImg, setScreenState }) {
     setReveal(tempReveal);
   };
 
-  const onRevealRandom = () => {
-    const tempReveal = { ...reveal };
-    //select item from array that is still false
-    // let randomReveal = Math.floor(Math.random() * numPomodoro) + 1;
+  // const onRevealRandom = () => {
+  //   const tempReveal = { ...reveal };
+  //   //select item from array that is still false
+  //   // let randomReveal = Math.floor(Math.random() * numPomodoro) + 1;
 
-    // while (tempReveal[randomReveal]) {
-    //   tempReveal.filter;
-    //   randomReveal = Math.floor(Math.random() * numPomodoro) + 1;
-    // }
-    // tempReveal[randomReveal] = true;
-    // setReveal(tempReveal);
+  //   // while (tempReveal[randomReveal]) {
+  //   //   tempReveal.filter;
+  //   //   randomReveal = Math.floor(Math.random() * numPomodoro) + 1;
+  //   // }
+  //   // tempReveal[randomReveal] = true;
+  //   // setReveal(tempReveal);
 
-    // console.log("ran", randomReveal);
-    // console.log("ref", tile.current);
-    //map tilesarray and change background color
-    // if (tilesArray) {
-    //   // tilesArray[0].props.style.backgroundColor = "none";
-    //   console.log("tilesarray", tilesArray[0].props.style.backgroundColor);
-    // }
-  };
+  //   // console.log("ran", randomReveal);
+  //   // console.log("ref", tile.current);
+  //   //map tilesarray and change background color
+  //   // if (tilesArray) {
+  //   //   // tilesArray[0].props.style.backgroundColor = "none";
+  //   //   console.log("tilesarray", tilesArray[0].props.style.backgroundColor);
+  //   // }
+  // };
   // const tilesArray = []; // should be a state
   // const [tilesArray, setTilesArray] = useState([]);
 
