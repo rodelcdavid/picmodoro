@@ -15,12 +15,15 @@ function Pomodoro({ goalImg, defaultImg, setGoalImg, setScreenState }) {
 
   // const tile = useRef();
 
-  // const computeReveal = () => {};
-
-  const onReveal = () => {
+  const computeReveal = () => {
     const tempReveal = [...reveal];
     console.log("temp", tempReveal);
     const totalReveal = tempReveal.filter((x) => x === true).length;
+    return [totalReveal, tempReveal];
+  };
+
+  const onReveal = () => {
+    const [totalReveal, tempReveal] = computeReveal();
     if (totalReveal + 1 === numPomodoro) {
       setIsDone(true);
     }
@@ -61,7 +64,13 @@ function Pomodoro({ goalImg, defaultImg, setGoalImg, setScreenState }) {
       }}
     >
       <h1>Goal Name</h1>
-      {isDone ? <h2>Congrats</h2> : <h2>Progress: totalReveal/numPomodoro</h2>}
+      {isDone ? (
+        <h2>Congrats</h2>
+      ) : (
+        <h2>
+          Progress: {computeReveal()}/{numPomodoro}
+        </h2>
+      )}
       <ImageGrid
         numPomodoro={numPomodoro}
         reveal={reveal}
@@ -90,7 +99,7 @@ function Pomodoro({ goalImg, defaultImg, setGoalImg, setScreenState }) {
           setGoalImg(defaultImg);
         }}
       >
-        Reset
+        New Goal
       </button>
     </div>
   );
