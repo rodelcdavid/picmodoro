@@ -13,7 +13,7 @@ function App() {
     const prevScreen = JSON.parse(localStorage.getItem("screenState")) || 0;
     setGoalImg(prevImg);
     setScreenState(prevScreen);
-  }, []);
+  }, [defaultImg]);
 
   useEffect(() => {
     localStorage.imgFile = JSON.stringify(goalImg);
