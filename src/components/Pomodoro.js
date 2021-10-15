@@ -42,38 +42,41 @@ function Pomodoro({
   };
 
   const onReveal = () => {
-    // const [totalReveal, tempReveal] = computeReveal();
-
-    //if reveal still has false, set one to true
-    const tempReveal = [...reveal];
-
-    // if (totalReveal !== numPomodoro) {
-    //   tempReveal[tempReveal.indexOf(false)] = true;
-    // }
-
-    if (tempReveal.indexOf(false) != null) {
-      tempReveal[tempReveal.indexOf(false)] = true;
-    }
-
-    setReveal(tempReveal);
-  };
-
-  const onRandomReveal = () => {
     const prevReveal = [...reveal];
 
-    const unrevealed = prevReveal.reduce((arr, item, i) => {
-      if (item === false) {
-        arr.push(i);
-      }
-      return arr;
-    }, []);
-    console.log(prevReveal);
-    console.log("unrevealed", unrevealed);
+    if (isRandom) {
+      const unrevealed = prevReveal.reduce((arr, item, i) => {
+        if (item === false) {
+          arr.push(i);
+        }
+        return arr;
+      }, []);
 
-    const random = Math.floor(Math.random() * unrevealed.length);
-    prevReveal[unrevealed[random]] = true;
+      const random = Math.floor(Math.random() * unrevealed.length);
+      prevReveal[unrevealed[random]] = true;
+    } else {
+      if (prevReveal.indexOf(false) != null) {
+        prevReveal[prevReveal.indexOf(false)] = true;
+      }
+    }
+
     setReveal(prevReveal);
   };
+
+  // const onRandomReveal = () => {
+  //   const prevReveal = [...reveal];
+
+  //   const unrevealed = prevReveal.reduce((arr, item, i) => {
+  //     if (item === false) {
+  //       arr.push(i);
+  //     }
+  //     return arr;
+  //   }, []);
+
+  //   const random = Math.floor(Math.random() * unrevealed.length);
+  //   prevReveal[unrevealed[random]] = true;
+  //   setReveal(prevReveal);
+  // };
 
   return (
     <div
@@ -82,6 +85,8 @@ function Pomodoro({
       }}
     >
       <h1>{goalName}</h1>
+
+      {/* should grab totalReveal instead of calling computereveal */}
       <h2>
         Progress: {computeReveal()}/{numPomodoro}
       </h2>
@@ -92,18 +97,16 @@ function Pomodoro({
         isDone={isDone}
         goalImg={goalImg}
       />
-      {isDone ? <h2>Congratulations</h2> : <h2>Hi</h2>}
+
+      {/* {isDone ? <h2>Congratulations</h2> : <h2>Hi</h2>} */}
       <FormControlLabel
         control={<Switch checked={isRandom} onChange={handleChange} />}
         label="Random Reveal"
       />
 
-      <Button
-        onClick={isRandom ? onRandomReveal : onReveal}
-        variant="contained"
-      >
+      {/* <Button onClick={onReveal} variant="contained">
         Reveal
-      </Button>
+      </Button> */}
 
       <Session
         numPomodoro={numPomodoro}

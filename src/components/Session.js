@@ -73,7 +73,7 @@ export default function Session({
   };
   return (
     <div>
-      <h3>How many Pomodoro sessions to finish this goal?</h3>
+      <h3>How many Pomodoro sessions?</h3>
       <div
         style={{
           display: "flex",

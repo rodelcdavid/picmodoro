@@ -33,7 +33,14 @@ export default function ImageGrid({ numPomodoro, reveal, isDone, goalImg }) {
     }
   }
 
-  const gridColumnSize = imgWidth / gridColumn;
+  let gridColumnSize = imgWidth / gridColumn;
+
+  //for those that don't divide equally
+  if ((imgWidth / gridColumn) % 10 !== 0) {
+    console.log((imgWidth / gridColumn) % 10);
+    gridColumnSize += 0.04;
+  }
+
   const gridRowSize = imgHeight / gridRow;
 
   return (

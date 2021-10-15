@@ -5,13 +5,9 @@ import React, { useState, useEffect } from "react";
 function Timer({ onReveal, isActive, setIsActive, isDone }) {
   const [presetMin, setPresetMin] = useState(25);
 
-  // const savedTime = {
-  //   savedMin: JSON.parse(localStorage.getItem("savedMin")),
-  //   savedSec: JSON.parse(localStorage.getItem("savedSec")),
-  // };
-
   const [minutes, setMinutes] = useState(presetMin);
   const [seconds, setSeconds] = useState(0);
+  const [isSessionDone, setIsSessionDone] = useState(false);
 
   useEffect(() => {
     setMinutes(presetMin);
@@ -28,12 +24,13 @@ function Timer({ onReveal, isActive, setIsActive, isDone }) {
             setMinutes(minutes - 1);
           } else {
             setIsActive(false);
+            setIsSessionDone(true);
             onReveal();
           }
         } else {
           setSeconds(seconds - 1);
         }
-      }, 1000);
+      }, 10);
     } else {
       clearInterval(interval);
     }
@@ -61,7 +58,9 @@ function Timer({ onReveal, isActive, setIsActive, isDone }) {
           onClick={() => {
             setPresetMin(presetMin - 5);
           }}
-          disabled={presetMin === 25 || isActive ? true : false}
+          disabled={
+            presetMin === 25 || isActive || isSessionDone ? true : false
+          }
         >
           <KeyboardArrowDown />
         </IconButton>
@@ -75,12 +74,26 @@ function Timer({ onReveal, isActive, setIsActive, isDone }) {
           onClick={() => {
             setPresetMin(presetMin + 5);
           }}
-          disabled={isActive ? true : false}
+          disabled={isActive || isSessionDone ? true : false}
         >
           <KeyboardArrowUp />
         </IconButton>
       </div>
-      <br />
+
+      {isSessionDone && (
+        <Button
+          style={{ display: "block", margin: "0 auto" }}
+          onClick={() => {
+            setMinutes(presetMin);
+            setSeconds(0);
+            setIsSessionDone(false);
+          }}
+          variant="contained"
+          color="warning"
+        >
+          Reset Timer
+        </Button>
+      )}
       {isActive ? (
         <Button
           onClick={() => {
@@ -95,7 +108,10 @@ function Timer({ onReveal, isActive, setIsActive, isDone }) {
         </Button>
       ) : (
         <Button
-          style={{ visibility: isDone ? "hidden" : "visible" }}
+          style={{
+            display: isDone || isSessionDone ? "none" : "block",
+            margin: "0 auto",
+          }}
           onClick={() => setIsActive(true)}
           variant="contained"
           color="primary"
