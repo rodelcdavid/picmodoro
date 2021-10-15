@@ -1,7 +1,7 @@
+import { FormControlLabel, Switch } from "@mui/material";
 import { useState, useEffect, useCallback } from "react";
 import ImageGrid from "./ImageGrid";
 import Session from "./Session";
-
 import Timer from "./Timer";
 
 function Pomodoro({ goalImg, defaultImg, setGoalImg, setScreenState }) {
@@ -12,6 +12,8 @@ function Pomodoro({ goalImg, defaultImg, setGoalImg, setScreenState }) {
   );
   const [isDone, setIsDone] = useState(false);
   const [isActive, setIsActive] = useState(false);
+  const [isRandom, setIsRandom] = useState(false);
+
   const computeReveal = () => {
     const tempReveal = [...reveal];
     const totalReveal = tempReveal.filter((x) => x === true).length;
@@ -27,6 +29,10 @@ function Pomodoro({ goalImg, defaultImg, setGoalImg, setScreenState }) {
       setIsDone(true);
     }
   }, [reveal]);
+
+  const handleChange = (e) => {
+    setIsRandom(e.target.checked);
+  };
 
   const onReveal = () => {
     // const [totalReveal, tempReveal] = computeReveal();
@@ -88,8 +94,12 @@ function Pomodoro({ goalImg, defaultImg, setGoalImg, setScreenState }) {
         goalImg={goalImg}
       />
 
-      <button onClick={onReveal}>Reveal</button>
-      <button onClick={onRandomReveal}>Random Reveal</button>
+      <FormControlLabel
+        control={<Switch checked={isRandom} onChange={handleChange} />}
+        label="Random Reveal"
+      />
+
+      <button onClick={isRandom ? onRandomReveal : onReveal}>Reveal</button>
       <Session
         numPomodoro={numPomodoro}
         setNumPomodoro={setNumPomodoro}
