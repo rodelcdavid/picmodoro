@@ -1,3 +1,5 @@
+import { KeyboardArrowDown, KeyboardArrowUp } from "@mui/icons-material";
+import { IconButton } from "@mui/material";
 import React from "react";
 
 export default function Session({
@@ -79,21 +81,22 @@ export default function Session({
           justifyContent: "center",
         }}
       >
-        <button
+        <IconButton
+          color="primary"
           disabled={isDone || numPomodoro === 1 || isActive ? true : false}
           onClick={onMinus}
-          style={{ width: "30px", padding: "5px" }}
         >
-          -
-        </button>
+          <KeyboardArrowDown />
+        </IconButton>
+
         <p style={{ margin: "0 5px" }}>{numPomodoro}</p>
-        <button
+        <IconButton
+          color="primary"
           disabled={isActive ? true : false}
           onClick={onPlus}
-          style={{ width: "30px", padding: "5px" }}
         >
-          +
-        </button>
+          <KeyboardArrowUp />
+        </IconButton>
       </div>
     </div>
   );

@@ -1,4 +1,4 @@
-import { FormControlLabel, Switch } from "@mui/material";
+import { Button, FormControlLabel, Switch } from "@mui/material";
 import { useState, useEffect, useCallback } from "react";
 import ImageGrid from "./ImageGrid";
 import Session from "./Session";
@@ -82,31 +82,29 @@ function Pomodoro({
       }}
     >
       <h1>{goalName}</h1>
-      {isDone ? (
-        <>
-          <h2>
-            Progress: {computeReveal()}/{numPomodoro}
-          </h2>
-          <h2>Congrats</h2>
-        </>
-      ) : (
-        <h2>
-          Progress: {computeReveal()}/{numPomodoro}
-        </h2>
-      )}
+      <h2>
+        Progress: {computeReveal()}/{numPomodoro}
+      </h2>
+
       <ImageGrid
         numPomodoro={numPomodoro}
         reveal={reveal}
         isDone={isDone}
         goalImg={goalImg}
       />
-
+      {isDone ? <h2>Congratulations</h2> : <h2>Hi</h2>}
       <FormControlLabel
         control={<Switch checked={isRandom} onChange={handleChange} />}
         label="Random Reveal"
       />
 
-      <button onClick={isRandom ? onRandomReveal : onReveal}>Reveal</button>
+      <Button
+        onClick={isRandom ? onRandomReveal : onReveal}
+        variant="contained"
+      >
+        Reveal
+      </Button>
+
       <Session
         numPomodoro={numPomodoro}
         setNumPomodoro={setNumPomodoro}
@@ -122,16 +120,17 @@ function Pomodoro({
         setIsActive={setIsActive}
         isDone={isDone}
       />
-
-      <button
+      <Button
         onClick={() => {
           setScreenState(0);
           setGoalImg(defaultImg);
           setGoalName("");
         }}
+        variant="contained"
+        color="success"
       >
         New Goal
-      </button>
+      </Button>
     </div>
   );
 }

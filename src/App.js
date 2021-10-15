@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Pomodoro from "./components/Pomodoro";
 import Upload from "./components/Upload";
 import placeholder from "./assets/placeholder.jpg";
@@ -52,9 +52,15 @@ function App() {
     }
   };
 
+  const textRef = useRef();
+
   const onSubmit = () => {
     if (goalImg === defaultImg) {
       alert("Please choose an image first");
+    } else if (!goalName) {
+      alert("Please enter name for your goal");
+      textRef.current.focus();
+      //focus
     } else {
       setScreenState(1);
     }
@@ -69,6 +75,7 @@ function App() {
         nameHandler={nameHandler}
         setScreenState={setScreenState}
         onSubmit={onSubmit}
+        textRef={textRef}
       />
     );
   } else {

@@ -1,6 +1,8 @@
+import { KeyboardArrowDown, KeyboardArrowUp } from "@mui/icons-material";
+import { Button, IconButton } from "@mui/material";
 import React, { useState, useEffect } from "react";
 
-function Timer({ onReveal, isActive, setIsActive }) {
+function Timer({ onReveal, isActive, setIsActive, isDone }) {
   const [presetMin, setPresetMin] = useState(25);
 
   // const savedTime = {
@@ -54,41 +56,52 @@ function Timer({ onReveal, isActive, setIsActive }) {
           justifyContent: "center",
         }}
       >
-        <button
-          style={{ width: "30px", height: "30px" }}
+        <IconButton
+          color="primary"
           onClick={() => {
             setPresetMin(presetMin - 5);
           }}
           disabled={presetMin === 25 || isActive ? true : false}
         >
-          -
-        </button>
+          <KeyboardArrowDown />
+        </IconButton>
+
         <div className="timer">
           {timerMinutes}:{timerSeconds}
         </div>
-        <button
-          disabled={isActive ? true : false}
-          style={{ width: "30px", height: "30px" }}
+
+        <IconButton
+          color="primary"
           onClick={() => {
             setPresetMin(presetMin + 5);
           }}
+          disabled={isActive ? true : false}
         >
-          +
-        </button>
+          <KeyboardArrowUp />
+        </IconButton>
       </div>
       <br />
       {isActive ? (
-        <button
+        <Button
           onClick={() => {
             setMinutes(presetMin);
             setSeconds(0);
             setIsActive(false);
           }}
+          variant="contained"
+          color="error"
         >
           Discard session
-        </button>
+        </Button>
       ) : (
-        <button onClick={() => setIsActive(true)}>Start timer</button>
+        <Button
+          style={{ visibility: isDone ? "hidden" : "visible" }}
+          onClick={() => setIsActive(true)}
+          variant="contained"
+          color="primary"
+        >
+          Start timer
+        </Button>
       )}
     </div>
   );
