@@ -6,11 +6,14 @@ import placeholder from "./assets/placeholder.jpg";
 function App() {
   const defaultImg = placeholder;
   const [goalImg, setGoalImg] = useState(defaultImg);
+  const [goalName, setGoalName] = useState("");
   const [screenState, setScreenState] = useState(0);
 
   useEffect(() => {
     const prevImg = JSON.parse(localStorage.getItem("imgFile")) || defaultImg;
     const prevScreen = JSON.parse(localStorage.getItem("screenState")) || 0;
+    const prevName = JSON.parse(localStorage.getItem("goalName") || "");
+    setGoalName(prevName);
     setGoalImg(prevImg);
     setScreenState(prevScreen);
   }, [defaultImg]);
@@ -18,8 +21,12 @@ function App() {
   useEffect(() => {
     localStorage.imgFile = JSON.stringify(goalImg);
     localStorage.screenState = JSON.stringify(screenState);
-  }, [goalImg, screenState]);
+    localStorage.goalName = JSON.stringify(goalName);
+  }, [goalImg, goalName, screenState]);
 
+  const nameHandler = (e) => {
+    setGoalName(e.target.value);
+  };
   const imageHandler = (e) => {
     const file = e.target.files[0];
     const reader = new FileReader();
@@ -57,7 +64,9 @@ function App() {
     return (
       <Upload
         goalImg={goalImg}
+        goalName={goalName}
         imageHandler={imageHandler}
+        nameHandler={nameHandler}
         setScreenState={setScreenState}
         onSubmit={onSubmit}
       />
@@ -66,8 +75,10 @@ function App() {
     return (
       <Pomodoro
         goalImg={goalImg}
+        goalName={goalName}
         defaultImg={defaultImg}
         setGoalImg={setGoalImg}
+        setGoalName={setGoalName}
         setScreenState={setScreenState}
       />
     );

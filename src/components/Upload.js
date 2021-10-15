@@ -1,7 +1,14 @@
+import { TextField } from "@mui/material";
 import React from "react";
 import { Container, ImageHolder } from "./Upload.styled";
 
-export default function Upload({ goalImg, imageHandler, onSubmit }) {
+export default function Upload({
+  goalImg,
+  goalName,
+  imageHandler,
+  nameHandler,
+  onSubmit,
+}) {
   return (
     <div className="page">
       <Container>
@@ -10,23 +17,33 @@ export default function Upload({ goalImg, imageHandler, onSubmit }) {
           {console.log(goalImg)}
           <img src={goalImg} width="100%" alt="" id="img" className="img" />
         </ImageHolder>
-        <div style={{ display: "flex" }}>
-          <input
-            style={{
-              border: "solid 2px black",
-              padding: "2px",
-              marginRight: "5px",
-            }}
-            type="file"
-            accept="image/*"
-            name="image-upload"
-            id="input"
-            onChange={imageHandler}
-          />
-          <button onClick={onSubmit}>Submit</button>
-        </div>
+
+        <input
+          style={{
+            border: "solid 2px black",
+            padding: "2px",
+            marginRight: "5px",
+          }}
+          type="file"
+          accept="image/*"
+          name="image-upload"
+          id="input"
+          onChange={imageHandler}
+        />
 
         <p>Max file size: 5MB</p>
+        <TextField
+          id="outlined-name"
+          label="Enter goal name"
+          value={goalName}
+          onChange={nameHandler}
+        />
+        {/* <input
+          placeholder="Enter name of your goal"
+          value={goalName}
+          onChange={nameHandler}
+        /> */}
+        <button onClick={onSubmit}>Submit</button>
       </Container>
     </div>
   );

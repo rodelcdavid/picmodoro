@@ -4,7 +4,14 @@ import ImageGrid from "./ImageGrid";
 import Session from "./Session";
 import Timer from "./Timer";
 
-function Pomodoro({ goalImg, defaultImg, setGoalImg, setScreenState }) {
+function Pomodoro({
+  goalImg,
+  goalName,
+  defaultImg,
+  setGoalImg,
+  setGoalName,
+  setScreenState,
+}) {
   const [numPomodoro, setNumPomodoro] = useState(1);
   const [reveal, setReveal] = useState(
     // [false, false].concat(Array(numPomodoro - 2).fill(false))
@@ -74,7 +81,7 @@ function Pomodoro({ goalImg, defaultImg, setGoalImg, setScreenState }) {
         textAlign: "center",
       }}
     >
-      <h1>Goal Name</h1>
+      <h1>{goalName}</h1>
       {isDone ? (
         <>
           <h2>
@@ -113,12 +120,14 @@ function Pomodoro({ goalImg, defaultImg, setGoalImg, setScreenState }) {
         onReveal={onReveal}
         isActive={isActive}
         setIsActive={setIsActive}
+        isDone={isDone}
       />
 
       <button
         onClick={() => {
           setScreenState(0);
           setGoalImg(defaultImg);
+          setGoalName("");
         }}
       >
         New Goal
