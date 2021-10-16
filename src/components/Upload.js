@@ -1,15 +1,59 @@
 import { Button, TextField } from "@mui/material";
-import React from "react";
+import React, { useRef } from "react";
 import { Container, ImageHolder } from "./Upload.styled";
+import placeholder from "../assets/placeholder.jpg";
 
 export default function Upload({
   goalImg,
+  setGoalImg,
   goalName,
-  imageHandler,
-  nameHandler,
-  onSubmit,
-  textRef,
+  setGoalName,
+  setScreenState,
 }) {
+  const nameHandler = (e) => {
+    setGoalName(e.target.value);
+  };
+
+  const imageHandler = (e) => {
+    const file = e.target.files[0];
+    const reader = new FileReader();
+
+    reader.onload = () => {
+      console.log("hello", file.size);
+      if (file.size > 5000000) {
+        alert("File size limit reached");
+        return;
+      }
+      if (reader.readyState === 2) {
+        setGoalImg(reader.result);
+      } else {
+        return <h1>Loading</h1>;
+      }
+    };
+
+    if (file) {
+      if (file.type.match("image.*")) {
+        reader.readAsDataURL(file);
+      } else {
+        alert("Please choose a valid image file");
+      }
+    }
+  };
+
+  const textRef = useRef();
+
+  const onSubmit = () => {
+    if (!goalName) {
+      alert("Please enter name for your goal");
+      textRef.current.focus();
+      //focus
+    } else if (goalImg === placeholder) {
+      alert("Please choose an image first");
+    } else {
+      setScreenState(1);
+    }
+  };
+
   return (
     <div className="page">
       <Container>

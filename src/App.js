@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import Pomodoro from "./components/Pomodoro";
 import Upload from "./components/Upload";
 import placeholder from "./assets/placeholder.jpg";
@@ -18,59 +18,14 @@ function App() {
     localStorage.goalName = JSON.stringify(goalName);
   }, [goalImg, goalName, screenState]);
 
-  const nameHandler = (e) => {
-    setGoalName(e.target.value);
-  };
-  const imageHandler = (e) => {
-    const file = e.target.files[0];
-    const reader = new FileReader();
-
-    reader.onload = () => {
-      console.log("hello", file.size);
-      if (file.size > 5000000) {
-        alert("File size limit reached");
-        return;
-      }
-      if (reader.readyState === 2) {
-        setGoalImg(reader.result);
-      } else {
-        return <h1>Loading</h1>;
-      }
-    };
-
-    if (file) {
-      if (file.type.match("image.*")) {
-        reader.readAsDataURL(file);
-      } else {
-        alert("Please choose a valid image file");
-      }
-    }
-  };
-
-  const textRef = useRef();
-
-  const onSubmit = () => {
-    if (!goalName) {
-      alert("Please enter name for your goal");
-      textRef.current.focus();
-      //focus
-    } else if (goalImg === placeholder) {
-      alert("Please choose an image first");
-    } else {
-      setScreenState(1);
-    }
-  };
-
   if (screenState === 0) {
     return (
       <Upload
         goalImg={goalImg}
+        setGoalImg={setGoalImg}
         goalName={goalName}
-        imageHandler={imageHandler}
-        nameHandler={nameHandler}
+        setGoalName={setGoalName}
         setScreenState={setScreenState}
-        onSubmit={onSubmit}
-        textRef={textRef}
       />
     );
   } else {
