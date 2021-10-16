@@ -3,20 +3,14 @@ import Pomodoro from "./components/Pomodoro";
 import Upload from "./components/Upload";
 import placeholder from "./assets/placeholder.jpg";
 
-function App() {
-  const defaultImg = placeholder;
-  const [goalImg, setGoalImg] = useState(defaultImg);
-  const [goalName, setGoalName] = useState("");
-  const [screenState, setScreenState] = useState(0);
+const prevImg = JSON.parse(localStorage.getItem("imgFile")) || placeholder;
+const prevScreen = JSON.parse(localStorage.getItem("screenState")) || 0;
+const prevName = JSON.parse(localStorage.getItem("goalName")) || "";
 
-  useEffect(() => {
-    const prevImg = JSON.parse(localStorage.getItem("imgFile")) || defaultImg;
-    const prevScreen = JSON.parse(localStorage.getItem("screenState")) || 0;
-    const prevName = JSON.parse(localStorage.getItem("goalName") || "");
-    setGoalName(prevName);
-    setGoalImg(prevImg);
-    setScreenState(prevScreen);
-  }, [defaultImg]);
+function App() {
+  const [goalImg, setGoalImg] = useState(prevImg);
+  const [goalName, setGoalName] = useState(prevName);
+  const [screenState, setScreenState] = useState(prevScreen);
 
   useEffect(() => {
     localStorage.imgFile = JSON.stringify(goalImg);
@@ -30,7 +24,6 @@ function App() {
   const imageHandler = (e) => {
     const file = e.target.files[0];
     const reader = new FileReader();
-    //error on empty file, reproduce the error by choosing large file >> alert will pop >> choose file then close without choosing
 
     reader.onload = () => {
       console.log("hello", file.size);
@@ -45,22 +38,24 @@ function App() {
       }
     };
 
-    if (file && file.type.match("image.*")) {
-      reader.readAsDataURL(file);
-    } else {
-      alert("Please choose a valid image file");
+    if (file) {
+      if (file.type.match("image.*")) {
+        reader.readAsDataURL(file);
+      } else {
+        alert("Please choose a valid image file");
+      }
     }
   };
 
   const textRef = useRef();
 
   const onSubmit = () => {
-    if (goalImg === defaultImg) {
-      alert("Please choose an image first");
-    } else if (!goalName) {
+    if (!goalName) {
       alert("Please enter name for your goal");
       textRef.current.focus();
       //focus
+    } else if (goalImg === placeholder) {
+      alert("Please choose an image first");
     } else {
       setScreenState(1);
     }
@@ -83,7 +78,7 @@ function App() {
       <Pomodoro
         goalImg={goalImg}
         goalName={goalName}
-        defaultImg={defaultImg}
+        defaultImg={placeholder}
         setGoalImg={setGoalImg}
         setGoalName={setGoalName}
         setScreenState={setScreenState}

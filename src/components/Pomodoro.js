@@ -1,5 +1,5 @@
 import { Button, FormControlLabel, Switch } from "@mui/material";
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect } from "react";
 import ImageGrid from "./ImageGrid";
 import Session from "./Session";
 import Timer from "./Timer";

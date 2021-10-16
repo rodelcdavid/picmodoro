@@ -50,7 +50,7 @@ export default function Upload({
           onChange={imageHandler}
         />
 
-        <p style={{ color: "red" }}>Max file size: 5MB</p>
+        <p style={{ color: "black", fontSize: "0.8rem" }}>Max file size: 5MB</p>
 
         {/* <input
           placeholder="Enter name of your goal"
