@@ -1,5 +1,6 @@
 import { Button, FormControlLabel, Switch } from "@mui/material";
 import { useState, useEffect } from "react";
+
 import ImageGrid from "./ImageGrid";
 import Session from "./Session";
 import Timer from "./Timer";
@@ -13,17 +14,16 @@ function Pomodoro({
   setScreenState,
 }) {
   const [numPomodoro, setNumPomodoro] = useState(1);
-  const [reveal, setReveal] = useState(
-    // [false, false].concat(Array(numPomodoro - 2).fill(false))
-    Array(numPomodoro).fill(false)
-  );
+  const [reveal, setReveal] = useState([false]);
   const [isDone, setIsDone] = useState(false);
   const [isActive, setIsActive] = useState(false);
   const [isRandom, setIsRandom] = useState(false);
 
+  //optimize this function because it renders twice
   const computeReveal = () => {
     const tempReveal = [...reveal];
     const totalReveal = tempReveal.filter((x) => x === true).length;
+
     return [totalReveal, tempReveal];
   };
 
@@ -35,9 +35,9 @@ function Pomodoro({
     if (totalReveal === numPomodoro) {
       setIsDone(true);
     }
-  }, [reveal]);
+  }, [reveal, numPomodoro]);
 
-  const handleChange = (e) => {
+  const handleToggle = (e) => {
     setIsRandom(e.target.checked);
   };
 
@@ -45,6 +45,7 @@ function Pomodoro({
     const prevReveal = [...reveal];
 
     if (isRandom) {
+      //Random reveal
       const unrevealed = prevReveal.reduce((arr, item, i) => {
         if (item === false) {
           arr.push(i);
@@ -55,28 +56,13 @@ function Pomodoro({
       const random = Math.floor(Math.random() * unrevealed.length);
       prevReveal[unrevealed[random]] = true;
     } else {
+      //Normal reveal
       if (prevReveal.indexOf(false) != null) {
         prevReveal[prevReveal.indexOf(false)] = true;
       }
     }
-
     setReveal(prevReveal);
   };
-
-  // const onRandomReveal = () => {
-  //   const prevReveal = [...reveal];
-
-  //   const unrevealed = prevReveal.reduce((arr, item, i) => {
-  //     if (item === false) {
-  //       arr.push(i);
-  //     }
-  //     return arr;
-  //   }, []);
-
-  //   const random = Math.floor(Math.random() * unrevealed.length);
-  //   prevReveal[unrevealed[random]] = true;
-  //   setReveal(prevReveal);
-  // };
 
   return (
     <div
@@ -100,13 +86,13 @@ function Pomodoro({
 
       {/* {isDone ? <h2>Congratulations</h2> : <h2>Hi</h2>} */}
       <FormControlLabel
-        control={<Switch checked={isRandom} onChange={handleChange} />}
+        control={<Switch checked={isRandom} onChange={handleToggle} />}
         label="Random Reveal"
       />
 
-      {/* <Button onClick={onReveal} variant="contained">
+      <Button onClick={onReveal} variant="contained">
         Reveal
-      </Button> */}
+      </Button>
 
       <Session
         numPomodoro={numPomodoro}
@@ -117,6 +103,7 @@ function Pomodoro({
         isActive={isActive}
         setReveal={setReveal}
       />
+      {/* Timer is being rerendered after adding numPomodoro, maybe because of the conditional rendering isActive */}
       <Timer
         onReveal={onReveal}
         isActive={isActive}

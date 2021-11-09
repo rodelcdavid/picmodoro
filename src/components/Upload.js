@@ -46,7 +46,6 @@ export default function Upload({
     if (!goalName) {
       alert("Please enter name for your goal");
       textRef.current.focus();
-      //focus
     } else if (goalImg === placeholder) {
       alert("Please choose an image first");
     } else {
@@ -96,11 +95,6 @@ export default function Upload({
 
         <p style={{ color: "black", fontSize: "0.8rem" }}>Max file size: 5MB</p>
 
-        {/* <input
-          placeholder="Enter name of your goal"
-          value={goalName}
-          onChange={nameHandler}
-        /> */}
         <h1>
           <span style={{ color: "#00ADB5" }}>Step 3: </span>Submit and start!
         </h1>

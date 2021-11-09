@@ -38,7 +38,7 @@ function Timer({ onReveal, isActive, setIsActive, isDone }) {
     return () => {
       clearInterval(interval);
     };
-  }, [seconds, minutes, isActive]);
+  }, [seconds, minutes, isActive, onReveal, setIsActive]); // too many dependencies
 
   const timerMinutes = minutes < 10 ? `0${minutes}` : minutes;
   const timerSeconds = seconds < 10 ? `0${seconds}` : seconds;

@@ -2,15 +2,12 @@ import { useEffect, useState } from "react";
 import Pomodoro from "./components/Pomodoro";
 import Upload from "./components/Upload";
 import placeholder from "./assets/placeholder.jpg";
-
-const prevImg = JSON.parse(localStorage.getItem("imgFile")) || placeholder;
-const prevScreen = JSON.parse(localStorage.getItem("screenState")) || 0;
-const prevName = JSON.parse(localStorage.getItem("goalName")) || "";
+import { prevImg, prevName, prevScreen } from "./utils/getLocalStorage";
 
 function App() {
-  const [goalImg, setGoalImg] = useState(prevImg);
-  const [goalName, setGoalName] = useState(prevName);
-  const [screenState, setScreenState] = useState(prevScreen);
+  const [goalImg, setGoalImg] = useState(prevImg || placeholder);
+  const [goalName, setGoalName] = useState(prevName || 0);
+  const [screenState, setScreenState] = useState(prevScreen || "");
 
   useEffect(() => {
     localStorage.imgFile = JSON.stringify(goalImg);
