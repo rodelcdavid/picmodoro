@@ -1,22 +1,14 @@
-import { useEffect, useRef, useState } from "react";
-import Pomodoro from "./components/Pomodoro";
-import Upload from "./components/Upload";
+import { useEffect, useState } from "react";
+
 import placeholder from "./assets/placeholder.jpg";
+import { prevImg, prevName, prevScreen } from "./utils/getLocalStorage";
+import Upload from "./containers/Upload";
+import Pomodoro from "./containers/Pomodoro";
 
 function App() {
-  const defaultImg = placeholder;
-  const [goalImg, setGoalImg] = useState(defaultImg);
-  const [goalName, setGoalName] = useState("");
-  const [screenState, setScreenState] = useState(0);
-
-  useEffect(() => {
-    const prevImg = JSON.parse(localStorage.getItem("imgFile")) || defaultImg;
-    const prevScreen = JSON.parse(localStorage.getItem("screenState")) || 0;
-    const prevName = JSON.parse(localStorage.getItem("goalName") || "");
-    setGoalName(prevName);
-    setGoalImg(prevImg);
-    setScreenState(prevScreen);
-  }, [defaultImg]);
+  const [goalImg, setGoalImg] = useState(prevImg || placeholder);
+  const [goalName, setGoalName] = useState(prevName || 0);
+  const [screenState, setScreenState] = useState(prevScreen || "");
 
   useEffect(() => {
     localStorage.imgFile = JSON.stringify(goalImg);
@@ -24,58 +16,14 @@ function App() {
     localStorage.goalName = JSON.stringify(goalName);
   }, [goalImg, goalName, screenState]);
 
-  const nameHandler = (e) => {
-    setGoalName(e.target.value);
-  };
-  const imageHandler = (e) => {
-    const file = e.target.files[0];
-    const reader = new FileReader();
-    //error on empty file, reproduce the error by choosing large file >> alert will pop >> choose file then close without choosing
-
-    reader.onload = () => {
-      console.log("hello", file.size);
-      if (file.size > 5000000) {
-        alert("File size limit reached");
-        return;
-      }
-      if (reader.readyState === 2) {
-        setGoalImg(reader.result);
-      } else {
-        return <h1>Loading</h1>;
-      }
-    };
-
-    if (file && file.type.match("image.*")) {
-      reader.readAsDataURL(file);
-    } else {
-      alert("Please choose a valid image file");
-    }
-  };
-
-  const textRef = useRef();
-
-  const onSubmit = () => {
-    if (goalImg === defaultImg) {
-      alert("Please choose an image first");
-    } else if (!goalName) {
-      alert("Please enter name for your goal");
-      textRef.current.focus();
-      //focus
-    } else {
-      setScreenState(1);
-    }
-  };
-
   if (screenState === 0) {
     return (
       <Upload
         goalImg={goalImg}
+        setGoalImg={setGoalImg}
         goalName={goalName}
-        imageHandler={imageHandler}
-        nameHandler={nameHandler}
+        setGoalName={setGoalName}
         setScreenState={setScreenState}
-        onSubmit={onSubmit}
-        textRef={textRef}
       />
     );
   } else {
@@ -83,7 +31,7 @@ function App() {
       <Pomodoro
         goalImg={goalImg}
         goalName={goalName}
-        defaultImg={defaultImg}
+        defaultImg={placeholder}
         setGoalImg={setGoalImg}
         setGoalName={setGoalName}
         setScreenState={setScreenState}

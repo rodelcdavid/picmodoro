@@ -2,7 +2,7 @@ import { KeyboardArrowDown, KeyboardArrowUp } from "@mui/icons-material";
 import { Button, IconButton } from "@mui/material";
 import React, { useState, useEffect } from "react";
 
-function Timer({ onReveal, isActive, setIsActive, isDone }) {
+function Duration({ onReveal, isActive, setIsActive, isDone }) {
   const [presetMin, setPresetMin] = useState(25);
 
   const [minutes, setMinutes] = useState(presetMin);
@@ -38,7 +38,7 @@ function Timer({ onReveal, isActive, setIsActive, isDone }) {
     return () => {
       clearInterval(interval);
     };
-  }, [seconds, minutes, isActive]);
+  }, [seconds, minutes, isActive, onReveal, setIsActive]); // too many dependencies
 
   const timerMinutes = minutes < 10 ? `0${minutes}` : minutes;
   const timerSeconds = seconds < 10 ? `0${seconds}` : seconds;
@@ -123,4 +123,4 @@ function Timer({ onReveal, isActive, setIsActive, isDone }) {
   );
 }
 
-export default Timer;
+export default Duration;
