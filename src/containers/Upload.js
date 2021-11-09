@@ -1,6 +1,6 @@
 // import { Button, TextField } from "@mui/material";
 import React, { useRef } from "react";
-import { Container, ImageHolder } from "./Upload.styled";
+import { Container } from "./Upload.styled";
 import placeholder from "../assets/placeholder.jpg";
 import InputName from "../components/Upload/InputName";
 import UploadImage from "../components/Upload/UploadImage";
