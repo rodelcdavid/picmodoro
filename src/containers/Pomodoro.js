@@ -29,7 +29,7 @@ function Pomodoro({
   };
 
   useEffect(() => {
-    console.log("reveal", reveal);
+    // console.log("reveal", reveal);
     const tempReveal = [...reveal];
     const totalReveal = tempReveal.filter((x) => x === true).length;
 

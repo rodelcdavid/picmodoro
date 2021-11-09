@@ -25,7 +25,7 @@ export default function Session({
     // console.log("tempreveal", tempReveal);
 
     const totalReveal = tempReveal.filter((x) => x === true).length;
-    console.log("plusreveal", totalReveal, tempNum);
+    // console.log("plusreveal", totalReveal, tempNum);
     if (totalReveal >= tempNum) {
       setIsDone(true);
     } else {
@@ -44,7 +44,7 @@ export default function Session({
       //remove last false
       //what if last element is true?
       let tempReveal = [...reveal];
-      console.log("lastindex", tempReveal.lastIndexOf(false));
+      // console.log("lastindex", tempReveal.lastIndexOf(false));
 
       if (tempReveal[tempReveal.length - 1] === true) {
         // tempReveal.reduce((arr, item, i) => {
@@ -57,13 +57,13 @@ export default function Session({
       } else {
         tempReveal.pop();
       }
-      console.log("tempReveal on splice", tempReveal);
+      // console.log("tempReveal on splice", tempReveal);
 
       setReveal(tempReveal);
-      console.log("reveal on minus", reveal);
+      // console.log("reveal on minus", reveal);
 
       const totalReveal = tempReveal.filter((x) => x === true).length;
-      console.log("plusreveal", totalReveal, tempNum);
+      // console.log("plusreveal", totalReveal, tempNum);
       if (totalReveal >= tempNum) {
         setIsDone(true);
       } else {

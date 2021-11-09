@@ -3,10 +3,10 @@ import React from "react";
 
 const SubmitButton = ({ onSubmit }) => {
   return (
-    <div>
-      <h1>
+    <div style={{ textAlign: "center" }}>
+      <h2>
         <span style={{ color: "#00ADB5" }}>Step 3: </span>Submit and start!
-      </h1>
+      </h2>
       <Button onClick={onSubmit} variant="contained">
         Submit
       </Button>

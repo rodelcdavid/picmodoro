@@ -37,7 +37,7 @@ export default function ImageGrid({ numPomodoro, reveal, isDone, goalImg }) {
 
   //for those that don't divide equally
   if ((imgWidth / gridColumn) % 10 !== 0) {
-    console.log((imgWidth / gridColumn) % 10);
+    // console.log((imgWidth / gridColumn) % 10);
     gridColumnSize += 0.04;
   }
 

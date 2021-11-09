@@ -23,7 +23,7 @@ export default function Upload({
     const reader = new FileReader();
 
     reader.onload = () => {
-      console.log("hello", file.size);
+      // console.log("hello", file.size);
       if (file.size > 5000000) {
         alert("File size limit reached");
         return;

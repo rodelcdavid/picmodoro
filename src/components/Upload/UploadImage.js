@@ -3,11 +3,11 @@ import { ImageHolder } from "./UploadImage.styled";
 
 const UploadImage = ({ goalImg, imageHandler }) => {
   return (
-    <div>
-      <h1 style={{ marginBottom: "5px" }}>
+    <div style={{ textAlign: "center" }}>
+      <h2 style={{ marginBottom: "5px" }}>
         <span style={{ color: "#00ADB5" }}>Step 2: </span>Upload an image for
         your goal
-      </h1>
+      </h2>
       <ImageHolder>
         <img src={goalImg} width="100%" alt="" id="img" className="img" />
       </ImageHolder>
