@@ -1,8 +1,9 @@
 import { useEffect, useState } from "react";
 import Pomodoro from "./components/Pomodoro";
-import Upload from "./components/Upload";
+
 import placeholder from "./assets/placeholder.jpg";
 import { prevImg, prevName, prevScreen } from "./utils/getLocalStorage";
+import Upload from "./containers/Upload";
 
 function App() {
   const [goalImg, setGoalImg] = useState(prevImg || placeholder);
