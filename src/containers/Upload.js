@@ -1,10 +1,10 @@
 // import { Button, TextField } from "@mui/material";
 import React, { useRef } from "react";
-import { Container } from "./Upload.styled";
 import placeholder from "../assets/placeholder.jpg";
 import InputName from "../components/Upload/InputName";
 import UploadImage from "../components/Upload/UploadImage";
 import SubmitButton from "../components/Upload/SubmitButton";
+import { Box } from "@mui/system";
 
 //change this to just props, then just specify on the children goalName, setGoalName, ...props
 export default function Upload({
@@ -58,14 +58,29 @@ export default function Upload({
   };
 
   return (
-    <Container>
-      <InputName
-        textRef={textRef}
-        goalName={goalName}
-        nameHandler={nameHandler}
-      />
-      <UploadImage goalImg={goalImg} imageHandler={imageHandler} />
-      <SubmitButton onSubmit={onSubmit} />
-    </Container>
+    <Box sx={{ display: "flex", justifyContent: "center", width: "100vw" }}>
+      <Box
+        sx={{
+          display: "flex",
+          flexDirection: "column",
+          justifyContent: "center",
+          alignItems: "center",
+          width: "calc(100vw - 2rem)",
+          maxWidth: "400px",
+          padding: "1rem",
+          border: "2px solid black",
+          borderRadius: "20px",
+          marginTop: "1.5rem",
+        }}
+      >
+        <InputName
+          textRef={textRef}
+          goalName={goalName}
+          nameHandler={nameHandler}
+        />
+        <UploadImage goalImg={goalImg} imageHandler={imageHandler} />
+        <SubmitButton onSubmit={onSubmit} />
+      </Box>
+    </Box>
   );
 }

@@ -1,21 +1,28 @@
-import { TextField } from "@mui/material";
+import { TextField, Typography } from "@mui/material";
+import { Box } from "@mui/system";
 import React from "react";
 
 const InputName = ({ textRef, goalName, nameHandler }) => {
   return (
-    <div style={{ textAlign: "center" }}>
-      <h2 style={{ marginBottom: "5px" }}>
-        <span style={{ color: "#00ADB5" }}>Step 1: </span>What is your goal?
-      </h2>
-      <TextField
-        inputRef={textRef}
-        id="outlined-name"
-        label="Enter goal name"
-        value={goalName}
-        onChange={nameHandler}
-        style={{ width: "500px", marginBottom: "5px" }}
-      />
-    </div>
+    <Box sx={{ display: "flex", flexDirection: "column", width: "100%" }}>
+      <Typography variant="h6">
+        <Box sx={{ color: "#00adb5", fontWeight: "bold" }} component="span">
+          Step 1:{" "}
+        </Box>
+        What is your goal?
+      </Typography>
+      <Box sx={{ width: "100%", alignSelf: "center" }}>
+        <TextField
+          className="name-field"
+          fullWidth
+          inputRef={textRef}
+          id="outlined-name"
+          label="Enter goal name"
+          value={goalName}
+          onChange={nameHandler}
+        />
+      </Box>
+    </Box>
   );
 };
 

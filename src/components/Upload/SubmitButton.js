@@ -1,16 +1,24 @@
-import { Button } from "@mui/material";
+import { Button, Typography } from "@mui/material";
+import { Box } from "@mui/system";
 import React from "react";
 
 const SubmitButton = ({ onSubmit }) => {
   return (
-    <div style={{ textAlign: "center" }}>
-      <h2>
-        <span style={{ color: "#00ADB5" }}>Step 3: </span>Submit and start!
-      </h2>
-      <Button onClick={onSubmit} variant="contained">
+    <Box sx={{ display: "flex", flexDirection: "column", width: "100%" }}>
+      <Typography variant="h6">
+        <Box sx={{ color: "#00adb5", fontWeight: "bold" }} component="span">
+          Step 3:{" "}
+        </Box>
+        Submit and start!
+      </Typography>
+      <Button
+        sx={{ alignSelf: "center", width: "60%" }}
+        onClick={onSubmit}
+        variant="contained"
+      >
         Submit
       </Button>
-    </div>
+    </Box>
   );
 };
 

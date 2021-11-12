@@ -1,36 +1,46 @@
+import { Typography } from "@mui/material";
+import { Box } from "@mui/system";
 import React from "react";
-import { ImageHolder } from "./UploadImage.styled";
 
 const UploadImage = ({ goalImg, imageHandler }) => {
   return (
-    <div style={{ textAlign: "center" }}>
-      <h2 style={{ marginBottom: "5px" }}>
-        <span style={{ color: "#00ADB5" }}>Step 2: </span>Upload an image for
-        your goal
-      </h2>
-      <ImageHolder>
-        <img src={goalImg} width="100%" alt="" id="img" className="img" />
-      </ImageHolder>
+    <Box sx={{ display: "flex", flexDirection: "column", width: "100%" }}>
+      <Typography variant="h6">
+        <Box sx={{ color: "#00adb5", fontWeight: "bold" }} component="span">
+          Step 2:{" "}
+        </Box>
+        Upload an image for your goal.
+      </Typography>
 
-      <input
-        style={{
-          cursor: "pointer",
-          fontSize: "1rem",
-          border: "solid 2px black",
-          padding: "10px",
-          borderRadius: "5px",
-          borderWidth: "1px",
-          marginRight: "5px",
-        }}
-        type="file"
-        accept="image/*"
-        name="image-upload"
-        id="input"
-        onChange={imageHandler}
-      />
+      <Box
+        sx={{ display: "flex", flexDirection: "column", alignItems: "center" }}
+      >
+        <Box sx={{ width: "80%" }} component="img" src={goalImg} alt="" />
+        <input
+          type="file"
+          accept="image/*"
+          name="image-upload"
+          id="input"
+          onChange={imageHandler}
+          style={{
+            width: "80%",
+            cursor: "pointer",
+            border: "solid 2px rgba(0,0,0,0.23)",
+            padding: "10px",
+            borderRadius: "5px",
+            borderWidth: "1px",
+            marginTop: "5px",
+          }}
+        />
 
-      <p style={{ color: "black", fontSize: "0.8rem" }}>Max file size: 5MB</p>
-    </div>
+        <Typography
+          sx={{ display: "inline-block", color: "black", fontSize: "0.8rem" }}
+          paragraph
+        >
+          Max file size: 5MB
+        </Typography>
+      </Box>
+    </Box>
   );
 };
 
