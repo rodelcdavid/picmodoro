@@ -1,19 +1,20 @@
 {
   "files": {
-    "main.js": "/picmodoro/static/js/main.fd799071.chunk.js",
-    "main.js.map": "/picmodoro/static/js/main.fd799071.chunk.js.map",
-    "runtime-main.js": "/picmodoro/static/js/runtime-main.d5be93bf.js",
-    "runtime-main.js.map": "/picmodoro/static/js/runtime-main.d5be93bf.js.map",
-    "static/js/2.5bec45e4.chunk.js": "/picmodoro/static/js/2.5bec45e4.chunk.js",
-    "static/js/2.5bec45e4.chunk.js.map": "/picmodoro/static/js/2.5bec45e4.chunk.js.map",
-    "static/js/3.0bc137e8.chunk.js": "/picmodoro/static/js/3.0bc137e8.chunk.js",
-    "static/js/3.0bc137e8.chunk.js.map": "/picmodoro/static/js/3.0bc137e8.chunk.js.map",
+    "main.js": "/picmodoro/static/js/main.db2e8ff3.chunk.js",
+    "main.js.map": "/picmodoro/static/js/main.db2e8ff3.chunk.js.map",
+    "runtime-main.js": "/picmodoro/static/js/runtime-main.2089e18a.js",
+    "runtime-main.js.map": "/picmodoro/static/js/runtime-main.2089e18a.js.map",
+    "static/js/2.c25b6734.chunk.js": "/picmodoro/static/js/2.c25b6734.chunk.js",
+    "static/js/2.c25b6734.chunk.js.map": "/picmodoro/static/js/2.c25b6734.chunk.js.map",
+    "static/js/3.8e16e1fd.chunk.js": "/picmodoro/static/js/3.8e16e1fd.chunk.js",
+    "static/js/3.8e16e1fd.chunk.js.map": "/picmodoro/static/js/3.8e16e1fd.chunk.js.map",
     "index.html": "/picmodoro/index.html",
-    "static/js/2.5bec45e4.chunk.js.LICENSE.txt": "/picmodoro/static/js/2.5bec45e4.chunk.js.LICENSE.txt"
+    "static/js/2.c25b6734.chunk.js.LICENSE.txt": "/picmodoro/static/js/2.c25b6734.chunk.js.LICENSE.txt",
+    "static/media/pnghut_pomodoro-technique-timer-android.e1763d73.png": "/picmodoro/static/media/pnghut_pomodoro-technique-timer-android.e1763d73.png"
   },
   "entrypoints": [
-    "static/js/runtime-main.d5be93bf.js",
-    "static/js/2.5bec45e4.chunk.js",
-    "static/js/main.fd799071.chunk.js"
+    "static/js/runtime-main.2089e18a.js",
+    "static/js/2.c25b6734.chunk.js",
+    "static/js/main.db2e8ff3.chunk.js"
   ]
 }
