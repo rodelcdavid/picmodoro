@@ -43,6 +43,7 @@ function Pomodoro({
   };
 
   const onReveal = () => {
+    //when timer hits zero, new class should be added on a random tile
     const prevReveal = [...reveal];
 
     if (isRandom) {
