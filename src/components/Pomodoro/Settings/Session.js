@@ -73,7 +73,7 @@ export default function Session({
   };
   return (
     <div>
-      <h3>How many Pomodoro sessions?</h3>
+      <h4>Sessions</h4>
       <div
         style={{
           display: "flex",
@@ -82,7 +82,7 @@ export default function Session({
         }}
       >
         <IconButton
-          color="primary"
+          color="success"
           disabled={isDone || numPomodoro === 1 || isActive ? true : false}
           onClick={onMinus}
         >
@@ -91,7 +91,7 @@ export default function Session({
 
         <p style={{ margin: "0 5px" }}>{numPomodoro}</p>
         <IconButton
-          color="primary"
+          color="success"
           disabled={isActive ? true : false}
           onClick={onPlus}
         >

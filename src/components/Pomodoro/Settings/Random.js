@@ -5,13 +5,15 @@ const Random = ({ isRandom, handleToggle, onReveal }) => {
   return (
     <div>
       <FormControlLabel
-        control={<Switch checked={isRandom} onChange={handleToggle} />}
+        control={
+          <Switch checked={isRandom} onChange={handleToggle} color="success" />
+        }
         label="Random Reveal"
       />
 
-      <Button onClick={onReveal} variant="contained">
+      {/* <Button onClick={onReveal} variant="contained">
         Reveal
-      </Button>
+      </Button> */}
     </div>
   );
 };

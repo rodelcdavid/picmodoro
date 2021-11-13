@@ -9,6 +9,7 @@ const globalStyles = (
         boxSizing: "border-box",
       },
       body: {
+        fontFamily: "'Montserrat', sans-serif",
         minHeight: "100vh",
         overflowY: "scroll",
         // backgroundImage:
@@ -17,8 +18,8 @@ const globalStyles = (
         //  oundImage: "linear-gradient( #007adf 0%, #00ecbc 100%)", backgr
         // backgroundImage: "linear-gradient(to right, #43e97b 0%, #38f9d7 100%)",
         // backgroundImage: "linear-gradient(to top, #0ba360 0%, #3cba92 100%)",
-        backgroundImage:
-          "linear-gradient(to top, #1e3c72 0%, #1e3c72 1%, #2a5298 100%)",
+        // backgroundImage:
+        //   "linear-gradient(to top, #1e3c72 0%, #1e3c72 1%, #2a5298 100%)",
       },
     }}
   />

@@ -45,7 +45,7 @@ function Duration({ onReveal, isActive, setIsActive, isDone }) {
 
   return (
     <div>
-      <h3>How many minutes?</h3>
+      <h4>Duration</h4>
       <div
         style={{
           display: "flex",
@@ -54,7 +54,7 @@ function Duration({ onReveal, isActive, setIsActive, isDone }) {
         }}
       >
         <IconButton
-          color="primary"
+          color="success"
           onClick={() => {
             setPresetMin(presetMin - 5);
           }}
@@ -70,7 +70,7 @@ function Duration({ onReveal, isActive, setIsActive, isDone }) {
         </div>
 
         <IconButton
-          color="primary"
+          color="success"
           onClick={() => {
             setPresetMin(presetMin + 5);
           }}

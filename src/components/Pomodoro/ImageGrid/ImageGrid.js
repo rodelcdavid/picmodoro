@@ -1,6 +1,6 @@
+import { Box } from "@mui/system";
 import React, { useCallback } from "react";
 import { getGridValues } from "../../../utils/helpers";
-import { Tiles } from "./ImageGrid.styled";
 
 export default function ImageGrid({ numPomodoro, reveal, isDone, goalImg }) {
   const ImageBlocker = useCallback(() => {
@@ -8,7 +8,14 @@ export default function ImageGrid({ numPomodoro, reveal, isDone, goalImg }) {
 
     for (let i = 1; i <= numPomodoro; i++) {
       tilesArray.push(
-        <Tiles key={i} index={i} reveal={reveal[i - 1]} isDone={isDone} />
+        <Box
+          sx={{
+            backgroundColor: reveal[i - 1] ? "none" : "#F6F5F5",
+            border: isDone ? "none" : "solid 1px black",
+          }}
+          key={i}
+          index={i}
+        />
       );
     }
 
@@ -25,8 +32,8 @@ export default function ImageGrid({ numPomodoro, reveal, isDone, goalImg }) {
   ] = getGridValues(numPomodoro);
 
   return (
-    <div
-      style={{
+    <Box
+      sx={{
         display: "flex",
         flexDirection: "column",
         justifyContent: "center",
@@ -34,7 +41,7 @@ export default function ImageGrid({ numPomodoro, reveal, isDone, goalImg }) {
         textAlign: "center",
       }}
     >
-      <div
+      <Box
         style={{
           display: "grid",
           gridTemplateColumns: `repeat( ${gridColumn}, ${gridColumnSize}px`,
@@ -46,13 +53,13 @@ export default function ImageGrid({ numPomodoro, reveal, isDone, goalImg }) {
           backgroundRepeat: "no-repeat",
           backgroundPosition: "center",
           border: "solid 1px black",
-          boxShadow: "0 10px 20px grey",
+          // boxShadow: "0 5px 10px #fff",
           overflow: "hidden",
           boxSizing: "content-box",
         }}
       >
         <ImageBlocker />
-      </div>
-    </div>
+      </Box>
+    </Box>
   );
 }
