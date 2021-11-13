@@ -4,18 +4,37 @@ import React from "react";
 
 const UploadImage = ({ goalImg, imageHandler }) => {
   return (
-    <Box sx={{ display: "flex", flexDirection: "column", width: "100%" }}>
+    <Box
+      sx={{
+        display: "flex",
+        flexDirection: "column",
+        width: "100%",
+      }}
+    >
       <Typography variant="h6">
-        <Box sx={{ color: "#00adb5", fontWeight: "bold" }} component="span">
+        <Box sx={{ color: "#4EC127", fontWeight: "bolder" }} component="span">
           Step 2:{" "}
         </Box>
         Upload an image for your goal.
       </Typography>
 
       <Box
-        sx={{ display: "flex", flexDirection: "column", alignItems: "center" }}
+        sx={{
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
+        }}
       >
-        <Box sx={{ width: "80%" }} component="img" src={goalImg} alt="" />
+        <Box
+          sx={{
+            border: "solid 1px rgba(0,0,0,0.23)",
+            width: "100%",
+          }}
+          component="img"
+          src={goalImg}
+          alt=""
+        />
+
         <input
           type="file"
           accept="image/*"
@@ -23,9 +42,9 @@ const UploadImage = ({ goalImg, imageHandler }) => {
           id="input"
           onChange={imageHandler}
           style={{
-            width: "80%",
+            width: "100%",
             cursor: "pointer",
-            border: "solid 2px rgba(0,0,0,0.23)",
+            border: "solid 1px rgba(0,0,0,0.23)",
             padding: "10px",
             borderRadius: "5px",
             borderWidth: "1px",

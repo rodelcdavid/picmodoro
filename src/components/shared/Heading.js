@@ -8,14 +8,13 @@ const Heading = () => {
       sx={{
         display: "flex",
         justifyContent: "center",
-        width: "100vw",
-        backgroundColor: "#1976d2",
+
         padding: "1rem",
         fontSize: "2.5rem",
         fontWeight: "bolder",
         color: "#fff",
         textShadow: "2px 2px #000",
-        borderBottom: "solid 3px black",
+        borderBottom: "solid 2px black",
         fontFamily: "'Righteous', cursive",
       }}
     >
