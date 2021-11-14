@@ -1,20 +1,20 @@
 {
   "files": {
-    "main.js": "/picmodoro/static/js/main.db2e8ff3.chunk.js",
-    "main.js.map": "/picmodoro/static/js/main.db2e8ff3.chunk.js.map",
-    "runtime-main.js": "/picmodoro/static/js/runtime-main.2089e18a.js",
-    "runtime-main.js.map": "/picmodoro/static/js/runtime-main.2089e18a.js.map",
-    "static/js/2.c25b6734.chunk.js": "/picmodoro/static/js/2.c25b6734.chunk.js",
-    "static/js/2.c25b6734.chunk.js.map": "/picmodoro/static/js/2.c25b6734.chunk.js.map",
-    "static/js/3.8e16e1fd.chunk.js": "/picmodoro/static/js/3.8e16e1fd.chunk.js",
-    "static/js/3.8e16e1fd.chunk.js.map": "/picmodoro/static/js/3.8e16e1fd.chunk.js.map",
+    "main.js": "/picmodoro/static/js/main.ae5aa6ad.chunk.js",
+    "main.js.map": "/picmodoro/static/js/main.ae5aa6ad.chunk.js.map",
+    "runtime-main.js": "/picmodoro/static/js/runtime-main.2729d396.js",
+    "runtime-main.js.map": "/picmodoro/static/js/runtime-main.2729d396.js.map",
+    "static/js/2.d60db99f.chunk.js": "/picmodoro/static/js/2.d60db99f.chunk.js",
+    "static/js/2.d60db99f.chunk.js.map": "/picmodoro/static/js/2.d60db99f.chunk.js.map",
+    "static/js/3.d58fa2ee.chunk.js": "/picmodoro/static/js/3.d58fa2ee.chunk.js",
+    "static/js/3.d58fa2ee.chunk.js.map": "/picmodoro/static/js/3.d58fa2ee.chunk.js.map",
     "index.html": "/picmodoro/index.html",
-    "static/js/2.c25b6734.chunk.js.LICENSE.txt": "/picmodoro/static/js/2.c25b6734.chunk.js.LICENSE.txt",
-    "static/media/pnghut_pomodoro-technique-timer-android.e1763d73.png": "/picmodoro/static/media/pnghut_pomodoro-technique-timer-android.e1763d73.png"
+    "static/js/2.d60db99f.chunk.js.LICENSE.txt": "/picmodoro/static/js/2.d60db99f.chunk.js.LICENSE.txt",
+    "static/media/pomodoro.e1763d73.png": "/picmodoro/static/media/pomodoro.e1763d73.png"
   },
   "entrypoints": [
-    "static/js/runtime-main.2089e18a.js",
-    "static/js/2.c25b6734.chunk.js",
-    "static/js/main.db2e8ff3.chunk.js"
+    "static/js/runtime-main.2729d396.js",
+    "static/js/2.d60db99f.chunk.js",
+    "static/js/main.ae5aa6ad.chunk.js"
   ]
 }
