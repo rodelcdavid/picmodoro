@@ -1,7 +1,11 @@
+import { useMediaQuery } from "@mui/material";
 import { Box } from "@mui/system";
 import React, { useCallback } from "react";
 
-const getGridValues = (numPomodoro) => {
+const getGridValues = (numPomodoro, wide) => {
+  // const imgWidth = wide ? 600 : 350;
+  // const imgHeight = wide ? 400 : 300;
+
   const imgWidth = 350;
   const imgHeight = 300;
   let gridColumn, gridRow;
@@ -43,6 +47,8 @@ const getGridValues = (numPomodoro) => {
 };
 
 export default function ImageGrid({ numPomodoro, reveal, isDone, goalImg }) {
+  const wide = useMediaQuery("(min-width:600px");
+
   const ImageBlocker = useCallback(() => {
     const tilesArray = [];
 
@@ -69,7 +75,7 @@ export default function ImageGrid({ numPomodoro, reveal, isDone, goalImg }) {
     gridRowSize,
     gridColumn,
     gridRow,
-  } = getGridValues(numPomodoro);
+  } = getGridValues(numPomodoro, wide);
 
   return (
     <Box

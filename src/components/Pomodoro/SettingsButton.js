@@ -25,6 +25,11 @@ const SettingsButton = ({
   isActive,
   setReveal,
   setIsActive,
+  setMinutes,
+  presetMin,
+  setPresetMin,
+  isSessionDone,
+  setIsSessionDone,
 }) => {
   const [openSettings, setOpenSettings] = useState(false);
   const handleCloseSettings = () => {
@@ -35,6 +40,7 @@ const SettingsButton = ({
     <div>
       <Tooltip title="Settings">
         <IconButton
+          disabled={isActive ? true : false}
           onClick={() => {
             setOpenSettings(true);
           }}
@@ -92,6 +98,11 @@ const SettingsButton = ({
               isActive={isActive}
               setIsActive={setIsActive}
               isDone={isDone}
+              setMinutes={setMinutes}
+              presetMin={presetMin}
+              setPresetMin={setPresetMin}
+              isSessionDone={isSessionDone}
+              setIsSessionDone={setIsSessionDone}
             />
           </Box>
         </Box>

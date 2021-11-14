@@ -17,6 +17,7 @@ const NewGoalButton = ({
   setGoalImg,
   setGoalName,
   defaultImg,
+  isActive,
 }) => {
   const [openNewGoalDialog, setOpenNewGoalDialog] = useState(false);
 
@@ -33,6 +34,7 @@ const NewGoalButton = ({
     <div>
       <Tooltip title="New Goal">
         <IconButton
+          disabled={isActive ? true : false}
           onClick={() => {
             setOpenNewGoalDialog(true);
           }}
@@ -65,12 +67,10 @@ const NewGoalButton = ({
           </DialogContentText>
         </DialogContent>
         <DialogActions>
-          <Button onClick={handleClose} variant="contained" color="error">
+          <Button onClick={handleClose} color="error">
             Cancel
           </Button>
-          <Button onClick={handleNewGoal} variant="contained">
-            New Goal
-          </Button>
+          <Button onClick={handleNewGoal}>New Goal</Button>
         </DialogActions>
       </Dialog>
     </div>
