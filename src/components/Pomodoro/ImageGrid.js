@@ -1,6 +1,46 @@
 import { Box } from "@mui/system";
 import React, { useCallback } from "react";
-import { getGridValues } from "../../../utils/helpers";
+
+const getGridValues = (numPomodoro) => {
+  const imgWidth = 350;
+  const imgHeight = 300;
+  let gridColumn, gridRow;
+
+  for (let i = 10; i > 1; i--) {
+    if (numPomodoro === 4) {
+      gridColumn = 2;
+      gridRow = 2;
+      break;
+    } else if (numPomodoro % i === 0 && numPomodoro >= i * 3) {
+      gridColumn = numPomodoro / i;
+      gridRow = i;
+      break;
+    } else {
+      gridColumn = numPomodoro;
+      gridRow = 1;
+    }
+  }
+
+  let gridColumnSize = imgWidth / gridColumn;
+
+  //for those that don't divide equally
+  if ((imgWidth / gridColumn) % 10 !== 0) {
+    // console.log((imgWidth / gridColumn) % 10);
+    gridColumnSize += 0.04;
+  }
+
+  const gridRowSize = imgHeight / gridRow;
+
+  const gridValues = {
+    imgWidth,
+    imgHeight,
+    gridColumnSize,
+    gridRowSize,
+    gridColumn,
+    gridRow,
+  };
+  return gridValues;
+};
 
 export default function ImageGrid({ numPomodoro, reveal, isDone, goalImg }) {
   const ImageBlocker = useCallback(() => {
@@ -22,14 +62,14 @@ export default function ImageGrid({ numPomodoro, reveal, isDone, goalImg }) {
     return tilesArray; // how to access this
   }, [numPomodoro, reveal, isDone]);
 
-  const [
+  const {
     imgWidth,
     imgHeight,
     gridColumnSize,
     gridRowSize,
     gridColumn,
     gridRow,
-  ] = getGridValues(numPomodoro);
+  } = getGridValues(numPomodoro);
 
   return (
     <Box
@@ -39,10 +79,12 @@ export default function ImageGrid({ numPomodoro, reveal, isDone, goalImg }) {
         justifyContent: "center",
         alignItems: "center",
         textAlign: "center",
+        marginTop: "1rem",
       }}
     >
       <Box
         style={{
+          //sx or style?
           display: "grid",
           gridTemplateColumns: `repeat( ${gridColumn}, ${gridColumnSize}px`,
           gridTemplateRows: `repeat( ${gridRow}, ${gridRowSize}px )`,

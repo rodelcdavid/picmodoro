@@ -1,6 +1,6 @@
 import React from "react";
 import { Box } from "@mui/material";
-import tomato from "../../assets/pnghut_pomodoro-technique-timer-android.png";
+import pomodoro from "../../assets/pomodoro.png";
 
 const Heading = () => {
   return (
@@ -21,7 +21,7 @@ const Heading = () => {
       }}
     >
       PICMODOR
-      <Box sx={{ width: "40px" }} component="img" src={tomato} alt="" />
+      <Box sx={{ width: "40px" }} component="img" src={pomodoro} alt="" />
     </Box>
   );
 };

@@ -30,7 +30,7 @@ function Duration({ onReveal, isActive, setIsActive, isDone }) {
         } else {
           setSeconds(seconds - 1);
         }
-      }, 10);
+      }, 1000);
     } else {
       clearInterval(interval);
     }
@@ -45,7 +45,7 @@ function Duration({ onReveal, isActive, setIsActive, isDone }) {
 
   return (
     <div>
-      <h4>Duration</h4>
+      <h5>Duration</h5>
       <div
         style={{
           display: "flex",
@@ -54,7 +54,7 @@ function Duration({ onReveal, isActive, setIsActive, isDone }) {
         }}
       >
         <IconButton
-          color="success"
+          color="primary"
           onClick={() => {
             setPresetMin(presetMin - 5);
           }}
@@ -70,7 +70,7 @@ function Duration({ onReveal, isActive, setIsActive, isDone }) {
         </div>
 
         <IconButton
-          color="success"
+          color="primary"
           onClick={() => {
             setPresetMin(presetMin + 5);
           }}

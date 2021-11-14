@@ -4,7 +4,7 @@ import placeholder from "./assets/placeholder.jpg";
 import { prevImg, prevName, prevScreen } from "./utils/getLocalStorage";
 import Upload from "./containers/Upload";
 import Pomodoro from "./containers/Pomodoro";
-import Heading from "./components/shared/Heading";
+import Heading from "./components/_shared/Heading";
 
 function App() {
   const [goalImg, setGoalImg] = useState(prevImg || placeholder);

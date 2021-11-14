@@ -1,12 +1,12 @@
 import { useState, useEffect } from "react";
 import Details from "../components/Pomodoro/Details";
-import ImageGrid from "../components/Pomodoro/ImageGrid/ImageGrid";
-import Duration from "../components/Pomodoro/Settings/Duration";
-import NewGoal from "../components/Pomodoro/NewGoal";
-import Random from "../components/Pomodoro/Settings/Random";
-import Session from "../components/Pomodoro/Settings/Session";
-import { Box, IconButton } from "@mui/material";
-import SettingsIcon from "@mui/icons-material/Settings";
+
+import { Box } from "@mui/material";
+
+import ImageGrid from "../components/Pomodoro/ImageGrid";
+
+import SettingsButton from "../components/Pomodoro/SettingsButton";
+import NewGoalButton from "../components/Pomodoro/NewGoalButton";
 
 function Pomodoro({
   goalImg,
@@ -80,10 +80,10 @@ function Pomodoro({
           justifyContent: "space-between",
           alignItems: "center",
           width: "350px",
-          margin: "0 auto",
+          margin: "1rem auto",
         }}
       >
-        <NewGoal
+        <NewGoalButton
           setScreenState={setScreenState}
           setGoalImg={setGoalImg}
           setGoalName={setGoalName}
@@ -94,18 +94,20 @@ function Pomodoro({
           computeReveal={computeReveal}
           numPomodoro={numPomodoro}
         />
-        <IconButton
-          onClick={() => {
-            setScreenState(0);
-            setGoalImg(defaultImg);
-            setGoalName("");
-          }}
-          color="primary"
-          aria-label="upload picture"
-          component="span"
-        >
-          <SettingsIcon />
-        </IconButton>
+        {/* Separate this component */}
+        <SettingsButton
+          isRandom={isRandom}
+          handleToggle={handleToggle}
+          onReveal={onReveal}
+          numPomodoro={numPomodoro}
+          setNumPomodoro={setNumPomodoro}
+          isDone={isDone}
+          setIsDone={setIsDone}
+          reveal={reveal}
+          isActive={isActive}
+          setReveal={setReveal}
+          setIsActive={setIsActive}
+        />
       </Box>
 
       <ImageGrid
@@ -114,40 +116,10 @@ function Pomodoro({
         isDone={isDone}
         goalImg={goalImg}
       />
-      <Random
-        isRandom={isRandom}
-        handleToggle={handleToggle}
-        onReveal={onReveal}
-      />
+
+      {/* <NewGoalDialog openNewGoalDialog={openNewGoalDialog} /> */}
+
       {/* {isDone ? <h2>Congratulations</h2> : <h2>Hi</h2>} */}
-      <Box
-        sx={{
-          border: "solid 2px rgba(0,0,0,.23)",
-          borderRadius: "10px",
-          width: "350px",
-          margin: "1rem auto",
-          padding: "1rem",
-          position: "relative",
-        }}
-      >
-        <Session
-          numPomodoro={numPomodoro}
-          setNumPomodoro={setNumPomodoro}
-          isDone={isDone}
-          setIsDone={setIsDone}
-          reveal={reveal}
-          isActive={isActive}
-          setReveal={setReveal}
-        />
-        {/* Timer is being rerendered after adding numPomodoro, maybe because of the conditional rendering isActive */}
-        <Duration
-          onReveal={onReveal}
-          isActive={isActive}
-          setIsActive={setIsActive}
-          isDone={isDone}
-        />
-        <Box sx={{ position: "absolute", top: 0, right: "5px" }}></Box>
-      </Box>
     </div>
   );
 }
