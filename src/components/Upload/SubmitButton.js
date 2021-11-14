@@ -6,7 +6,7 @@ const SubmitButton = ({ onSubmit }) => {
   return (
     <Box sx={{ display: "flex", flexDirection: "column", width: "100%" }}>
       <Typography variant="h6">
-        <Box sx={{ color: "#00adb5", fontWeight: "bold" }} component="span">
+        <Box sx={{ color: "#4EC127", fontWeight: "bolder" }} component="span">
           Step 3:{" "}
         </Box>
         Submit and start!

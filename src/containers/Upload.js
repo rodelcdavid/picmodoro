@@ -58,7 +58,13 @@ export default function Upload({
   };
 
   return (
-    <Box sx={{ display: "flex", justifyContent: "center", width: "100vw" }}>
+    <Box
+      sx={{
+        display: "flex",
+        justifyContent: "center",
+        width: "100%",
+      }}
+    >
       <Box
         sx={{
           display: "flex",
@@ -68,9 +74,10 @@ export default function Upload({
           width: "calc(100vw - 2rem)",
           maxWidth: "400px",
           padding: "1rem",
-          border: "2px solid black",
+          boxShadow: "0 10px 15px rgba(0,0,0,0.5)",
           borderRadius: "20px",
           marginTop: "1.5rem",
+          backgroundColor: "#F6F5F5",
         }}
       >
         <InputName

@@ -8,6 +8,11 @@ const globalStyles = (
         padding: 0,
         boxSizing: "border-box",
       },
+      body: {
+        fontFamily: "'Montserrat', sans-serif",
+        minHeight: "100vh",
+        overflowY: "scroll",
+      },
     }}
   />
 );

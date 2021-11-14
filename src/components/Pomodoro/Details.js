@@ -1,15 +1,16 @@
+import { Box } from "@mui/system";
 import React from "react";
 
 const Details = ({ goalName, computeReveal, numPomodoro }) => {
   return (
-    <div>
-      <h1>{goalName}</h1>
+    <Box>
+      <h2>{goalName}</h2>
 
       {/* should grab totalReveal instead of calling computereveal */}
-      <h2>
+      <p style={{ color: "green" }}>
         Progress: {computeReveal()}/{numPomodoro}
-      </h2>
-    </div>
+      </p>
+    </Box>
   );
 };
 
