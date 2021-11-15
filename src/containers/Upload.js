@@ -76,7 +76,7 @@ export default function Upload({
           padding: "1rem",
           boxShadow: "0 10px 15px rgba(0,0,0,0.5)",
           borderRadius: "20px",
-          marginTop: "1.5rem",
+          marginTop: "1rem",
           backgroundColor: "#F6F5F5",
         }}
       >

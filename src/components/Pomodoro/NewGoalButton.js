@@ -11,6 +11,7 @@ import {
   Tooltip,
 } from "@mui/material";
 import AutorenewIcon from "@mui/icons-material/Autorenew";
+import { Box } from "@mui/system";
 
 const NewGoalButton = ({
   setScreenState,
@@ -31,7 +32,7 @@ const NewGoalButton = ({
     setGoalName("");
   };
   return (
-    <div>
+    <Box sx={{ marginRight: "auto" }}>
       <Tooltip title="New Goal">
         <IconButton
           disabled={isActive ? true : false}
@@ -73,7 +74,7 @@ const NewGoalButton = ({
           <Button onClick={handleNewGoal}>New Goal</Button>
         </DialogActions>
       </Dialog>
-    </div>
+    </Box>
   );
 };
 

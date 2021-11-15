@@ -8,6 +8,7 @@ import ImageGrid from "../components/Pomodoro/ImageGrid";
 import SettingsButton from "../components/Pomodoro/SettingsButton";
 import NewGoalButton from "../components/Pomodoro/NewGoalButton";
 import DisplayTimer from "./DisplayTimer";
+import UpArrow from "../components/Pomodoro/UpArrow";
 
 function Pomodoro({
   goalImg,
@@ -30,6 +31,8 @@ function Pomodoro({
   const [isActive, setIsActive] = useState(false);
 
   const [isSessionDone, setIsSessionDone] = useState(false);
+
+  const [isGuided, setIsGuided] = useState(false);
 
   //optimize this function because it renders twice
   const computeReveal = () => {
@@ -89,10 +92,11 @@ function Pomodoro({
       <Box
         sx={{
           display: "flex",
-          justifyContent: "space-between",
+
           alignItems: "center",
           width: "350px",
           margin: "0 auto",
+          position: "relative",
         }}
       >
         <NewGoalButton
@@ -125,7 +129,9 @@ function Pomodoro({
           setPresetMin={setPresetMin}
           isSessionDone={isSessionDone}
           setIsSessionDone={setIsSessionDone}
+          setIsGuided={setIsGuided}
         />
+        <UpArrow isGuided={isGuided} />
       </Box>
 
       <ImageGrid

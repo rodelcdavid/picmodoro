@@ -1,6 +1,6 @@
 import { Button } from "@mui/material";
 import React, { useEffect } from "react";
-import CheckIcon from "@mui/icons-material/Check";
+import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 import { Box } from "@mui/system";
 
 const DisplayTimer = ({
@@ -79,7 +79,7 @@ const DisplayTimer = ({
             fontWeight: "bolder",
           }}
         >
-          <CheckIcon color="success" fontSize="medium" /> Session finished.
+          Session finished <CheckCircleIcon color="success" fontSize="medium" />
         </Box>
       )}
 
@@ -93,46 +93,6 @@ const DisplayTimer = ({
         setIsActive={setIsActive}
         presetMin={presetMin}
       />
-
-      {/* <Button
-        disabled={isDone ? true : false}
-        style={{ display: "block", margin: "0 auto" }}
-        onClick={() => {
-          setMinutes(presetMin);
-          setSeconds(0);
-          setIsSessionDone(false);
-        }}
-        variant="contained"
-        color="warning"
-      >
-        Reset Timer
-      </Button>
-
-      {isActive ? (
-        <Button
-          onClick={() => {
-            setMinutes(presetMin);
-            setSeconds(0);
-            setIsActive(false);
-          }}
-          variant="contained"
-          color="error"
-        >
-          Discard session
-        </Button>
-      ) : (
-        <Button
-          style={{
-            display: isDone || isSessionDone ? "none" : "block",
-            margin: "0 auto",
-          }}
-          onClick={() => setIsActive(true)}
-          variant="contained"
-          color="primary"
-        >
-          Start timer
-        </Button>
-      )} */}
     </div>
   );
 };
