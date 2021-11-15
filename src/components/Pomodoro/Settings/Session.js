@@ -1,5 +1,6 @@
 import { KeyboardArrowDown, KeyboardArrowUp } from "@mui/icons-material";
 import { IconButton } from "@mui/material";
+import { Box } from "@mui/system";
 import React from "react";
 
 export default function Session({
@@ -72,10 +73,10 @@ export default function Session({
     }
   };
   return (
-    <div>
+    <>
       <h5>Sessions</h5>
-      <div
-        style={{
+      <Box
+        sx={{
           display: "flex",
           alignItems: "center",
           justifyContent: "center",
@@ -97,7 +98,7 @@ export default function Session({
         >
           <KeyboardArrowUp />
         </IconButton>
-      </div>
-    </div>
+      </Box>
+    </>
   );
 }

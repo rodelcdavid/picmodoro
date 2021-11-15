@@ -85,7 +85,6 @@ export default function ImageGrid({ numPomodoro, reveal, isDone, goalImg }) {
         justifyContent: "center",
         alignItems: "center",
         textAlign: "center",
-        marginTop: "1rem",
       }}
     >
       <Box

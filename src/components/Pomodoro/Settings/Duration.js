@@ -1,5 +1,6 @@
 import { KeyboardArrowDown, KeyboardArrowUp } from "@mui/icons-material";
 import { IconButton } from "@mui/material";
+import { Box } from "@mui/system";
 import React, { useEffect } from "react";
 
 function Duration({ presetMin, setPresetMin }) {
@@ -8,10 +9,10 @@ function Duration({ presetMin, setPresetMin }) {
   }, [presetMin, setPresetMin]);
 
   return (
-    <div>
+    <>
       <h5>Duration</h5>
-      <div
-        style={{
+      <Box
+        sx={{
           display: "flex",
           alignItems: "center",
           justifyContent: "center",
@@ -27,7 +28,7 @@ function Duration({ presetMin, setPresetMin }) {
           <KeyboardArrowDown />
         </IconButton>
 
-        <div className="timer">{presetMin}:00</div>
+        <Box>{presetMin}:00</Box>
 
         <IconButton
           color="primary"
@@ -37,8 +38,8 @@ function Duration({ presetMin, setPresetMin }) {
         >
           <KeyboardArrowUp />
         </IconButton>
-      </div>
-    </div>
+      </Box>
+    </>
   );
 }
 
