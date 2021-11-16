@@ -1,7 +1,7 @@
 {
   "files": {
-    "main.js": "/picmodoro/static/js/main.3b2c0edb.chunk.js",
-    "main.js.map": "/picmodoro/static/js/main.3b2c0edb.chunk.js.map",
+    "main.js": "/picmodoro/static/js/main.63e65247.chunk.js",
+    "main.js.map": "/picmodoro/static/js/main.63e65247.chunk.js.map",
     "runtime-main.js": "/picmodoro/static/js/runtime-main.67505427.js",
     "runtime-main.js.map": "/picmodoro/static/js/runtime-main.67505427.js.map",
     "static/js/2.4cb2e600.chunk.js": "/picmodoro/static/js/2.4cb2e600.chunk.js",
@@ -15,6 +15,6 @@
   "entrypoints": [
     "static/js/runtime-main.67505427.js",
     "static/js/2.4cb2e600.chunk.js",
-    "static/js/main.3b2c0edb.chunk.js"
+    "static/js/main.63e65247.chunk.js"
   ]
 }
