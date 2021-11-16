@@ -20,6 +20,7 @@ const InputName = ({ textRef, goalName, nameHandler }) => {
           label="Enter goal name"
           value={goalName}
           onChange={nameHandler}
+          helperText="Ex. Finish Atomic Habits book, Score A+ on Math"
         />
       </Box>
     </Box>

@@ -20,6 +20,7 @@ function App() {
   return (
     <>
       <Heading />
+
       {screenState === 0 ? (
         <Upload
           goalImg={goalImg}
@@ -40,28 +41,6 @@ function App() {
       )}
     </>
   );
-  // if (screenState === 0) {
-  //   return (
-  //     <Upload
-  //       goalImg={goalImg}
-  //       setGoalImg={setGoalImg}
-  //       goalName={goalName}
-  //       setGoalName={setGoalName}
-  //       setScreenState={setScreenState}
-  //     />
-  //   );
-  // } else {
-  //   return (
-  //     <Pomodoro
-  //       goalImg={goalImg}
-  //       goalName={goalName}
-  //       defaultImg={placeholder}
-  //       setGoalImg={setGoalImg}
-  //       setGoalName={setGoalName}
-  //       setScreenState={setScreenState}
-  //     />
-  //   );
-  // }
 }
 
 export default App;
