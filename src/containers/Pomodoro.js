@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import Details from "../components/Pomodoro/Details";
 
 import { Box } from "@mui/material";
@@ -18,20 +18,21 @@ function Pomodoro({
   setGoalName,
   setScreenState,
 }) {
-  const [numPomodoro, setNumPomodoro] = useState(1);
+  const [numPomodoro, setNumPomodoro] = useState(1); //change to 25
   const [reveal, setReveal] = useState([false]);
   const [isDone, setIsDone] = useState(false);
 
   const [isRandom, setIsRandom] = useState(false);
 
   // Timer state
-  const [presetMin, setPresetMin] = useState(5);
+  const [presetMin, setPresetMin] = useState(1);
   const [minutes, setMinutes] = useState(presetMin);
   const [seconds, setSeconds] = useState(0);
   const [isActive, setIsActive] = useState(false);
 
   const [isSessionDone, setIsSessionDone] = useState(false);
 
+  //Arrow Guide
   const [isGuided, setIsGuided] = useState(false);
 
   //optimize this function because it renders twice
@@ -43,7 +44,6 @@ function Pomodoro({
   };
 
   useEffect(() => {
-    // console.log("reveal", reveal);
     const tempReveal = [...reveal];
     const totalReveal = tempReveal.filter((x) => x === true).length;
 
@@ -56,7 +56,8 @@ function Pomodoro({
     setIsRandom(e.target.checked);
   };
 
-  const onReveal = () => {
+  const onReveal = useCallback(() => {
+    // recommended usecallback because this function is a dependency on timer useeffect, is it necessary though?
     //when timer hits zero, new class should be added on a random tile
     const prevReveal = [...reveal];
 
@@ -78,7 +79,38 @@ function Pomodoro({
       }
     }
     setReveal(prevReveal);
-  };
+  }, [reveal, isRandom]);
+
+  useEffect(() => {
+    let interval = null;
+
+    let start = new Date();
+    start.setSeconds(start.getSeconds() + presetMin * 60 + 1);
+
+    if (isActive) {
+      interval = setInterval(() => {
+        let current = new Date().getTime();
+        let distance = start - current;
+
+        let s = Math.floor((distance % (1000 * 60)) / 1000);
+        let m = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+
+        setMinutes(m);
+        setSeconds(s);
+
+        if (distance < 0) {
+          setIsActive(false);
+          onReveal();
+          setIsSessionDone(true);
+        }
+      }, 1000);
+    } else {
+      clearInterval(interval);
+    }
+    return () => {
+      clearInterval(interval);
+    };
+  }, [isActive, presetMin, onReveal]); //too many dependencies
 
   return (
     <Box
