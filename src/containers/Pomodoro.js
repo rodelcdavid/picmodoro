@@ -11,7 +11,7 @@ import DisplayTimer from "./DisplayTimer";
 import UpArrow from "../components/Pomodoro/UpArrow";
 
 function Pomodoro({
-  goalImg,
+  goalImage,
   goalName,
   defaultImg,
   setGoalImg,
@@ -163,14 +163,14 @@ function Pomodoro({
           setIsSessionDone={setIsSessionDone}
           setIsGuided={setIsGuided}
         />
-        <UpArrow isGuided={isGuided} />
+        {/* <UpArrow isGuided={isGuided} /> */}
       </Box>
 
       <ImageGrid
         numPomodoro={numPomodoro}
         reveal={reveal}
         isDone={isDone}
-        goalImg={goalImg}
+        goalImage={goalImage}
       />
       <DisplayTimer
         presetMin={presetMin}

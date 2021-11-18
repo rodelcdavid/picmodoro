@@ -6,16 +6,27 @@ import Upload from "./containers/Upload";
 import Pomodoro from "./containers/Pomodoro";
 import Heading from "./components/_shared/Heading";
 
+import { useSelector, useDispatch } from "react-redux";
+import { updateName, updateImage } from "./slices/goal";
+
 function App() {
-  const [goalImg, setGoalImg] = useState(prevImg || placeholder);
-  const [goalName, setGoalName] = useState(prevName || "");
+  // const [goalImage, setgoalImage] = useState(prevImg || placeholder);
+  // const [goalName, setGoalName] = useState(prevName || "");
   const [screenState, setScreenState] = useState(prevScreen || 0);
 
+  const goalName = useSelector((state) => state.goal.name);
+  const goalImage = useSelector((state) => state.goal.image);
+
+  //dispatch
+  const dispatch = useDispatch();
+  const _updateName = (name) => dispatch(updateName(name));
+  const _updateImage = (image) => dispatch(updateImage(image));
+
   useEffect(() => {
-    localStorage.imgFile = JSON.stringify(goalImg);
+    localStorage.imgFile = JSON.stringify(goalImage);
     localStorage.screenState = JSON.stringify(screenState);
     localStorage.goalName = JSON.stringify(goalName);
-  }, [goalImg, goalName, screenState]);
+  }, [goalImage, goalName, screenState]);
 
   return (
     <>
@@ -23,19 +34,19 @@ function App() {
 
       {screenState === 0 ? (
         <Upload
-          goalImg={goalImg}
-          setGoalImg={setGoalImg}
+          goalImage={goalImage}
+          setGoalImg={_updateImage}
           goalName={goalName}
-          setGoalName={setGoalName}
+          setGoalName={_updateName}
           setScreenState={setScreenState}
         />
       ) : (
         <Pomodoro
-          goalImg={goalImg}
+          goalImage={goalImage}
           goalName={goalName}
           defaultImg={placeholder}
-          setGoalImg={setGoalImg}
-          setGoalName={setGoalName}
+          setGoalImg={_updateImage}
+          setGoalName={_updateName}
           setScreenState={setScreenState}
         />
       )}

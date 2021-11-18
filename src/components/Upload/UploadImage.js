@@ -2,7 +2,7 @@ import { Typography } from "@mui/material";
 import { Box } from "@mui/system";
 import React from "react";
 
-const UploadImage = ({ goalImg, imageHandler }) => {
+const UploadImage = ({ goalImage, imageHandler }) => {
   return (
     <Box
       sx={{
@@ -31,7 +31,7 @@ const UploadImage = ({ goalImg, imageHandler }) => {
             width: "100%",
           }}
           component="img"
-          src={goalImg}
+          src={goalImage}
           alt=""
         />
 

@@ -6,14 +6,33 @@ import UploadImage from "../components/Upload/UploadImage";
 import SubmitButton from "../components/Upload/SubmitButton";
 import { Box } from "@mui/system";
 
+// import { useSelector, useDispatch } from "react-redux";
+// import { updateName, updateImage } from "./slices/goal";
+
 //change this to just props, then just specify on the children goalName, setGoalName, ...props
-export default function Upload({
-  goalImg,
+// export default function Upload({
+//   goalImage,
+//   setGoalImg,
+//   goalName,
+//   setGoalName,
+//   setScreenState,
+// })
+
+const Upload = ({
+  goalImage,
   setGoalImg,
   goalName,
   setGoalName,
   setScreenState,
-}) {
+}) => {
+  // //Selectors
+  // const goalName = useSelector((state) => state.goal.name);
+  // const goalImage = useSelector((state) => state.goal.image);
+  // //Dispatch
+  // const dispatch = useDispatch();
+  // const _updateName = (name) => dispatch(updateName(name));
+  // const _updateImage = (image) => dispatch(updateImage(image));
+
   const nameHandler = (e) => {
     setGoalName(e.target.value);
   };
@@ -50,7 +69,7 @@ export default function Upload({
     if (!goalName) {
       alert("Please enter name for your goal");
       textRef.current.focus();
-    } else if (goalImg === placeholder) {
+    } else if (goalImage === placeholder) {
       alert("Please choose an image first");
     } else {
       setScreenState(1);
@@ -85,9 +104,11 @@ export default function Upload({
           goalName={goalName}
           nameHandler={nameHandler}
         />
-        <UploadImage goalImg={goalImg} imageHandler={imageHandler} />
+        <UploadImage goalImage={goalImage} imageHandler={imageHandler} />
         <SubmitButton onSubmit={onSubmit} />
       </Box>
     </Box>
   );
-}
+};
+
+export default Upload;
