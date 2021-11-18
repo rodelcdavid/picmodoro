@@ -6,8 +6,8 @@ import UploadImage from "../components/Upload/UploadImage";
 import SubmitButton from "../components/Upload/SubmitButton";
 import { Box } from "@mui/system";
 
-// import { useSelector, useDispatch } from "react-redux";
-// import { updateName, updateImage } from "./slices/goal";
+import { useSelector, useDispatch } from "react-redux";
+import { updateName, updateImage } from "../slices/goal";
 
 //change this to just props, then just specify on the children goalName, setGoalName, ...props
 // export default function Upload({
@@ -18,23 +18,17 @@ import { Box } from "@mui/system";
 //   setScreenState,
 // })
 
-const Upload = ({
-  goalImage,
-  setGoalImg,
-  goalName,
-  setGoalName,
-  setScreenState,
-}) => {
+const Upload = ({ setScreenState }) => {
   // //Selectors
-  // const goalName = useSelector((state) => state.goal.name);
-  // const goalImage = useSelector((state) => state.goal.image);
+  const goalName = useSelector((state) => state.goalState.name);
+  const goalImage = useSelector((state) => state.goalState.image);
   // //Dispatch
-  // const dispatch = useDispatch();
-  // const _updateName = (name) => dispatch(updateName(name));
-  // const _updateImage = (image) => dispatch(updateImage(image));
+  const dispatch = useDispatch();
+  const _updateName = (name) => dispatch(updateName(name));
+  const _updateImage = (image) => dispatch(updateImage(image));
 
   const nameHandler = (e) => {
-    setGoalName(e.target.value);
+    _updateName(e.target.value);
   };
 
   const imageHandler = (e) => {
@@ -48,7 +42,7 @@ const Upload = ({
         return;
       }
       if (reader.readyState === 2) {
-        setGoalImg(reader.result);
+        _updateImage(reader.result);
       } else {
         return <h1>Loading</h1>;
       }

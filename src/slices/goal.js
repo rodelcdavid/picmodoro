@@ -11,11 +11,11 @@ export const goalSlice = createSlice({
   name: "goal",
   initialState,
   reducers: {
-    updateName: (state, action) => {
-      state.name = action.payload;
+    updateName: (state, { payload }) => {
+      state.name = payload;
     },
-    updateImage: (state, action) => {
-      state.image = action.payload;
+    updateImage: (state, { payload }) => {
+      state.image = payload;
     },
   },
 });

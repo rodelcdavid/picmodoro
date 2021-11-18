@@ -10,14 +10,10 @@ import NewGoalButton from "../components/Pomodoro/NewGoalButton";
 import DisplayTimer from "./DisplayTimer";
 import UpArrow from "../components/Pomodoro/UpArrow";
 
-function Pomodoro({
-  goalImage,
-  goalName,
-  defaultImg,
-  setGoalImg,
-  setGoalName,
-  setScreenState,
-}) {
+import { useSelector, useDispatch } from "react-redux";
+import { updateName, updateImage } from "../slices/goal";
+
+function Pomodoro({ defaultImg, setScreenState }) {
   const [numPomodoro, setNumPomodoro] = useState(1); //change to 25
   const [reveal, setReveal] = useState([false]);
   const [isDone, setIsDone] = useState(false);
@@ -34,6 +30,15 @@ function Pomodoro({
 
   //Arrow Guide
   const [isGuided, setIsGuided] = useState(false);
+
+  //Selectors
+  const goalName = useSelector((state) => state.goalState.name);
+  const goalImage = useSelector((state) => state.goalState.image);
+
+  //Dispatch
+  const dispatch = useDispatch();
+  const _updateName = (name) => dispatch(updateName(name));
+  const _updateImage = (image) => dispatch(updateImage(image));
 
   //optimize this function because it renders twice
   const computeReveal = () => {
@@ -133,8 +138,8 @@ function Pomodoro({
       >
         <NewGoalButton
           setScreenState={setScreenState}
-          setGoalImg={setGoalImg}
-          setGoalName={setGoalName}
+          setGoalImg={_updateImage}
+          setGoalName={_updateName}
           defaultImg={defaultImg}
           isActive={isActive}
         />

@@ -8,21 +8,27 @@ import Heading from "./components/_shared/Heading";
 
 import { useSelector, useDispatch } from "react-redux";
 import { updateName, updateImage } from "./slices/goal";
+import { updateScreen } from "./slices/screen";
 
 function App() {
   // const [goalImage, setgoalImage] = useState(prevImg || placeholder);
   // const [goalName, setGoalName] = useState(prevName || "");
-  const [screenState, setScreenState] = useState(prevScreen || 0);
+  // const [screenState, setScreenState] = useState(prevScreen || 0);
 
-  const goalName = useSelector((state) => state.goal.name);
-  const goalImage = useSelector((state) => state.goal.image);
+  const goalName = useSelector((state) => state.goalState.name);
+  const goalImage = useSelector((state) => state.goalState.image);
+
+  const screenState = useSelector((state) => state.screenState.value);
+  // const goalImage = useSelector((state) => state.goalState.image);
 
   //dispatch
   const dispatch = useDispatch();
-  const _updateName = (name) => dispatch(updateName(name));
-  const _updateImage = (image) => dispatch(updateImage(image));
+  const _updateScreen = (value) => dispatch(updateScreen(value));
+  // const _updateName = (name) => dispatch(updateName(name));
+  // const _updateImage = (image) => dispatch(updateImage(image));
 
   useEffect(() => {
+    // move this to Upload and Pomodoro container
     localStorage.imgFile = JSON.stringify(goalImage);
     localStorage.screenState = JSON.stringify(screenState);
     localStorage.goalName = JSON.stringify(goalName);
@@ -33,21 +39,15 @@ function App() {
       <Heading />
 
       {screenState === 0 ? (
-        <Upload
-          goalImage={goalImage}
-          setGoalImg={_updateImage}
-          goalName={goalName}
-          setGoalName={_updateName}
-          setScreenState={setScreenState}
-        />
+        <Upload setScreenState={_updateScreen} />
       ) : (
         <Pomodoro
-          goalImage={goalImage}
-          goalName={goalName}
+          // goalImage={goalImage}
+          // goalName={goalName}
           defaultImg={placeholder}
-          setGoalImg={_updateImage}
-          setGoalName={_updateName}
-          setScreenState={setScreenState}
+          // setGoalImg={_updateImage}
+          // setGoalName={_updateName}
+          setScreenState={_updateScreen}
         />
       )}
     </>
