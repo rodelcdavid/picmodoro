@@ -1,13 +1,12 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 
 import placeholder from "./assets/placeholder.jpg";
-import { prevImg, prevName, prevScreen } from "./utils/getLocalStorage";
+
 import Upload from "./containers/Upload";
 import Pomodoro from "./containers/Pomodoro";
 import Heading from "./components/_shared/Heading";
 
 import { useSelector, useDispatch } from "react-redux";
-import { updateName, updateImage } from "./slices/goal";
 import { updateScreen } from "./slices/screen";
 
 function App() {
@@ -15,17 +14,15 @@ function App() {
   // const [goalName, setGoalName] = useState(prevName || "");
   // const [screenState, setScreenState] = useState(prevScreen || 0);
 
+  //Selectors
+
   const goalName = useSelector((state) => state.goalState.name);
   const goalImage = useSelector((state) => state.goalState.image);
-
   const screenState = useSelector((state) => state.screenState.value);
-  // const goalImage = useSelector((state) => state.goalState.image);
 
-  //dispatch
+  //Dispatch
   const dispatch = useDispatch();
   const _updateScreen = (value) => dispatch(updateScreen(value));
-  // const _updateName = (name) => dispatch(updateName(name));
-  // const _updateImage = (image) => dispatch(updateImage(image));
 
   useEffect(() => {
     // move this to Upload and Pomodoro container
@@ -41,14 +38,7 @@ function App() {
       {screenState === 0 ? (
         <Upload setScreenState={_updateScreen} />
       ) : (
-        <Pomodoro
-          // goalImage={goalImage}
-          // goalName={goalName}
-          defaultImg={placeholder}
-          // setGoalImg={_updateImage}
-          // setGoalName={_updateName}
-          setScreenState={_updateScreen}
-        />
+        <Pomodoro defaultImg={placeholder} setScreenState={_updateScreen} />
       )}
     </>
   );

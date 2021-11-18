@@ -12,33 +12,47 @@ import UpArrow from "../components/Pomodoro/UpArrow";
 
 import { useSelector, useDispatch } from "react-redux";
 import { updateName, updateImage } from "../slices/goal";
+import {
+  toggleIsRandom,
+  updateNumPomodoro,
+  updatePresetMin,
+} from "../slices/settings";
 
 function Pomodoro({ defaultImg, setScreenState }) {
-  const [numPomodoro, setNumPomodoro] = useState(1); //change to 25
+  // const [numPomodoro, setNumPomodoro] = useState(1); //change to 25
   const [reveal, setReveal] = useState([false]);
   const [isDone, setIsDone] = useState(false);
 
-  const [isRandom, setIsRandom] = useState(false);
+  // const [isRandom, _toggleIsRandom] = useState(false);
 
   // Timer state
-  const [presetMin, setPresetMin] = useState(1);
-  const [minutes, setMinutes] = useState(presetMin);
+  // const [presetMin, setPresetMin] = useState(1);
+
   const [seconds, setSeconds] = useState(0);
   const [isActive, setIsActive] = useState(false);
 
   const [isSessionDone, setIsSessionDone] = useState(false);
 
-  //Arrow Guide
+  //Arrow Guide, why the error
   const [isGuided, setIsGuided] = useState(false);
 
   //Selectors
+  //can use spread instead of individual?
   const goalName = useSelector((state) => state.goalState.name);
   const goalImage = useSelector((state) => state.goalState.image);
+  const isRandom = useSelector((state) => state.settingsState.isRandom);
+  const presetMin = useSelector((state) => state.settingsState.presetMin);
+  const numPomodoro = useSelector((state) => state.settingsState.numPomodoro);
 
   //Dispatch
   const dispatch = useDispatch();
   const _updateName = (name) => dispatch(updateName(name));
   const _updateImage = (image) => dispatch(updateImage(image));
+  const _toggleIsRandom = (checked) => dispatch(toggleIsRandom(checked));
+  const _updatePresetMin = (min) => dispatch(updatePresetMin(min));
+  const _updateNumPomodoro = (num) => dispatch(updateNumPomodoro(num));
+
+  const [minutes, setMinutes] = useState(presetMin);
 
   //optimize this function because it renders twice
   const computeReveal = () => {
@@ -58,7 +72,7 @@ function Pomodoro({ defaultImg, setScreenState }) {
   }, [reveal, numPomodoro]);
 
   const handleToggle = (e) => {
-    setIsRandom(e.target.checked);
+    _toggleIsRandom(e.target.checked); //can you refactor this to !isRandom?
   };
 
   const onReveal = useCallback(() => {
@@ -154,7 +168,7 @@ function Pomodoro({ defaultImg, setScreenState }) {
           handleToggle={handleToggle}
           onReveal={onReveal}
           numPomodoro={numPomodoro}
-          setNumPomodoro={setNumPomodoro}
+          setNumPomodoro={_updateNumPomodoro}
           isDone={isDone}
           setIsDone={setIsDone}
           reveal={reveal}
@@ -163,7 +177,7 @@ function Pomodoro({ defaultImg, setScreenState }) {
           setIsActive={setIsActive}
           setMinutes={setMinutes}
           presetMin={presetMin}
-          setPresetMin={setPresetMin}
+          setPresetMin={_updatePresetMin}
           isSessionDone={isSessionDone}
           setIsSessionDone={setIsSessionDone}
           setIsGuided={setIsGuided}
