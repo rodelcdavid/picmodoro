@@ -30,7 +30,7 @@ const SettingsButton = ({
   setPresetMin,
   isSessionDone,
   setIsSessionDone,
-  setIsGuided,
+  setGuide,
 }) => {
   const [open, setOpen] = useState(false);
   const handleClose = () => {
@@ -44,7 +44,7 @@ const SettingsButton = ({
           disabled={isActive ? true : false}
           onClick={() => {
             setOpen(true);
-            setIsGuided(true);
+            setGuide(false);
           }}
           color="primary"
           aria-label="upload picture"

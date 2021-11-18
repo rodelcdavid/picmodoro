@@ -16,8 +16,9 @@ function App() {
 
   //Selectors
 
-  const goalName = useSelector((state) => state.goalState.name);
-  const goalImage = useSelector((state) => state.goalState.image);
+  const { goalName, goalImage } = useSelector((state) => state.goalState);
+  // const goalName = useSelector((state) => state.goalState.name);
+  // const goalImage = useSelector((state) => state.goalState.image);
   const screenState = useSelector((state) => state.screenState.value);
 
   //Dispatch

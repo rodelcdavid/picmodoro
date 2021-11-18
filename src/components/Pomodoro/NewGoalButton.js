@@ -17,8 +17,16 @@ const NewGoalButton = ({
   setScreenState,
   setGoalImg,
   setGoalName,
+  setReveal,
+  setIsSessionDone,
   defaultImg,
   isActive,
+  setMinutes,
+  setSeconds,
+  setNumPomodoro,
+  setPresetMin,
+  setIsRandom,
+  setIsDone,
 }) => {
   const [open, setOpen] = useState(false);
 
@@ -27,9 +35,18 @@ const NewGoalButton = ({
   };
 
   const handleNewGoal = () => {
+    //how to reset store state
     setScreenState(0);
     setGoalImg(defaultImg);
     setGoalName("");
+    setReveal([false]);
+    setIsSessionDone(false);
+    setMinutes(0);
+    setSeconds(0);
+    setNumPomodoro(1);
+    setPresetMin(0.1); //set to 25
+    setIsRandom(false);
+    setIsDone(false);
   };
   return (
     <Box sx={{ marginRight: "auto" }}>

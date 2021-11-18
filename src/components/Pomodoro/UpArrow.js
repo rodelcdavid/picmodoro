@@ -17,7 +17,9 @@ const UpArrow = styled("div")`
   border-color: transparent;
   border-style: solid;
   border-width: 0 1rem;
-  display: ${({ isGuided }) => (!isGuided ? "block" : "none")};
+  display: ${({ guide }) => (guide ? "block" : "none")};
+  /* display: ${({ isGuided }) => isGuided}; */
+  /* display: ${(props) => (props.$isGuided ? "block" : "none")} */
   height: 0;
   margin: 10em auto;
   opacity: 0.4;

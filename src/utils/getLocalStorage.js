@@ -1,5 +1,8 @@
 //if screenstate is 1 do code below
 
-export const prevImg = JSON.parse(localStorage.getItem("imgFile"));
-export const prevScreen = JSON.parse(localStorage.getItem("screenState"));
-export const prevName = JSON.parse(localStorage.getItem("goalName"));
+import placeholder from "../assets/placeholder.jpg";
+
+export const prevImg =
+  JSON.parse(localStorage.getItem("imgFile")) || placeholder;
+export const prevScreen = JSON.parse(localStorage.getItem("screenState")) || 0;
+export const prevName = JSON.parse(localStorage.getItem("goalName")) || "";

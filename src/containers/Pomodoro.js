@@ -11,7 +11,7 @@ import DisplayTimer from "./DisplayTimer";
 import UpArrow from "../components/Pomodoro/UpArrow";
 
 import { useSelector, useDispatch } from "react-redux";
-import { updateName, updateImage } from "../slices/goal";
+import { updateGoalName, updateGoalImage } from "../slices/goal";
 import {
   toggleIsRandom,
   updateNumPomodoro,
@@ -23,44 +23,28 @@ import {
   updateMinutes,
   updateSeconds,
 } from "../slices/timer";
+import { toggleIsDone, updateReveal } from "../slices/displayGrid";
 
 function Pomodoro({ defaultImg, setScreenState }) {
-  // const [numPomodoro, setNumPomodoro] = useState(1); //change to 25
-  const [reveal, setReveal] = useState([false]);
-  const [isDone, setIsDone] = useState(false);
-
-  // const [isRandom, _toggleIsRandom] = useState(false);
-
-  // Timer state
-  // const [presetMin, setPresetMin] = useState(1);
-
-  // const [seconds, setSeconds] = useState(0);
-  // const [isActive, setIsActive] = useState(false);
-
-  // const [isSessionDone, setIsSessionDone] = useState(false);
-
-  //Arrow Guide, why the error
-  const [isGuided, setIsGuided] = useState(false);
+  //Arrow Guide
+  const [guide, setGuide] = useState(true);
 
   //Selectors
   //can use spread instead of individual?
-  const goalName = useSelector((state) => state.goalState.name);
-  const goalImage = useSelector((state) => state.goalState.image);
-
-  const isRandom = useSelector((state) => state.settingsState.isRandom);
-  const presetMin = useSelector((state) => state.settingsState.presetMin);
-  const numPomodoro = useSelector((state) => state.settingsState.numPomodoro);
-
-  const minutes = useSelector((state) => state.timerState.minutes);
-  const seconds = useSelector((state) => state.timerState.seconds);
-  const isActive = useSelector((state) => state.timerState.isActive);
-  const isSessionDone = useSelector((state) => state.timerState.isSessionDone);
+  const { goalName, goalImage } = useSelector((state) => state.goalState);
+  const { isRandom, presetMin, numPomodoro } = useSelector(
+    (state) => state.settingsState
+  );
+  const { minutes, seconds, isActive, isSessionDone } = useSelector(
+    (state) => state.timerState
+  );
+  const { reveal, isDone } = useSelector((state) => state.displayGridState);
 
   //Dispatch
   const dispatch = useDispatch();
 
-  const _updateName = (name) => dispatch(updateName(name));
-  const _updateImage = (image) => dispatch(updateImage(image));
+  const _updateGoalName = (name) => dispatch(updateGoalName(name));
+  const _updateGoalImage = (image) => dispatch(updateGoalImage(image));
 
   const _toggleIsRandom = (checked) => dispatch(toggleIsRandom(checked));
   const _updatePresetMin = (min) => dispatch(updatePresetMin(min));
@@ -71,7 +55,8 @@ function Pomodoro({ defaultImg, setScreenState }) {
   const _toggleIsActive = (bool) => dispatch(toggleIsActive(bool));
   const _toggleIsSessionDone = (bool) => dispatch(toggleIsSessionDone(bool));
 
-  // const [minutes, setMinutes] = useState(presetMin);
+  const _updateReveal = (arr) => dispatch(updateReveal(arr));
+  const _toggleIsDone = (bool) => dispatch(toggleIsDone(bool));
 
   //optimize this function because it renders twice
   const computeReveal = () => {
@@ -85,7 +70,7 @@ function Pomodoro({ defaultImg, setScreenState }) {
     const totalReveal = tempReveal.filter((x) => x === true).length;
 
     if (totalReveal === numPomodoro) {
-      setIsDone(true);
+      _toggleIsDone(true);
     }
   }, [reveal, numPomodoro]);
 
@@ -115,7 +100,7 @@ function Pomodoro({ defaultImg, setScreenState }) {
         prevReveal[prevReveal.indexOf(false)] = true;
       }
     }
-    setReveal(prevReveal);
+    _updateReveal(prevReveal);
   }, [reveal, isRandom]);
 
   useEffect(() => {
@@ -174,10 +159,18 @@ function Pomodoro({ defaultImg, setScreenState }) {
       >
         <NewGoalButton
           setScreenState={setScreenState}
-          setGoalImg={_updateImage}
-          setGoalName={_updateName}
+          setGoalImg={_updateGoalImage}
+          setGoalName={_updateGoalName}
+          setIsSessionDone={_toggleIsSessionDone}
+          setReveal={_updateReveal}
           defaultImg={defaultImg}
           isActive={isActive}
+          setMinutes={_updateMinutes}
+          setSeconds={_updateSeconds}
+          setNumPomodoro={_updateNumPomodoro}
+          setPresetMin={_updatePresetMin}
+          setIsRandom={_toggleIsRandom}
+          setIsDone={_toggleIsDone}
         />
         <Details
           goalName={goalName}
@@ -192,19 +185,19 @@ function Pomodoro({ defaultImg, setScreenState }) {
           numPomodoro={numPomodoro}
           setNumPomodoro={_updateNumPomodoro}
           isDone={isDone}
-          setIsDone={setIsDone}
+          setIsDone={_toggleIsDone}
           reveal={reveal}
           isActive={isActive}
-          setReveal={setReveal}
+          setReveal={_updateReveal}
           setIsActive={_toggleIsActive}
           setMinutes={_updateMinutes}
           presetMin={presetMin}
           setPresetMin={_updatePresetMin}
           isSessionDone={isSessionDone}
           setIsSessionDone={_toggleIsSessionDone}
-          setIsGuided={setIsGuided}
+          setGuide={setGuide}
         />
-        {/* <UpArrow isGuided={isGuided} /> */}
+        <UpArrow guide={guide ? 1 : 0} />
       </Box>
 
       <ImageGrid

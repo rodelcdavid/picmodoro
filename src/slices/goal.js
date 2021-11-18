@@ -1,26 +1,26 @@
 import { createSlice } from "@reduxjs/toolkit";
-import placeholder from "../assets/placeholder.jpg";
+
 import { prevImg, prevName } from "../utils/getLocalStorage";
 
 const initialState = {
-  name: prevName || "",
-  image: prevImg || placeholder,
+  goalName: prevName,
+  goalImage: prevImg,
 };
 
 export const goalSlice = createSlice({
   name: "goal",
   initialState,
   reducers: {
-    updateName: (state, { payload }) => {
-      state.name = payload;
+    updateGoalName: (state, { payload }) => {
+      state.goalName = payload;
     },
-    updateImage: (state, { payload }) => {
-      state.image = payload;
+    updateGoalImage: (state, { payload }) => {
+      state.goalImage = payload;
     },
   },
 });
 
 // Action creators are generated for each case reducer function
-export const { updateName, updateImage } = goalSlice.actions;
+export const { updateGoalName, updateGoalImage } = goalSlice.actions;
 
 export default goalSlice.reducer;
