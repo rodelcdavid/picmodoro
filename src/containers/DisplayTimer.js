@@ -79,22 +79,36 @@ const DisplayTimer = ({
 
   return (
     <div>
-      {!isSessionDone ? (
-        <h1>
-          {timerMinutes}:{timerSeconds}
-        </h1>
-      ) : (
-        <Box
-          sx={{
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-            fontWeight: "bolder",
-          }}
-        >
-          Session finished <CheckCircleIcon color="success" fontSize="medium" />
-        </Box>
-      )}
+      <Box
+        sx={{
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          height: "50px",
+        }}
+      >
+        {!isSessionDone ? (
+          <h1>
+            {timerMinutes}:{timerSeconds}
+          </h1>
+        ) : (
+          <Box
+            sx={{
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              fontWeight: "bolder",
+            }}
+          >
+            Session finished{" "}
+            <CheckCircleIcon
+              sx={{ marginLeft: "5px" }}
+              color="success"
+              fontSize="small"
+            />
+          </Box>
+        )}
+      </Box>
 
       <TimerControls
         isActive={isActive}

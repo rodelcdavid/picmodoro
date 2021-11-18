@@ -103,7 +103,7 @@ function Pomodoro({
           onReveal();
           setIsSessionDone(true);
         }
-      }, 1000);
+      }, 100);
     } else {
       clearInterval(interval);
     }

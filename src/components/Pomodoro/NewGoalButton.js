@@ -20,10 +20,10 @@ const NewGoalButton = ({
   defaultImg,
   isActive,
 }) => {
-  const [openNewGoalDialog, setOpenNewGoalDialog] = useState(false);
+  const [open, setOpen] = useState(false);
 
   const handleClose = () => {
-    setOpenNewGoalDialog(false);
+    setOpen(false);
   };
 
   const handleNewGoal = () => {
@@ -37,7 +37,7 @@ const NewGoalButton = ({
         <IconButton
           disabled={isActive ? true : false}
           onClick={() => {
-            setOpenNewGoalDialog(true);
+            setOpen(true);
           }}
           color="primary"
           aria-label="upload picture"
@@ -49,7 +49,7 @@ const NewGoalButton = ({
 
       {/* Dialog */}
       <Dialog
-        open={openNewGoalDialog}
+        open={open}
         onClose={handleClose}
         aria-labelledby="alert-dialog-title"
         aria-describedby="alert-dialog-description"
