@@ -17,6 +17,12 @@ import {
   updateNumPomodoro,
   updatePresetMin,
 } from "../slices/settings";
+import {
+  toggleIsActive,
+  toggleIsSessionDone,
+  updateMinutes,
+  updateSeconds,
+} from "../slices/timer";
 
 function Pomodoro({ defaultImg, setScreenState }) {
   // const [numPomodoro, setNumPomodoro] = useState(1); //change to 25
@@ -28,10 +34,10 @@ function Pomodoro({ defaultImg, setScreenState }) {
   // Timer state
   // const [presetMin, setPresetMin] = useState(1);
 
-  const [seconds, setSeconds] = useState(0);
-  const [isActive, setIsActive] = useState(false);
+  // const [seconds, setSeconds] = useState(0);
+  // const [isActive, setIsActive] = useState(false);
 
-  const [isSessionDone, setIsSessionDone] = useState(false);
+  // const [isSessionDone, setIsSessionDone] = useState(false);
 
   //Arrow Guide, why the error
   const [isGuided, setIsGuided] = useState(false);
@@ -40,25 +46,37 @@ function Pomodoro({ defaultImg, setScreenState }) {
   //can use spread instead of individual?
   const goalName = useSelector((state) => state.goalState.name);
   const goalImage = useSelector((state) => state.goalState.image);
+
   const isRandom = useSelector((state) => state.settingsState.isRandom);
   const presetMin = useSelector((state) => state.settingsState.presetMin);
   const numPomodoro = useSelector((state) => state.settingsState.numPomodoro);
 
+  const minutes = useSelector((state) => state.timerState.minutes);
+  const seconds = useSelector((state) => state.timerState.seconds);
+  const isActive = useSelector((state) => state.timerState.isActive);
+  const isSessionDone = useSelector((state) => state.timerState.isSessionDone);
+
   //Dispatch
   const dispatch = useDispatch();
+
   const _updateName = (name) => dispatch(updateName(name));
   const _updateImage = (image) => dispatch(updateImage(image));
+
   const _toggleIsRandom = (checked) => dispatch(toggleIsRandom(checked));
   const _updatePresetMin = (min) => dispatch(updatePresetMin(min));
   const _updateNumPomodoro = (num) => dispatch(updateNumPomodoro(num));
 
-  const [minutes, setMinutes] = useState(presetMin);
+  const _updateMinutes = (min) => dispatch(updateMinutes(min));
+  const _updateSeconds = (sec) => dispatch(updateSeconds(sec));
+  const _toggleIsActive = (bool) => dispatch(toggleIsActive(bool));
+  const _toggleIsSessionDone = (bool) => dispatch(toggleIsSessionDone(bool));
+
+  // const [minutes, setMinutes] = useState(presetMin);
 
   //optimize this function because it renders twice
   const computeReveal = () => {
     const tempReveal = [...reveal];
     const totalReveal = tempReveal.filter((x) => x === true).length;
-
     return [totalReveal, tempReveal];
   };
 
@@ -101,6 +119,10 @@ function Pomodoro({ defaultImg, setScreenState }) {
   }, [reveal, isRandom]);
 
   useEffect(() => {
+    _updateMinutes(presetMin);
+  }, [presetMin]);
+
+  useEffect(() => {
     let interval = null;
 
     let start = new Date();
@@ -114,13 +136,13 @@ function Pomodoro({ defaultImg, setScreenState }) {
         let s = Math.floor((distance % (1000 * 60)) / 1000);
         let m = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
 
-        setMinutes(m);
-        setSeconds(s);
+        _updateMinutes(m);
+        _updateSeconds(s);
 
         if (distance < 0) {
-          setIsActive(false);
+          _toggleIsActive(false);
           onReveal();
-          setIsSessionDone(true);
+          _toggleIsSessionDone(true);
         }
       }, 100);
     } else {
@@ -174,12 +196,12 @@ function Pomodoro({ defaultImg, setScreenState }) {
           reveal={reveal}
           isActive={isActive}
           setReveal={setReveal}
-          setIsActive={setIsActive}
-          setMinutes={setMinutes}
+          setIsActive={_toggleIsActive}
+          setMinutes={_updateMinutes}
           presetMin={presetMin}
           setPresetMin={_updatePresetMin}
           isSessionDone={isSessionDone}
-          setIsSessionDone={setIsSessionDone}
+          setIsSessionDone={_toggleIsSessionDone}
           setIsGuided={setIsGuided}
         />
         {/* <UpArrow isGuided={isGuided} /> */}
@@ -194,15 +216,15 @@ function Pomodoro({ defaultImg, setScreenState }) {
       <DisplayTimer
         presetMin={presetMin}
         isActive={isActive}
-        setIsActive={setIsActive}
+        setIsActive={_toggleIsActive}
         isDone={isDone}
         onReveal={onReveal}
         minutes={minutes}
-        setMinutes={setMinutes}
+        setMinutes={_updateMinutes}
         seconds={seconds}
-        setSeconds={setSeconds}
+        setSeconds={_updateSeconds}
         isSessionDone={isSessionDone}
-        setIsSessionDone={setIsSessionDone}
+        setIsSessionDone={_toggleIsSessionDone}
       />
     </Box>
   );

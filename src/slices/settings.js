@@ -2,7 +2,7 @@ import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
   isRandom: false,
-  presetMin: 0.1, //set to 25
+  presetMin: 25, //set to 25
   numPomodoro: 1,
 };
 
