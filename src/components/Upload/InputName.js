@@ -2,7 +2,7 @@ import { TextField, Typography } from "@mui/material";
 import { Box } from "@mui/system";
 import React from "react";
 
-const InputName = ({ textRef, goalName, nameHandler }) => {
+const InputName = ({ nameFieldRef, goalName, nameHandler, nameError }) => {
   return (
     <Box sx={{ display: "flex", flexDirection: "column", width: "100%" }}>
       <Typography variant="h6">
@@ -11,16 +11,21 @@ const InputName = ({ textRef, goalName, nameHandler }) => {
         </Box>
         What is your goal?
       </Typography>
-      <Box sx={{ width: "100%", alignSelf: "center" }}>
+      <Box sx={{ width: "100%", alignSelf: "center", marginTop: "5px" }}>
         <TextField
+          error={nameError ? true : false}
           className="name-field"
           fullWidth
-          inputRef={textRef}
+          inputRef={nameFieldRef}
           id="outlined-name"
           label="Enter goal name"
           value={goalName}
           onChange={nameHandler}
-          helperText="Ex. Finish Atomic Habits book, Score A+ on Math"
+          helperText={
+            nameError
+              ? "Please enter your goal name."
+              : "Ex. Finish Atomic Habits book, Score A+ on Math"
+          }
         />
       </Box>
     </Box>

@@ -30,11 +30,11 @@ const SettingsButton = ({
   setPresetMin,
   isSessionDone,
   setIsSessionDone,
-  setIsGuided,
+  setGuide,
 }) => {
-  const [openSettings, setOpenSettings] = useState(false);
-  const handleCloseSettings = () => {
-    setOpenSettings(false);
+  const [open, setOpen] = useState(false);
+  const handleClose = () => {
+    setOpen(false);
   };
 
   return (
@@ -43,8 +43,8 @@ const SettingsButton = ({
         <IconButton
           disabled={isActive ? true : false}
           onClick={() => {
-            setOpenSettings(true);
-            setIsGuided(true);
+            setOpen(true);
+            setGuide(false);
           }}
           color="primary"
           aria-label="upload picture"
@@ -55,7 +55,7 @@ const SettingsButton = ({
       </Tooltip>
 
       {/* Dialog */}
-      <Dialog open={openSettings} onClose={handleCloseSettings}>
+      <Dialog open={open} onClose={handleClose}>
         <Box
           sx={{
             width: "80vw",
@@ -71,7 +71,7 @@ const SettingsButton = ({
             <DialogTitle sx={{ color: "white" }}>Settings</DialogTitle>
             <IconButton
               sx={{ marginLeft: "auto", color: "white" }}
-              onClick={handleCloseSettings}
+              onClick={handleClose}
               aria-label="close button"
               component="span"
             >

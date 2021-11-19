@@ -10,50 +10,60 @@ import NewGoalButton from "../components/Pomodoro/NewGoalButton";
 import DisplayTimer from "./DisplayTimer";
 import UpArrow from "../components/Pomodoro/UpArrow";
 
-function Pomodoro({
-  goalImg,
-  goalName,
-  defaultImg,
-  setGoalImg,
-  setGoalName,
-  setScreenState,
-}) {
-  const [numPomodoro, setNumPomodoro] = useState(1); //change to 25
-  const [reveal, setReveal] = useState([false]);
-  const [isDone, setIsDone] = useState(false);
+import { useSelector, useDispatch } from "react-redux";
+import { updateGoalName, updateGoalImage } from "../slices/goal";
+import {
+  toggleIsRandom,
+  updateNumPomodoro,
+  updatePresetMin,
+} from "../slices/settings";
+import {
+  toggleIsActive,
+  toggleIsSessionDone,
+  updateMinutes,
+  updateSeconds,
+} from "../slices/timer";
+import { toggleIsDone, updateReveal } from "../slices/displayGrid";
 
-  const [isRandom, setIsRandom] = useState(false);
+function Pomodoro({ defaultImg, setScreenState }) {
+  //Local state
+  const [guide, setGuide] = useState(true);
 
-  // Timer state
-  const [presetMin, setPresetMin] = useState(1);
-  const [minutes, setMinutes] = useState(presetMin);
-  const [seconds, setSeconds] = useState(0);
-  const [isActive, setIsActive] = useState(false);
+  //Selectors
+  //can use spread instead of individual?
+  const { goalName, goalImage } = useSelector((state) => state.goalState);
+  const { isRandom, presetMin, numPomodoro } = useSelector(
+    (state) => state.settingsState
+  );
+  const { minutes, seconds, isActive, isSessionDone } = useSelector(
+    (state) => state.timerState
+  );
+  const { reveal, isDone } = useSelector((state) => state.displayGridState);
 
-  const [isSessionDone, setIsSessionDone] = useState(false);
+  //Dispatch
+  const dispatch = useDispatch();
 
-  //Arrow Guide
-  const [isGuided, setIsGuided] = useState(false);
+  const _updateGoalName = (name) => dispatch(updateGoalName(name));
+  const _updateGoalImage = (image) => dispatch(updateGoalImage(image));
 
+  const _toggleIsRandom = (checked) => dispatch(toggleIsRandom(checked));
+  const _updatePresetMin = (min) => dispatch(updatePresetMin(min));
+  const _updateNumPomodoro = (num) => dispatch(updateNumPomodoro(num));
+
+  const _updateMinutes = (min) => dispatch(updateMinutes(min));
+  const _updateSeconds = (sec) => dispatch(updateSeconds(sec));
+  const _toggleIsActive = (bool) => dispatch(toggleIsActive(bool));
+  const _toggleIsSessionDone = (bool) => dispatch(toggleIsSessionDone(bool));
+
+  const _updateReveal = (arr) => dispatch(updateReveal(arr));
+  const _toggleIsDone = (bool) => dispatch(toggleIsDone(bool));
+
+  //functions, maybe put these outside?
   //optimize this function because it renders twice
   const computeReveal = () => {
     const tempReveal = [...reveal];
     const totalReveal = tempReveal.filter((x) => x === true).length;
-
     return [totalReveal, tempReveal];
-  };
-
-  useEffect(() => {
-    const tempReveal = [...reveal];
-    const totalReveal = tempReveal.filter((x) => x === true).length;
-
-    if (totalReveal === numPomodoro) {
-      setIsDone(true);
-    }
-  }, [reveal, numPomodoro]);
-
-  const handleToggle = (e) => {
-    setIsRandom(e.target.checked);
   };
 
   const onReveal = useCallback(() => {
@@ -78,8 +88,26 @@ function Pomodoro({
         prevReveal[prevReveal.indexOf(false)] = true;
       }
     }
-    setReveal(prevReveal);
+    _updateReveal(prevReveal);
   }, [reveal, isRandom]);
+
+  //ComponentDidUpdate
+  useEffect(() => {
+    const tempReveal = [...reveal];
+    const totalReveal = tempReveal.filter((x) => x === true).length;
+
+    if (totalReveal === numPomodoro) {
+      _toggleIsDone(true);
+    }
+  }, [reveal, numPomodoro]);
+
+  const handleToggle = (e) => {
+    _toggleIsRandom(e.target.checked); //can you refactor this to !isRandom?
+  };
+
+  useEffect(() => {
+    _updateMinutes(presetMin);
+  }, [presetMin]);
 
   useEffect(() => {
     let interval = null;
@@ -95,15 +123,15 @@ function Pomodoro({
         let s = Math.floor((distance % (1000 * 60)) / 1000);
         let m = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
 
-        setMinutes(m);
-        setSeconds(s);
+        _updateMinutes(m);
+        _updateSeconds(s);
 
         if (distance < 0) {
-          setIsActive(false);
+          _toggleIsActive(false);
           onReveal();
-          setIsSessionDone(true);
+          _toggleIsSessionDone(true);
         }
-      }, 1000);
+      }, 100);
     } else {
       clearInterval(interval);
     }
@@ -112,6 +140,15 @@ function Pomodoro({
     };
   }, [isActive, presetMin, onReveal]); //too many dependencies
 
+  useEffect(() => {
+    const timerMinutes = minutes < 10 ? `0${minutes}` : minutes;
+    const timerSeconds = seconds < 10 ? `0${seconds}` : seconds;
+
+    document.title =
+      isSessionDone || !isActive
+        ? "Picmodoro"
+        : `Picmodoro (${timerMinutes}:${timerSeconds})`;
+  }, [minutes, seconds, isSessionDone, isActive]);
   return (
     <Box
       sx={{
@@ -119,6 +156,12 @@ function Pomodoro({
         display: "grid",
         gridTemplateRows: "1fr 3fr 1fr",
         alignItems: "center",
+        width: ["100%", "450px"],
+        margin: "1rem auto",
+        // border: "solid 2px rgba(0,0,0,0.23)",
+        borderRadius: "10px",
+        // boxShadow: "0 10px 15px rgba(0,0,0,0.5)",
+        boxShadow: 3,
       }}
     >
       <Box
@@ -133,10 +176,18 @@ function Pomodoro({
       >
         <NewGoalButton
           setScreenState={setScreenState}
-          setGoalImg={setGoalImg}
-          setGoalName={setGoalName}
+          setGoalImg={_updateGoalImage}
+          setGoalName={_updateGoalName}
+          setIsSessionDone={_toggleIsSessionDone}
+          setReveal={_updateReveal}
           defaultImg={defaultImg}
           isActive={isActive}
+          setMinutes={_updateMinutes}
+          setSeconds={_updateSeconds}
+          setNumPomodoro={_updateNumPomodoro}
+          setPresetMin={_updatePresetMin}
+          setIsRandom={_toggleIsRandom}
+          setIsDone={_toggleIsDone}
         />
         <Details
           goalName={goalName}
@@ -149,41 +200,41 @@ function Pomodoro({
           handleToggle={handleToggle}
           onReveal={onReveal}
           numPomodoro={numPomodoro}
-          setNumPomodoro={setNumPomodoro}
+          setNumPomodoro={_updateNumPomodoro}
           isDone={isDone}
-          setIsDone={setIsDone}
+          setIsDone={_toggleIsDone}
           reveal={reveal}
           isActive={isActive}
-          setReveal={setReveal}
-          setIsActive={setIsActive}
-          setMinutes={setMinutes}
+          setReveal={_updateReveal}
+          setIsActive={_toggleIsActive}
+          setMinutes={_updateMinutes}
           presetMin={presetMin}
-          setPresetMin={setPresetMin}
+          setPresetMin={_updatePresetMin}
           isSessionDone={isSessionDone}
-          setIsSessionDone={setIsSessionDone}
-          setIsGuided={setIsGuided}
+          setIsSessionDone={_toggleIsSessionDone}
+          setGuide={setGuide}
         />
-        <UpArrow isGuided={isGuided} />
+        <UpArrow guide={guide ? 1 : 0} />
       </Box>
 
       <ImageGrid
         numPomodoro={numPomodoro}
         reveal={reveal}
         isDone={isDone}
-        goalImg={goalImg}
+        goalImage={goalImage}
       />
       <DisplayTimer
         presetMin={presetMin}
         isActive={isActive}
-        setIsActive={setIsActive}
+        setIsActive={_toggleIsActive}
         isDone={isDone}
         onReveal={onReveal}
         minutes={minutes}
-        setMinutes={setMinutes}
+        setMinutes={_updateMinutes}
         seconds={seconds}
-        setSeconds={setSeconds}
+        setSeconds={_updateSeconds}
         isSessionDone={isSessionDone}
-        setIsSessionDone={setIsSessionDone}
+        setIsSessionDone={_toggleIsSessionDone}
       />
     </Box>
   );

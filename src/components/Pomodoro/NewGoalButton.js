@@ -17,19 +17,36 @@ const NewGoalButton = ({
   setScreenState,
   setGoalImg,
   setGoalName,
+  setReveal,
+  setIsSessionDone,
   defaultImg,
   isActive,
+  setMinutes,
+  setSeconds,
+  setNumPomodoro,
+  setPresetMin,
+  setIsRandom,
+  setIsDone,
 }) => {
-  const [openNewGoalDialog, setOpenNewGoalDialog] = useState(false);
+  const [open, setOpen] = useState(false);
 
   const handleClose = () => {
-    setOpenNewGoalDialog(false);
+    setOpen(false);
   };
 
   const handleNewGoal = () => {
+    //how to reset store state
     setScreenState(0);
     setGoalImg(defaultImg);
     setGoalName("");
+    setReveal([false]);
+    setIsSessionDone(false);
+    setMinutes(0);
+    setSeconds(0);
+    setNumPomodoro(1);
+    setPresetMin(0.1); //set to 25
+    setIsRandom(false);
+    setIsDone(false);
   };
   return (
     <Box sx={{ marginRight: "auto" }}>
@@ -37,7 +54,7 @@ const NewGoalButton = ({
         <IconButton
           disabled={isActive ? true : false}
           onClick={() => {
-            setOpenNewGoalDialog(true);
+            setOpen(true);
           }}
           color="primary"
           aria-label="upload picture"
@@ -49,7 +66,7 @@ const NewGoalButton = ({
 
       {/* Dialog */}
       <Dialog
-        open={openNewGoalDialog}
+        open={open}
         onClose={handleClose}
         aria-labelledby="alert-dialog-title"
         aria-describedby="alert-dialog-description"

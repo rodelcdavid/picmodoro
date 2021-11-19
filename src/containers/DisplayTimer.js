@@ -1,5 +1,5 @@
 import { Button } from "@mui/material";
-import React, { useEffect } from "react";
+import React from "react";
 import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 import { Box } from "@mui/system";
 
@@ -16,59 +16,6 @@ const DisplayTimer = ({
   isSessionDone,
   setIsSessionDone,
 }) => {
-  useEffect(() => {
-    setMinutes(presetMin);
-  }, [presetMin, setMinutes]);
-
-  // useEffect(() => {
-  //   let interval = null;
-
-  //   if (isActive) {
-  //     let start = new Date();
-  //     start.setTime(start.getTime() + presetMin * 60 * 1000);
-  //     console.log(start);
-  //     interval = setInterval(() => {
-  //       // if (seconds === 0) {
-  //       //   if (minutes !== 0) {
-  //       //     setSeconds(59);
-  //       //     setMinutes(minutes - 1);
-  //       //   } else {
-  //       //     setIsActive(false);
-  //       //     setIsSessionDone(true);
-  //       //     onReveal();
-  //       //   }
-  //       // } else {
-  //       //   setSeconds(seconds - 1);
-  //       // }
-
-  //       let current = new Date().getTime();
-  //       let distance = start - current;
-
-  //       // let ms = count % 1000;
-  //       let s = Math.floor((distance % (1000 * 60)) / 1000);
-  //       let m = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
-
-  //       setMinutes(m);
-  //       setSeconds(s);
-  //     }, 1000);
-  //   } else {
-  //     clearInterval(interval);
-  //   }
-
-  //   return () => {
-  //     clearInterval(interval);
-  //   };
-  // }, [
-  //   seconds,
-  //   minutes,
-  //   isActive,
-  //   onReveal,
-  //   setIsActive,
-  //   setMinutes,
-  //   setSeconds,
-  //   setIsSessionDone,
-  // ]); // too many dependencies
-
   const timerMinutes = minutes < 10 ? `0${minutes}` : minutes;
   const timerSeconds = seconds < 10 ? `0${seconds}` : seconds;
 
@@ -79,22 +26,36 @@ const DisplayTimer = ({
 
   return (
     <div>
-      {!isSessionDone ? (
-        <h1>
-          {timerMinutes}:{timerSeconds}
-        </h1>
-      ) : (
-        <Box
-          sx={{
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-            fontWeight: "bolder",
-          }}
-        >
-          Session finished <CheckCircleIcon color="success" fontSize="medium" />
-        </Box>
-      )}
+      <Box
+        sx={{
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          height: "50px",
+        }}
+      >
+        {!isSessionDone ? (
+          <h1>
+            {timerMinutes}:{timerSeconds}
+          </h1>
+        ) : (
+          <Box
+            sx={{
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              fontWeight: "bolder",
+            }}
+          >
+            Session finished{" "}
+            <CheckCircleIcon
+              sx={{ marginLeft: "5px" }}
+              color="success"
+              fontSize="small"
+            />
+          </Box>
+        )}
+      </Box>
 
       <TimerControls
         isActive={isActive}
@@ -156,7 +117,14 @@ const TimerControls = ({
     }
 
     if (isDone) {
-      return <h3 style={{ color: "green" }}>All Done. Congratulations!</h3>;
+      return (
+        <>
+          <h3 style={{ color: "green" }}>All Done. Congratulations!</h3>
+          <p style={{ fontSize: "0.8rem" }}>
+            (You can always add more sessions to this goal.)
+          </p>
+        </>
+      );
     }
 
     if (!isDone && !isSessionDone) {

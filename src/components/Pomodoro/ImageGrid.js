@@ -46,7 +46,7 @@ const getGridValues = (numPomodoro, wide) => {
   return gridValues;
 };
 
-export default function ImageGrid({ numPomodoro, reveal, isDone, goalImg }) {
+export default function ImageGrid({ numPomodoro, reveal, isDone, goalImage }) {
   const wide = useMediaQuery("(min-width:600px");
 
   const ImageBlocker = useCallback(() => {
@@ -95,7 +95,7 @@ export default function ImageGrid({ numPomodoro, reveal, isDone, goalImg }) {
           gridTemplateRows: `repeat( ${gridRow}, ${gridRowSize}px )`,
           width: imgWidth,
           height: imgHeight,
-          background: `url(${goalImg})`,
+          background: `url(${goalImage})`,
           backgroundSize: "cover",
           backgroundRepeat: "no-repeat",
           backgroundPosition: "center",
