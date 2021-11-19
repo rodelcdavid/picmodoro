@@ -1,5 +1,6 @@
 import { styled } from "@mui/system";
 
+//try to use sx instead
 const UpArrow = styled("div")`
   @keyframes uparrow {
     0% {
@@ -13,13 +14,11 @@ const UpArrow = styled("div")`
   }
   position: absolute;
   top: -112px;
-  right: 4px;
+  right: 12px;
   border-color: transparent;
   border-style: solid;
-  border-width: 0 1rem;
+  border-width: 0 0.5rem;
   display: ${({ guide }) => (guide ? "block" : "none")};
-  /* display: ${({ isGuided }) => isGuided}; */
-  /* display: ${(props) => (props.$isGuided ? "block" : "none")} */
   height: 0;
   margin: 10em auto;
   opacity: 0.4;

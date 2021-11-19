@@ -26,7 +26,7 @@ import {
 import { toggleIsDone, updateReveal } from "../slices/displayGrid";
 
 function Pomodoro({ defaultImg, setScreenState }) {
-  //Arrow Guide
+  //Local state
   const [guide, setGuide] = useState(true);
 
   //Selectors
@@ -58,24 +58,12 @@ function Pomodoro({ defaultImg, setScreenState }) {
   const _updateReveal = (arr) => dispatch(updateReveal(arr));
   const _toggleIsDone = (bool) => dispatch(toggleIsDone(bool));
 
+  //functions, maybe put these outside?
   //optimize this function because it renders twice
   const computeReveal = () => {
     const tempReveal = [...reveal];
     const totalReveal = tempReveal.filter((x) => x === true).length;
     return [totalReveal, tempReveal];
-  };
-
-  useEffect(() => {
-    const tempReveal = [...reveal];
-    const totalReveal = tempReveal.filter((x) => x === true).length;
-
-    if (totalReveal === numPomodoro) {
-      _toggleIsDone(true);
-    }
-  }, [reveal, numPomodoro]);
-
-  const handleToggle = (e) => {
-    _toggleIsRandom(e.target.checked); //can you refactor this to !isRandom?
   };
 
   const onReveal = useCallback(() => {
@@ -102,6 +90,20 @@ function Pomodoro({ defaultImg, setScreenState }) {
     }
     _updateReveal(prevReveal);
   }, [reveal, isRandom]);
+
+  //ComponentDidUpdate
+  useEffect(() => {
+    const tempReveal = [...reveal];
+    const totalReveal = tempReveal.filter((x) => x === true).length;
+
+    if (totalReveal === numPomodoro) {
+      _toggleIsDone(true);
+    }
+  }, [reveal, numPomodoro]);
+
+  const handleToggle = (e) => {
+    _toggleIsRandom(e.target.checked); //can you refactor this to !isRandom?
+  };
 
   useEffect(() => {
     _updateMinutes(presetMin);
@@ -138,6 +140,15 @@ function Pomodoro({ defaultImg, setScreenState }) {
     };
   }, [isActive, presetMin, onReveal]); //too many dependencies
 
+  useEffect(() => {
+    const timerMinutes = minutes < 10 ? `0${minutes}` : minutes;
+    const timerSeconds = seconds < 10 ? `0${seconds}` : seconds;
+
+    document.title =
+      isSessionDone || !isActive
+        ? "Picmodoro"
+        : `Picmodoro (${timerMinutes}:${timerSeconds})`;
+  }, [minutes, seconds, isSessionDone, isActive]);
   return (
     <Box
       sx={{
@@ -145,6 +156,12 @@ function Pomodoro({ defaultImg, setScreenState }) {
         display: "grid",
         gridTemplateRows: "1fr 3fr 1fr",
         alignItems: "center",
+        width: ["100%", "450px"],
+        margin: "1rem auto",
+        // border: "solid 2px rgba(0,0,0,0.23)",
+        borderRadius: "10px",
+        // boxShadow: "0 10px 15px rgba(0,0,0,0.5)",
+        boxShadow: 3,
       }}
     >
       <Box

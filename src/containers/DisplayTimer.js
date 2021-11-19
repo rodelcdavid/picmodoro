@@ -117,7 +117,14 @@ const TimerControls = ({
     }
 
     if (isDone) {
-      return <h3 style={{ color: "green" }}>All Done. Congratulations!</h3>;
+      return (
+        <>
+          <h3 style={{ color: "green" }}>All Done. Congratulations!</h3>
+          <p style={{ fontSize: "0.8rem" }}>
+            (You can always add more sessions to this goal.)
+          </p>
+        </>
+      );
     }
 
     if (!isDone && !isSessionDone) {
