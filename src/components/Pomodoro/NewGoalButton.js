@@ -17,7 +17,7 @@ const NewGoalButton = ({
   setScreenState,
   setGoalImg,
   setGoalName,
-  setReveal,
+  // setReveal,
   setIsSessionDone,
   defaultImg,
   isActive,
@@ -40,7 +40,7 @@ const NewGoalButton = ({
     setScreenState(0);
     setGoalImg(defaultImg);
     setGoalName("");
-    setReveal([false]);
+    // setReveal([false]);
     setIsSessionDone(false);
     setMinutes(0);
     setSeconds(0);

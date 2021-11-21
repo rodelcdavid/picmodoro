@@ -4,11 +4,11 @@ import { Box } from "@mui/system";
 import React from "react";
 
 export default function Session({
-  reveal,
+  // reveal,
   isDone,
   setIsDone,
   isActive,
-  setReveal,
+  // setReveal,
   updateBlockers,
   blockers,
 }) {

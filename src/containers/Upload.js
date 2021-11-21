@@ -22,7 +22,7 @@ const Upload = ({ setScreenState }) => {
   //Dispatch
   const dispatch = useDispatch();
   const _updateGoalName = (name) => dispatch(updateGoalName(name));
-  const _updateGoalImage = (image) => dispatch(updateGoalImage(image));
+  // const _updateGoalImage = (image) => dispatch(updateGoalImage(image));
 
   //Refs
   const nameFieldRef = useRef();
@@ -55,20 +55,22 @@ const Upload = ({ setScreenState }) => {
     image.src = inputUrl;
     image.onload = function () {
       if (this.width > 0) {
-        _updateGoalImage(inputUrl); //state should update only onsubmit
+        // _updateGoalImage(inputUrl); //state should update only onsubmit
+        dispatch(updateGoalImage(inputUrl));
         setIsImageValid(true);
         setImageError(false);
       }
     };
     image.onerror = function () {
-      _updateGoalImage(placeholder);
+      // _updateGoalImage(placeholder);
+      dispatch(updateGoalImage(placeholder));
       setIsImageValid(false);
     };
 
     if (inputUrl.length) {
       setImageError(false);
     }
-  }, [inputUrl]);
+  }, [inputUrl, dispatch]);
 
   useEffect(() => {
     if (goalName) {

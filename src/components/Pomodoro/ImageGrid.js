@@ -1,6 +1,6 @@
 import { useMediaQuery } from "@mui/material";
 import { Box } from "@mui/system";
-import React, { useCallback } from "react";
+import React from "react";
 
 const getGridValues = (numBlockers, wide) => {
   // const imgWidth = wide ? 600 : 350;

@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect } from "react";
 import Details from "../components/Pomodoro/Details";
 
 import { Box } from "@mui/material";
@@ -23,10 +23,12 @@ import {
   updateMinutes,
   updateSeconds,
 } from "../slices/timer";
-import { toggleIsDone, updateReveal } from "../slices/displayGrid";
+import { toggleIsDone } from "../slices/displayGrid";
 
 function Pomodoro({ defaultImg, setScreenState }) {
+  //TODO: Separate these selectors and dispatch to their respective components to minimize rerender!
   //Local state
+
   const [guide, setGuide] = useState(true);
 
   //Selectors
@@ -38,7 +40,7 @@ function Pomodoro({ defaultImg, setScreenState }) {
   const { minutes, seconds, isActive, isSessionDone } = useSelector(
     (state) => state.timerState
   );
-  const { reveal, isDone } = useSelector((state) => state.displayGridState);
+  const { isDone } = useSelector((state) => state.displayGridState);
 
   //Dispatch
   const dispatch = useDispatch();
@@ -56,7 +58,7 @@ function Pomodoro({ defaultImg, setScreenState }) {
   const _toggleIsActive = (bool) => dispatch(toggleIsActive(bool));
   const _toggleIsSessionDone = (bool) => dispatch(toggleIsSessionDone(bool));
 
-  const _updateReveal = (arr) => dispatch(updateReveal(arr));
+  // const _updateReveal = (arr) => dispatch(updateReveal(arr));
   const _toggleIsDone = (bool) => dispatch(toggleIsDone(bool));
 
   //Handlers
@@ -103,20 +105,27 @@ function Pomodoro({ defaultImg, setScreenState }) {
     const reveal = blockers.map((blocker) => blocker.reveal);
     const totalReveal = reveal.filter((bool) => bool === true).length;
     if (totalReveal === blockers.length) {
-      toggleIsDone(true);
+      // _toggleIsDone(true);
+      dispatch(toggleIsDone(true));
     } else {
-      toggleIsDone(false);
+      // _toggleIsDone(false);
+      dispatch(toggleIsDone(false));
     }
 
     console.log(blockers);
-  }, [blockers]);
+  }, [blockers, dispatch]);
 
   //Set display minutes when presetMin settings changes
   useEffect(() => {
-    _updateMinutes(presetMin);
-  }, [presetMin]);
+    // _updateMinutes(presetMin);
+    dispatch(updateMinutes(presetMin));
+  }, [presetMin, dispatch]);
 
   //Countdown timer
+  //This should be on the displaytimer component, make states local
+  //Thoughts: Component should be as stateless as possible?, Containers VS Presentational?
+  //Dependencies: presetMin, isActive, updatemin, updatesec, toggleisactive, onReveal, toggleisSessioinDone
+  //This also should be triggered by onClick, not by useEffect
   useEffect(() => {
     let interval = null;
 
@@ -131,13 +140,17 @@ function Pomodoro({ defaultImg, setScreenState }) {
         let s = Math.floor((distance % (1000 * 60)) / 1000);
         let m = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
 
-        _updateMinutes(m);
-        _updateSeconds(s);
+        // _updateMinutes(m);
+        // _updateSeconds(s);
+        dispatch(updateMinutes(m));
+        dispatch(updateSeconds(s));
 
         if (distance < 0) {
-          _toggleIsActive(false);
+          // _toggleIsActive(false);
+          dispatch(toggleIsActive(false));
           onReveal();
-          _toggleIsSessionDone(true);
+          dispatch(toggleIsSessionDone(true));
+          // _toggleIsSessionDone(true);
         }
       }, 100);
     } else {
@@ -146,7 +159,7 @@ function Pomodoro({ defaultImg, setScreenState }) {
     return () => {
       clearInterval(interval);
     };
-  }, [isActive, presetMin]); //too many dependencies
+  }, [isActive, presetMin, dispatch]); //too many dependencies
 
   //Set document title to timer
   useEffect(() => {
@@ -188,7 +201,7 @@ function Pomodoro({ defaultImg, setScreenState }) {
           setGoalImg={_updateGoalImage}
           setGoalName={_updateGoalName}
           setIsSessionDone={_toggleIsSessionDone}
-          setReveal={_updateReveal}
+          // setReveal={_updateReveal}
           defaultImg={defaultImg}
           isActive={isActive}
           setMinutes={_updateMinutes}
@@ -208,9 +221,9 @@ function Pomodoro({ defaultImg, setScreenState }) {
           onReveal={onReveal}
           isDone={isDone}
           toggleIsDone={_toggleIsDone}
-          reveal={reveal}
+          // reveal={reveal}
           isActive={isActive}
-          setReveal={_updateReveal}
+          // setReveal={_updateReveal}
           setIsActive={_toggleIsActive}
           setMinutes={_updateMinutes}
           presetMin={presetMin}
@@ -224,7 +237,7 @@ function Pomodoro({ defaultImg, setScreenState }) {
 
       <ImageGrid
         blockers={blockers}
-        reveal={reveal}
+        // reveal={reveal}
         isDone={isDone}
         goalImage={goalImage}
       />

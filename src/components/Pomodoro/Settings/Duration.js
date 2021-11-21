@@ -1,13 +1,9 @@
 import { KeyboardArrowDown, KeyboardArrowUp } from "@mui/icons-material";
 import { IconButton } from "@mui/material";
 import { Box } from "@mui/system";
-import React, { useEffect } from "react";
+import React from "react";
 
 function Duration({ presetMin, setPresetMin }) {
-  // useEffect(() => {
-  //   setPresetMin(presetMin);
-  // }, [presetMin, setPresetMin]);
-
   return (
     <>
       <h5>Duration</h5>

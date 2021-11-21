@@ -22,9 +22,9 @@ const SettingsButton = ({
 
   isDone,
   setIsDone,
-  reveal,
+  // reveal,
   isActive,
-  setReveal,
+  // setReveal,
   setIsActive,
   setMinutes,
   presetMin,
@@ -87,9 +87,9 @@ const SettingsButton = ({
               updateBlockers={updateBlockers}
               isDone={isDone}
               setIsDone={setIsDone}
-              reveal={reveal}
+              // reveal={reveal}
               isActive={isActive}
-              setReveal={setReveal}
+              // setReveal={setReveal}
             />
             {/* Timer is being rerendered after adding numPomodoro, maybe because of the conditional rendering isActive */}
             <Duration

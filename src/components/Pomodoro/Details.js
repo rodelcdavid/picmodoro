@@ -5,6 +5,7 @@ const Details = ({ goalName, blockers }) => {
   const reveal = blockers.map((blocker) => blocker.reveal);
   const totalReveal = reveal.filter((bool) => bool === true).length;
 
+  console.log("Details Component");
   return (
     <Box sx={{ width: "80%" }}>
       <h3>{goalName}</h3>
