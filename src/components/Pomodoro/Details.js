@@ -1,14 +1,15 @@
 import { Box } from "@mui/system";
 import React from "react";
 
-const Details = ({ goalName, computeReveal, numPomodoro }) => {
+const Details = ({ goalName, blockers }) => {
+  const reveal = blockers.map((blocker) => blocker.reveal);
+  const totalReveal = reveal.filter((bool) => bool === true).length;
+
   return (
     <Box sx={{ width: "80%" }}>
       <h3>{goalName}</h3>
-
-      {/* should grab totalReveal instead of calling computereveal */}
       <p style={{ color: "green", fontSize: "0.8rem" }}>
-        Progress: {computeReveal()}/{numPomodoro}
+        Progress: {totalReveal}/{blockers.length}
       </p>
     </Box>
   );

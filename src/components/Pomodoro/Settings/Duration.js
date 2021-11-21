@@ -4,9 +4,9 @@ import { Box } from "@mui/system";
 import React, { useEffect } from "react";
 
 function Duration({ presetMin, setPresetMin }) {
-  useEffect(() => {
-    setPresetMin(presetMin);
-  }, [presetMin, setPresetMin]);
+  // useEffect(() => {
+  //   setPresetMin(presetMin);
+  // }, [presetMin, setPresetMin]);
 
   return (
     <>

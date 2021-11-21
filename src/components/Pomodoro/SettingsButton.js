@@ -14,11 +14,12 @@ import Session from "./Settings/Session";
 import Duration from "./Settings/Duration";
 
 const SettingsButton = ({
+  updateBlockers,
+  blockers,
   isRandom,
   handleToggle,
   onReveal,
-  numPomodoro,
-  setNumPomodoro,
+
   isDone,
   setIsDone,
   reveal,
@@ -80,14 +81,10 @@ const SettingsButton = ({
           </Box>
           <Divider />
           <Box sx={{ textAlign: "center", padding: "1rem" }}>
-            <Random
-              isRandom={isRandom}
-              handleToggle={handleToggle}
-              onReveal={onReveal}
-            />
+            <Random isRandom={isRandom} handleToggle={handleToggle} />
             <Session
-              numPomodoro={numPomodoro}
-              setNumPomodoro={setNumPomodoro}
+              blockers={blockers}
+              updateBlockers={updateBlockers}
               isDone={isDone}
               setIsDone={setIsDone}
               reveal={reveal}

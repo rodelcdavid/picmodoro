@@ -23,7 +23,8 @@ const NewGoalButton = ({
   isActive,
   setMinutes,
   setSeconds,
-  setNumPomodoro,
+
+  updateBlockers,
   setPresetMin,
   setIsRandom,
   setIsDone,
@@ -43,7 +44,8 @@ const NewGoalButton = ({
     setIsSessionDone(false);
     setMinutes(0);
     setSeconds(0);
-    setNumPomodoro(1);
+
+    updateBlockers([{ clickable: false, reveal: false }]); //set to initial state
     setPresetMin(0.1); //set to 25
     setIsRandom(false);
     setIsDone(false);

@@ -1,7 +1,7 @@
 import { Switch } from "@mui/material";
 import React from "react";
 
-const Random = ({ isRandom, handleToggle, onReveal }) => {
+const Random = ({ isRandom, handleToggle }) => {
   return (
     <>
       <h5>Random Reveal</h5>

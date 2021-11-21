@@ -14,7 +14,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { updateGoalName, updateGoalImage } from "../slices/goal";
 import {
   toggleIsRandom,
-  updateNumPomodoro,
+  updateBlockers,
   updatePresetMin,
 } from "../slices/settings";
 import {
@@ -32,7 +32,7 @@ function Pomodoro({ defaultImg, setScreenState }) {
   //Selectors
   //can use spread instead of individual?
   const { goalName, goalImage } = useSelector((state) => state.goalState);
-  const { isRandom, presetMin, numPomodoro } = useSelector(
+  const { isRandom, presetMin, blockers } = useSelector(
     (state) => state.settingsState
   );
   const { minutes, seconds, isActive, isSessionDone } = useSelector(
@@ -48,7 +48,8 @@ function Pomodoro({ defaultImg, setScreenState }) {
 
   const _toggleIsRandom = (checked) => dispatch(toggleIsRandom(checked));
   const _updatePresetMin = (min) => dispatch(updatePresetMin(min));
-  const _updateNumPomodoro = (num) => dispatch(updateNumPomodoro(num));
+
+  const _updateBlockers = (blockers) => dispatch(updateBlockers(blockers));
 
   const _updateMinutes = (min) => dispatch(updateMinutes(min));
   const _updateSeconds = (sec) => dispatch(updateSeconds(sec));
@@ -58,57 +59,64 @@ function Pomodoro({ defaultImg, setScreenState }) {
   const _updateReveal = (arr) => dispatch(updateReveal(arr));
   const _toggleIsDone = (bool) => dispatch(toggleIsDone(bool));
 
-  //functions, maybe put these outside?
-  //optimize this function because it renders twice
-  const computeReveal = () => {
-    const tempReveal = [...reveal];
-    const totalReveal = tempReveal.filter((x) => x === true).length;
-    return [totalReveal, tempReveal];
+  //Handlers
+  const handleToggle = (e) => {
+    _toggleIsRandom(e.target.checked); //can you refactor this to !isRandom?
   };
 
-  const onReveal = useCallback(() => {
-    // recommended usecallback because this function is a dependency on timer useeffect, is it necessary though?
-    //when timer hits zero, new class should be added on a random tile
-    const prevReveal = [...reveal];
+  //functions, maybe put these outside?
+
+  const onReveal = () => {
+    // wrap in useCallback to include in useeffect dependency?
+    const reveal = blockers.map((blocker) => blocker.reveal);
 
     if (isRandom) {
       //Random reveal
-      const unrevealed = prevReveal.reduce((arr, item, i) => {
+      const unrevealed = reveal.reduce((arr, item, i) => {
         if (item === false) {
           arr.push(i);
         }
         return arr;
       }, []);
 
-      const random = Math.floor(Math.random() * unrevealed.length);
-      prevReveal[unrevealed[random]] = true;
+      const randomIndex = Math.floor(Math.random() * unrevealed.length);
+
+      _updateBlockers(
+        blockers.map((blocker, i) =>
+          i === unrevealed[randomIndex] ? { ...blocker, reveal: true } : blocker
+        )
+      );
     } else {
       //Normal reveal
-      if (prevReveal.indexOf(false) != null) {
-        prevReveal[prevReveal.indexOf(false)] = true;
-      }
+      _updateBlockers(
+        blockers.map((blocker, i) =>
+          i === reveal.indexOf(false) ? { ...blocker, reveal: true } : blocker
+        )
+      );
     }
-    _updateReveal(prevReveal);
-  }, [reveal, isRandom]);
-
-  //ComponentDidUpdate
-  useEffect(() => {
-    const tempReveal = [...reveal];
-    const totalReveal = tempReveal.filter((x) => x === true).length;
-
-    if (totalReveal === numPomodoro) {
-      _toggleIsDone(true);
-    }
-  }, [reveal, numPomodoro]);
-
-  const handleToggle = (e) => {
-    _toggleIsRandom(e.target.checked); //can you refactor this to !isRandom?
   };
 
+  //ComponentDidUpdate
+
+  //Update if isDone
+  useEffect(() => {
+    const reveal = blockers.map((blocker) => blocker.reveal);
+    const totalReveal = reveal.filter((bool) => bool === true).length;
+    if (totalReveal === blockers.length) {
+      toggleIsDone(true);
+    } else {
+      toggleIsDone(false);
+    }
+
+    console.log(blockers);
+  }, [blockers]);
+
+  //Set display minutes when presetMin settings changes
   useEffect(() => {
     _updateMinutes(presetMin);
   }, [presetMin]);
 
+  //Countdown timer
   useEffect(() => {
     let interval = null;
 
@@ -138,8 +146,9 @@ function Pomodoro({ defaultImg, setScreenState }) {
     return () => {
       clearInterval(interval);
     };
-  }, [isActive, presetMin, onReveal]); //too many dependencies
+  }, [isActive, presetMin]); //too many dependencies
 
+  //Set document title to timer
   useEffect(() => {
     const timerMinutes = minutes < 10 ? `0${minutes}` : minutes;
     const timerSeconds = seconds < 10 ? `0${seconds}` : seconds;
@@ -184,25 +193,21 @@ function Pomodoro({ defaultImg, setScreenState }) {
           isActive={isActive}
           setMinutes={_updateMinutes}
           setSeconds={_updateSeconds}
-          setNumPomodoro={_updateNumPomodoro}
+          updateBlockers={_updateBlockers}
           setPresetMin={_updatePresetMin}
           setIsRandom={_toggleIsRandom}
           setIsDone={_toggleIsDone}
         />
-        <Details
-          goalName={goalName}
-          computeReveal={computeReveal}
-          numPomodoro={numPomodoro}
-        />
+        <Details blockers={blockers} goalName={goalName} />
 
         <SettingsButton
+          blockers={blockers}
+          updateBlockers={_updateBlockers}
           isRandom={isRandom}
           handleToggle={handleToggle}
           onReveal={onReveal}
-          numPomodoro={numPomodoro}
-          setNumPomodoro={_updateNumPomodoro}
           isDone={isDone}
-          setIsDone={_toggleIsDone}
+          toggleIsDone={_toggleIsDone}
           reveal={reveal}
           isActive={isActive}
           setReveal={_updateReveal}
@@ -218,7 +223,7 @@ function Pomodoro({ defaultImg, setScreenState }) {
       </Box>
 
       <ImageGrid
-        numPomodoro={numPomodoro}
+        blockers={blockers}
         reveal={reveal}
         isDone={isDone}
         goalImage={goalImage}
