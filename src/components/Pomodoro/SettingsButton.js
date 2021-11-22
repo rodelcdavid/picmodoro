@@ -39,7 +39,14 @@ const SettingsButton = ({
   };
 
   return (
-    <Box sx={{ marginLeft: "auto" }}>
+    <Box
+      sx={{
+        marginLeft: "auto",
+        boxShadow: "0 5px 5px rgba(0,0,0,0.5)",
+        borderRadius: "100%",
+        backgroundColor: "#fff",
+      }}
+    >
       <Tooltip title="Settings">
         <IconButton
           disabled={isActive ? true : false}

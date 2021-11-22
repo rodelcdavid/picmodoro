@@ -7,9 +7,22 @@ const Details = ({ goalName, blockers }) => {
 
   console.log("Details Component");
   return (
-    <Box sx={{ width: "80%" }}>
-      <h3>{goalName}</h3>
-      <p style={{ color: "green", fontSize: "0.8rem" }}>
+    <Box
+      sx={{
+        width: "80%",
+      }}
+    >
+      <h3 style={{ fontSize: goalName.length > 10 ? "1rem" : "1.5rem" }}>
+        {goalName}
+      </h3>
+      <p
+        style={{
+          color: "#fff",
+          fontSize: "0.7rem",
+          fontWeight: "bolder",
+          marginTop: "5px",
+        }}
+      >
         Progress: {totalReveal}/{blockers.length}
       </p>
     </Box>

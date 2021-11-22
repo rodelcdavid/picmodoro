@@ -1,4 +1,4 @@
-import { TextField, Typography } from "@mui/material";
+import { CircularProgress, TextField, Typography } from "@mui/material";
 import { Box } from "@mui/system";
 import React from "react";
 
@@ -8,6 +8,7 @@ const UploadImage = ({
   inputUrl,
   setInputUrl,
   imageError,
+  loading,
 }) => {
   return (
     <Box
@@ -47,16 +48,31 @@ const UploadImage = ({
           }
           inputRef={imageFieldRef}
         />
-        <Box
-          sx={{
-            border: "solid 1px rgba(0,0,0,0.23)",
-            width: "100%",
-            // maxHeight: "300px",
-          }}
-          component="img"
-          src={goalImage}
-          alt=""
-        />
+        {!loading ? (
+          <Box
+            sx={{
+              border: "solid 1px rgba(0,0,0,0.23)",
+              width: "100%",
+              // maxHeight: "300px",
+            }}
+            component="img"
+            src={goalImage}
+            alt=""
+          />
+        ) : (
+          <Box
+            sx={{
+              border: "solid 1px rgba(0,0,0,0.23)",
+              width: "100%",
+              height: "200px",
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+            }}
+          >
+            <CircularProgress />
+          </Box>
+        )}
       </Box>
     </Box>
   );

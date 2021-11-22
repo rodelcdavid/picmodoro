@@ -32,6 +32,12 @@ const DisplayTimer = ({
           alignItems: "center",
           justifyContent: "center",
           height: "50px",
+          color: "#1e3c72",
+          // backgroundColor: "#2a5298",
+          // width: "140px",
+          // height: "140px",
+          // borderRadius: "100%",
+          // padding: "2rem",
         }}
       >
         {!isSessionDone ? (

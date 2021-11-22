@@ -51,7 +51,14 @@ const NewGoalButton = ({
     setIsDone(false);
   };
   return (
-    <Box sx={{ marginRight: "auto" }}>
+    <Box
+      sx={{
+        marginRight: "auto",
+        boxShadow: "0 5px 5px rgba(0,0,0,0.5)",
+        borderRadius: "100%",
+        backgroundColor: "#fff",
+      }}
+    >
       <Tooltip title="New Goal">
         <IconButton
           disabled={isActive ? true : false}

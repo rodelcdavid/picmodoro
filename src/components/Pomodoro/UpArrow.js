@@ -13,8 +13,8 @@ const UpArrow = styled("div")`
     }
   }
   position: absolute;
-  top: -112px;
-  right: 12px;
+  top: -105px;
+  right: 27px;
   border-color: transparent;
   border-style: solid;
   border-width: 0 0.5rem;

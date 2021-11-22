@@ -83,6 +83,8 @@ function Pomodoro({ defaultImg, setScreenState }) {
 
       const randomIndex = Math.floor(Math.random() * unrevealed.length);
 
+      //Move this to the reducer instead, passthe required index as payload
+      //random: unrevealed[randomIndex], normal: reveal.indexOf(false)
       _updateBlockers(
         blockers.map((blocker, i) =>
           i === unrevealed[randomIndex] ? { ...blocker, reveal: true } : blocker
@@ -181,9 +183,10 @@ function Pomodoro({ defaultImg, setScreenState }) {
         width: ["100%", "450px"],
         margin: "1rem auto",
         // border: "solid 2px rgba(0,0,0,0.23)",
-        borderRadius: "10px",
-        // boxShadow: "0 10px 15px rgba(0,0,0,0.5)",
-        boxShadow: 3,
+        borderRadius: "20px",
+        boxShadow: "0 10px 15px rgba(0,0,0,0.5)",
+        // boxShadow: 3,
+        backgroundColor: "#fff",
       }}
     >
       <Box
@@ -192,8 +195,16 @@ function Pomodoro({ defaultImg, setScreenState }) {
 
           alignItems: "center",
           width: "350px",
+          // width: "400px",
           margin: "0 auto",
           position: "relative",
+          background:
+            "linear-gradient(to top, #1e3c72 0%, #1e3c72 1%, #2a5298 100%)",
+          borderRadius: "10px",
+          color: "#fff",
+          // color: "#1e3c72",
+          padding: "15px",
+          boxShadow: "0 5px 10px rgba(0,0,0,0.25)",
         }}
       >
         <NewGoalButton

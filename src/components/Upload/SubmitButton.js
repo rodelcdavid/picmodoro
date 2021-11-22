@@ -2,7 +2,7 @@ import { Button, Typography } from "@mui/material";
 import { Box } from "@mui/system";
 import React from "react";
 
-const SubmitButton = ({ onSubmit }) => {
+const SubmitButton = ({ onSubmit, loading }) => {
   return (
     <Box sx={{ display: "flex", flexDirection: "column", width: "100%" }}>
       <Typography variant="h6">
@@ -12,6 +12,7 @@ const SubmitButton = ({ onSubmit }) => {
         Submit and start!
       </Typography>
       <Button
+        disabled={loading ? true : false}
         sx={{ alignSelf: "center", width: "60%" }}
         onClick={onSubmit}
         variant="contained"

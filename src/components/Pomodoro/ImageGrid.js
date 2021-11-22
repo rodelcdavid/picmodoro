@@ -60,7 +60,7 @@ const ImageGrid = ({ isDone, goalImage, blockers }) => {
           <Box
             key={i}
             sx={{
-              border: isDone ? "none" : "solid 1px black",
+              border: isDone ? "none" : "solid 1px #1e3c72",
               backgroundColor: blocker.reveal ? "none" : "#F6F5F5",
               cursor: blocker.clickable ? "pointer" : "default",
             }}
@@ -101,8 +101,8 @@ const ImageGrid = ({ isDone, goalImage, blockers }) => {
           backgroundSize: "cover",
           backgroundRepeat: "no-repeat",
           backgroundPosition: "center",
-          border: "solid 1px black",
-          // boxShadow: "0 5px 10px #fff",
+          border: "solid 1px #1e3c72",
+          boxShadow: "0 5px 10px rgba(0,0,0,0.25)",
           overflow: "hidden",
           boxSizing: "content-box",
         }}

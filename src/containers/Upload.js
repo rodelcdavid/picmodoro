@@ -15,6 +15,7 @@ const Upload = ({ setScreenState }) => {
   const [isImageValid, setIsImageValid] = useState(true);
   const [imageError, setImageError] = useState(false);
   const [nameError, setNameError] = useState(false);
+  const [loading, setLoading] = useState(false);
 
   //Selectors
   const { goalName, goalImage } = useSelector((state) => state.goalState);
@@ -51,11 +52,14 @@ const Upload = ({ setScreenState }) => {
 
   //ComponentDidUpdate
   useEffect(() => {
+    setLoading(true);
     const image = new Image();
     image.src = inputUrl;
     image.onload = function () {
+      //need to have spinner before this
       if (this.width > 0) {
         // _updateGoalImage(inputUrl); //state should update only onsubmit
+        setLoading(false);
         dispatch(updateGoalImage(inputUrl));
         setIsImageValid(true);
         setImageError(false);
@@ -63,6 +67,7 @@ const Upload = ({ setScreenState }) => {
     };
     image.onerror = function () {
       // _updateGoalImage(placeholder);
+      setLoading(false);
       dispatch(updateGoalImage(placeholder));
       setIsImageValid(false);
     };
@@ -98,8 +103,9 @@ const Upload = ({ setScreenState }) => {
           padding: "1rem",
           boxShadow: "0 10px 15px rgba(0,0,0,0.5)",
           // boxShadow: 3, why is this not working
-          borderRadius: "10px",
+          borderRadius: "20px",
           marginTop: "1rem",
+          backgroundColor: "#fff",
         }}
       >
         <InputName
@@ -114,8 +120,9 @@ const Upload = ({ setScreenState }) => {
           inputUrl={inputUrl}
           setInputUrl={setInputUrl}
           imageError={imageError}
+          loading={loading}
         />
-        <SubmitButton onSubmit={onSubmit} />
+        <SubmitButton onSubmit={onSubmit} loading={loading} />
       </Box>
     </Box>
   );
