@@ -1,7 +1,13 @@
 import { Box } from "@mui/system";
 import React from "react";
+import { useSelector } from "react-redux";
 
-const Details = ({ goalName, blockers }) => {
+const Details = () => {
+  //Selectors
+  const { goalName } = useSelector((state) => state.goalState);
+
+  const { blockers } = useSelector((state) => state.settingsState);
+
   const reveal = blockers.map((blocker) => blocker.reveal);
   const totalReveal = reveal.filter((bool) => bool === true).length;
 

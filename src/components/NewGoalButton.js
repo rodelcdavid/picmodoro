@@ -12,24 +12,45 @@ import {
 } from "@mui/material";
 import AutorenewIcon from "@mui/icons-material/Autorenew";
 import { Box } from "@mui/system";
+import { useDispatch, useSelector } from "react-redux";
 
-const NewGoalButton = ({
-  setScreenState,
-  setGoalImg,
-  setGoalName,
-  // setReveal,
-  setIsSessionDone,
-  defaultImg,
-  isActive,
-  setMinutes,
-  setSeconds,
+import { updateGoalName, updateGoalImage } from "../features/goal";
+import {
+  toggleIsSessionDone,
+  updateMinutes,
+  updateSeconds,
+} from "../features/timer";
 
+import {
   updateBlockers,
-  setPresetMin,
-  setIsRandom,
-  setIsDone,
-}) => {
+  toggleIsRandom,
+  updatePresetMin,
+} from "../features/settings";
+
+import { toggleIsDone } from "../features/displayGrid";
+import { updateScreen } from "../features/screen";
+import placeholder from "../assets/placeholder.jpg";
+
+const NewGoalButton = () => {
+  console.log("NewGoalButton");
+
   const [open, setOpen] = useState(false);
+
+  //Selector
+  const { isActive } = useSelector((state) => state.timerState);
+
+  //Dispatch
+  const dispatch = useDispatch();
+  const _updateGoalImage = (image) => dispatch(updateGoalImage(image));
+  const _updateGoalName = (name) => dispatch(updateGoalName(name));
+  const _toggleIsSessionDone = (bool) => dispatch(toggleIsSessionDone(bool));
+  const _updateMinutes = (min) => dispatch(updateMinutes(min));
+  const _updateSeconds = (sec) => dispatch(updateSeconds(sec));
+  const _updateBlockers = (blockers) => dispatch(updateBlockers(blockers));
+  const _toggleIsRandom = (checked) => dispatch(toggleIsRandom(checked));
+  const _updatePresetMin = (min) => dispatch(updatePresetMin(min));
+  const _toggleIsDone = (bool) => dispatch(toggleIsDone(bool));
+  const _updateScreen = (value) => dispatch(updateScreen(value));
 
   const handleClose = () => {
     setOpen(false);
@@ -37,18 +58,18 @@ const NewGoalButton = ({
 
   const handleNewGoal = () => {
     //how to reset store state
-    setScreenState(0);
-    setGoalImg(defaultImg);
-    setGoalName("");
-    // setReveal([false]);
-    setIsSessionDone(false);
-    setMinutes(0);
-    setSeconds(0);
+    _updateScreen(0);
+    _updateGoalImage(placeholder);
+    _updateGoalName("");
 
-    updateBlockers([{ clickable: false, reveal: false }]); //set to initial state
-    setPresetMin(0.1); //set to 25
-    setIsRandom(false);
-    setIsDone(false);
+    _toggleIsSessionDone(false);
+    _updateMinutes(0);
+    _updateSeconds(0);
+
+    _updateBlockers([{ clickable: false, reveal: false }]); //set to initial state
+    _updatePresetMin(0.1); //set to 25
+    _toggleIsRandom(false);
+    _toggleIsDone(false);
   };
   return (
     <Box

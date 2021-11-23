@@ -1,11 +1,12 @@
 import { useMediaQuery } from "@mui/material";
 import { Box } from "@mui/system";
-import React from "react";
+import React, { useCallback } from "react";
+import { useSelector } from "react-redux";
 
 const getGridValues = (numBlockers, wide) => {
   // const imgWidth = wide ? 600 : 350;
   // const imgHeight = wide ? 400 : 300;
-  console.log("Getting grid values");
+
   const imgWidth = 350;
   const imgHeight = 300;
   let gridColumn, gridRow;
@@ -46,14 +47,18 @@ const getGridValues = (numBlockers, wide) => {
   return gridValues;
 };
 
-const ImageGrid = ({ isDone, goalImage, blockers }) => {
+const ImageGrid = () => {
+  //Selectors
+  const { isDone } = useSelector((state) => state.displayGridState);
+  const { goalImage } = useSelector((state) => state.goalState);
+  const { blockers } = useSelector((state) => state.settingsState);
+
   //this component rerenders on any pomodoro state change
   const wide = useMediaQuery("(min-width:600px");
 
   console.log("Image Grid");
-  const ImageBlocker = () => {
-    // this render twice even if I wrap in usecallback
-    // console.log("Image Blocker");
+  //Wrapped in useCallback, prevented rerender when duration settings changes
+  const ImageBlocker = useCallback(() => {
     return (
       <>
         {blockers.map((blocker, i) => (
@@ -68,7 +73,7 @@ const ImageGrid = ({ isDone, goalImage, blockers }) => {
         ))}
       </>
     );
-  };
+  }, [blockers, isDone]);
 
   const {
     imgWidth,

@@ -5,8 +5,10 @@ import { Box } from "@mui/system";
 import { useSelector, useDispatch } from "react-redux";
 import { updateGoalName, updateGoalImage } from "../features/goal";
 import { Button, CircularProgress, TextField, Typography } from "@mui/material";
+import { updateScreen } from "../features/screen";
 
-const Form = ({ setScreenState }) => {
+const Form = () => {
+  console.log("Form.js");
   const [inputUrl, setInputUrl] = useState("");
   const [isImageValid, setIsImageValid] = useState(true);
   const [imageError, setImageError] = useState(false);
@@ -19,6 +21,7 @@ const Form = ({ setScreenState }) => {
   //Dispatch
   const dispatch = useDispatch();
   const _updateGoalName = (name) => dispatch(updateGoalName(name));
+  const _updateScreen = (value) => dispatch(updateScreen(value));
   // const _updateGoalImage = (image) => dispatch(updateGoalImage(image));
 
   //Refs
@@ -42,7 +45,7 @@ const Form = ({ setScreenState }) => {
     }
 
     if (goalName.length && isImageValid) {
-      setScreenState(1);
+      _updateScreen(1);
     }
   };
 
