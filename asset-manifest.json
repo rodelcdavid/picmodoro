@@ -1,20 +1,20 @@
 {
   "files": {
-    "main.js": "/picmodoro/static/js/main.3b7c15dd.chunk.js",
-    "main.js.map": "/picmodoro/static/js/main.3b7c15dd.chunk.js.map",
-    "runtime-main.js": "/picmodoro/static/js/runtime-main.cb999aaa.js",
-    "runtime-main.js.map": "/picmodoro/static/js/runtime-main.cb999aaa.js.map",
-    "static/js/2.ddcd8f27.chunk.js": "/picmodoro/static/js/2.ddcd8f27.chunk.js",
-    "static/js/2.ddcd8f27.chunk.js.map": "/picmodoro/static/js/2.ddcd8f27.chunk.js.map",
-    "static/js/3.636fdee1.chunk.js": "/picmodoro/static/js/3.636fdee1.chunk.js",
-    "static/js/3.636fdee1.chunk.js.map": "/picmodoro/static/js/3.636fdee1.chunk.js.map",
+    "main.js": "/picmodoro/static/js/main.beb39cd1.chunk.js",
+    "main.js.map": "/picmodoro/static/js/main.beb39cd1.chunk.js.map",
+    "runtime-main.js": "/picmodoro/static/js/runtime-main.54fd5e34.js",
+    "runtime-main.js.map": "/picmodoro/static/js/runtime-main.54fd5e34.js.map",
+    "static/js/2.3d3ea743.chunk.js": "/picmodoro/static/js/2.3d3ea743.chunk.js",
+    "static/js/2.3d3ea743.chunk.js.map": "/picmodoro/static/js/2.3d3ea743.chunk.js.map",
+    "static/js/3.a9acf50c.chunk.js": "/picmodoro/static/js/3.a9acf50c.chunk.js",
+    "static/js/3.a9acf50c.chunk.js.map": "/picmodoro/static/js/3.a9acf50c.chunk.js.map",
     "index.html": "/picmodoro/index.html",
-    "static/js/2.ddcd8f27.chunk.js.LICENSE.txt": "/picmodoro/static/js/2.ddcd8f27.chunk.js.LICENSE.txt",
+    "static/js/2.3d3ea743.chunk.js.LICENSE.txt": "/picmodoro/static/js/2.3d3ea743.chunk.js.LICENSE.txt",
     "static/media/pomodoro.e1763d73.png": "/picmodoro/static/media/pomodoro.e1763d73.png"
   },
   "entrypoints": [
-    "static/js/runtime-main.cb999aaa.js",
-    "static/js/2.ddcd8f27.chunk.js",
-    "static/js/main.3b7c15dd.chunk.js"
+    "static/js/runtime-main.54fd5e34.js",
+    "static/js/2.3d3ea743.chunk.js",
+    "static/js/main.beb39cd1.chunk.js"
   ]
 }
