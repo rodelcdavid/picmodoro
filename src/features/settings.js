@@ -3,7 +3,13 @@ import { createSlice } from "@reduxjs/toolkit";
 const initialState = {
   isRandom: false,
   presetMin: 0.1, //set to 25
-  numPomodoro: 1,
+
+  blockers: [
+    {
+      clickable: false,
+      reveal: false,
+    },
+  ],
 };
 
 export const settingsSlice = createSlice({
@@ -16,14 +22,19 @@ export const settingsSlice = createSlice({
     updatePresetMin: (state, { payload }) => {
       state.presetMin = payload; //should be state.presetMin += payload , payload should be +-5
     },
-    updateNumPomodoro: (state, { payload }) => {
-      state.numPomodoro = payload;
+
+    updateBlockers: (state, { payload }) => {
+      state.blockers = payload;
     },
   },
 });
 
 // Action creators are generated for each case reducer function
-export const { toggleIsRandom, updatePresetMin, updateNumPomodoro } =
-  settingsSlice.actions;
+export const {
+  toggleIsRandom,
+  updatePresetMin,
+
+  updateBlockers,
+} = settingsSlice.actions;
 
 export default settingsSlice.reducer;

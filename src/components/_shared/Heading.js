@@ -14,10 +14,10 @@ const Heading = () => {
         fontWeight: "bolder",
         color: "#fff",
         textShadow: "2px 2px #000",
-        borderBottom: "solid 2px black",
+        // borderBottom: "solid 2px black",
         fontFamily: "'Righteous', cursive",
-        backgroundImage:
-          "linear-gradient(to top, #1e3c72 0%, #1e3c72 1%, #2a5298 100%)",
+        // backgroundImage:
+        //   "linear-gradient(to top, #1e3c72 0%, #1e3c72 1%, #2a5298 100%)",
       }}
     >
       PICMODOR

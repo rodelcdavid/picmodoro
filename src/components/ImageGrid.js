@@ -1,8 +1,9 @@
 import { useMediaQuery } from "@mui/material";
 import { Box } from "@mui/system";
 import React, { useCallback } from "react";
+import { useSelector } from "react-redux";
 
-const getGridValues = (numPomodoro, wide) => {
+const getGridValues = (numBlockers, wide) => {
   // const imgWidth = wide ? 600 : 350;
   // const imgHeight = wide ? 400 : 300;
 
@@ -11,16 +12,16 @@ const getGridValues = (numPomodoro, wide) => {
   let gridColumn, gridRow;
 
   for (let i = 10; i > 1; i--) {
-    if (numPomodoro === 4) {
+    if (numBlockers === 4) {
       gridColumn = 2;
       gridRow = 2;
       break;
-    } else if (numPomodoro % i === 0 && numPomodoro >= i * 3) {
-      gridColumn = numPomodoro / i;
+    } else if (numBlockers % i === 0 && numBlockers >= i * 3) {
+      gridColumn = numBlockers / i;
       gridRow = i;
       break;
     } else {
-      gridColumn = numPomodoro;
+      gridColumn = numBlockers;
       gridRow = 1;
     }
   }
@@ -46,27 +47,33 @@ const getGridValues = (numPomodoro, wide) => {
   return gridValues;
 };
 
-export default function ImageGrid({ numPomodoro, reveal, isDone, goalImage }) {
+const ImageGrid = () => {
+  //Selectors
+  const { isDone } = useSelector((state) => state.displayGridState);
+  const { goalImage } = useSelector((state) => state.goalState);
+  const { blockers } = useSelector((state) => state.settingsState);
+
+  //this component rerenders on any pomodoro state change
   const wide = useMediaQuery("(min-width:600px");
 
+  console.log("Image Grid");
+  //Wrapped in useCallback, prevented rerender when duration settings changes
   const ImageBlocker = useCallback(() => {
-    const tilesArray = [];
-
-    for (let i = 1; i <= numPomodoro; i++) {
-      tilesArray.push(
-        <Box
-          sx={{
-            backgroundColor: reveal[i - 1] ? "none" : "#F6F5F5",
-            border: isDone ? "none" : "solid 1px black",
-          }}
-          key={i}
-          index={i}
-        />
-      );
-    }
-
-    return tilesArray; // how to access this
-  }, [numPomodoro, reveal, isDone]);
+    return (
+      <>
+        {blockers.map((blocker, i) => (
+          <Box
+            key={i}
+            sx={{
+              border: isDone ? "none" : "solid 1px #1e3c72",
+              backgroundColor: blocker.reveal ? "none" : "#F6F5F5",
+              cursor: blocker.clickable ? "pointer" : "default",
+            }}
+          />
+        ))}
+      </>
+    );
+  }, [blockers, isDone]);
 
   const {
     imgWidth,
@@ -75,7 +82,7 @@ export default function ImageGrid({ numPomodoro, reveal, isDone, goalImage }) {
     gridRowSize,
     gridColumn,
     gridRow,
-  } = getGridValues(numPomodoro, wide);
+  } = getGridValues(blockers.length, wide);
 
   return (
     <Box
@@ -99,8 +106,8 @@ export default function ImageGrid({ numPomodoro, reveal, isDone, goalImage }) {
           backgroundSize: "cover",
           backgroundRepeat: "no-repeat",
           backgroundPosition: "center",
-          border: "solid 1px black",
-          // boxShadow: "0 5px 10px #fff",
+          border: "solid 1px #1e3c72",
+          boxShadow: "0 5px 10px rgba(0,0,0,0.25)",
           overflow: "hidden",
           boxSizing: "content-box",
         }}
@@ -109,4 +116,5 @@ export default function ImageGrid({ numPomodoro, reveal, isDone, goalImage }) {
       </Box>
     </Box>
   );
-}
+};
+export default ImageGrid;
