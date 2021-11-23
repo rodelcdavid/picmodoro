@@ -11,19 +11,19 @@ import DisplayTimer from "./DisplayTimer";
 import UpArrow from "../components/Pomodoro/UpArrow";
 
 import { useSelector, useDispatch } from "react-redux";
-import { updateGoalName, updateGoalImage } from "../slices/goal";
+import { updateGoalName, updateGoalImage } from "../features/goal";
 import {
   toggleIsRandom,
   updateBlockers,
   updatePresetMin,
-} from "../slices/settings";
+} from "../features/settings";
 import {
   toggleIsActive,
   toggleIsSessionDone,
   updateMinutes,
   updateSeconds,
-} from "../slices/timer";
-import { toggleIsDone } from "../slices/displayGrid";
+} from "../features/timer";
+import { toggleIsDone } from "../features/displayGrid";
 
 function Pomodoro({ defaultImg, setScreenState }) {
   //TODO: Separate these selectors and dispatch to their respective components to minimize rerender!

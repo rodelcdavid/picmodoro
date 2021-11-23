@@ -7,7 +7,8 @@ import Pomodoro from "./containers/Pomodoro";
 import Heading from "./components/_shared/Heading";
 
 import { useSelector, useDispatch } from "react-redux";
-import { updateScreen } from "./slices/screen";
+import { updateScreen } from "./features/screen";
+import SetupForm from "./views/SetupForm";
 
 function App() {
   // const [goalImage, setgoalImage] = useState(prevImg || placeholder);
@@ -37,7 +38,7 @@ function App() {
       <Heading />
 
       {screenState === 0 ? (
-        <Upload setScreenState={_updateScreen} />
+        <SetupForm setScreenState={_updateScreen} />
       ) : (
         <Pomodoro defaultImg={placeholder} setScreenState={_updateScreen} />
       )}

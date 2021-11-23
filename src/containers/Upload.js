@@ -7,7 +7,7 @@ import SubmitButton from "../components/Upload/SubmitButton";
 import { Box } from "@mui/system";
 
 import { useSelector, useDispatch } from "react-redux";
-import { updateGoalName, updateGoalImage } from "../slices/goal";
+import { updateGoalName, updateGoalImage } from "../features/goal";
 
 const Upload = ({ setScreenState }) => {
   //Local State
