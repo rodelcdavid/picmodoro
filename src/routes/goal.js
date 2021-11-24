@@ -16,9 +16,13 @@ import SettingsButton from "../components/SettingsButton";
 
 function Goal() {
   let urlParams = useParams();
-  console.log(urlParams.goalid);
 
-  //Get state based on goalid
+  //Fetch state from server base on goalid, get state from redux for now base on goalid
+  const { goalList } = useSelector((state) => state.goalState);
+  console.log(goalList);
+  const currentGoal = goalList.filter((goal) => {
+    return goal.id === Number(urlParams.goalid);
+  });
 
   //Local state
   const [guide, setGuide] = useState(true);

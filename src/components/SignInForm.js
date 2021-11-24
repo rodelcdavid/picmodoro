@@ -34,7 +34,16 @@ const SignInForm = () => {
       >
         Sign In
       </Button>
-      <p style={{ marginTop: "5px" }}>
+      <Button
+        sx={{ marginTop: "5px" }}
+        to="/dashboard"
+        variant="contained"
+        color="warning"
+        component={RouterLink}
+      >
+        Test
+      </Button>
+      <p style={{ fontSize: "0.8rem", marginTop: "10px" }}>
         Don't have an account?{" "}
         <Box
           sx={{

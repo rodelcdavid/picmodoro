@@ -40,7 +40,7 @@ const RegisterForm = () => {
       >
         Register
       </Button>
-      <p style={{ marginTop: "5px" }}>
+      <p style={{ fontSize: "0.8rem", marginTop: "10px" }}>
         Already have an account?{" "}
         <Box
           sx={{

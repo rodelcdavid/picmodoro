@@ -50,8 +50,9 @@ const GoalSetup = () => {
 
     if (goalName.length && isImageValid) {
       // _updateScreen(1);
-      //add new goal
-      navigate(`/${goalName}`);
+      //add new goal action
+      const id = 1; //goalList.length + 1 for now, try uuid later
+      navigate(`/${id}`); //navigate goal id
     }
   };
 
