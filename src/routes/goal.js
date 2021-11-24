@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { useParams } from "react-router-dom";
 import Details from "../components/Details";
 
 import { Box } from "@mui/material";
@@ -10,10 +11,15 @@ import DisplayTimer from "../components/DisplayTimer";
 import UpArrow from "../components/UpArrow";
 
 import { useSelector, useDispatch } from "react-redux";
-import { toggleIsDone } from "../features/displayGrid";
+import { toggleIsDone } from "../features/displayGridSlice";
 import SettingsButton from "../components/SettingsButton";
 
-function Main({ defaultImg }) {
+function Goal() {
+  let urlParams = useParams();
+  console.log(urlParams.goalid);
+
+  //Get state based on goalid
+
   //Local state
   const [guide, setGuide] = useState(true);
 
@@ -79,4 +85,4 @@ function Main({ defaultImg }) {
   );
 }
 
-export default Main;
+export default Goal;

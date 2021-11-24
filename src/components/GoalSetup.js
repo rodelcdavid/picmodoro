@@ -1,13 +1,14 @@
 import React, { useEffect, useRef, useState } from "react";
+import { Link as RouterLink, useNavigate } from "react-router-dom";
 import placeholder from "../assets/placeholder.jpg";
 import { Box } from "@mui/system";
 
 import { useSelector, useDispatch } from "react-redux";
-import { updateGoalName, updateGoalImage } from "../features/goal";
+import { updateGoalName, updateGoalImage } from "../features/goalSlice";
 import { Button, CircularProgress, TextField, Typography } from "@mui/material";
-import { updateScreen } from "../features/screen";
+import { updateScreen } from "../features/screenSlice";
 
-const Form = () => {
+const GoalSetup = () => {
   console.log("Form.js");
   const [inputUrl, setInputUrl] = useState("");
   const [isImageValid, setIsImageValid] = useState(true);
@@ -33,7 +34,10 @@ const Form = () => {
     _updateGoalName(e.target.value); //state should update only onSubmit
   };
 
-  const onSubmit = () => {
+  let navigate = useNavigate();
+  const onSubmit = (e) => {
+    e.preventDefault();
+
     if (!isImageValid) {
       setImageError(true);
       imageFieldRef.current.focus();
@@ -45,7 +49,9 @@ const Form = () => {
     }
 
     if (goalName.length && isImageValid) {
-      _updateScreen(1);
+      // _updateScreen(1);
+      //add new goal
+      navigate(`/${goalName}`);
     }
   };
 
@@ -197,6 +203,8 @@ const Form = () => {
           sx={{ alignSelf: "center", width: "60%" }}
           onClick={onSubmit}
           variant="contained"
+          component={RouterLink}
+          to={`/${goalName}`}
         >
           Submit
         </Button>
@@ -205,4 +213,4 @@ const Form = () => {
   );
 };
 
-export default Form;
+export default GoalSetup;

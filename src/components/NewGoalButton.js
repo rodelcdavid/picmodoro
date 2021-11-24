@@ -10,25 +10,26 @@ import {
   IconButton,
   Tooltip,
 } from "@mui/material";
+
 import AutorenewIcon from "@mui/icons-material/Autorenew";
 import { Box } from "@mui/system";
 import { useDispatch, useSelector } from "react-redux";
 
-import { updateGoalName, updateGoalImage } from "../features/goal";
+import { updateGoalName, updateGoalImage } from "../features/goalSlice";
 import {
   toggleIsSessionDone,
   updateMinutes,
   updateSeconds,
-} from "../features/timer";
+} from "../features/timerSlice";
 
 import {
   updateBlockers,
   toggleIsRandom,
   updatePresetMin,
-} from "../features/settings";
+} from "../features/settingsSlice";
 
-import { toggleIsDone } from "../features/displayGrid";
-import { updateScreen } from "../features/screen";
+import { toggleIsDone } from "../features/displayGridSlice";
+import { updateScreen } from "../features/screenSlice";
 import placeholder from "../assets/placeholder.jpg";
 
 const NewGoalButton = () => {

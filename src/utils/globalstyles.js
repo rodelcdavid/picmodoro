@@ -1,4 +1,5 @@
 import { GlobalStyles } from "@mui/material";
+import { Box } from "@mui/system";
 
 const globalStyles = (
   <GlobalStyles
@@ -18,5 +19,20 @@ const globalStyles = (
     }}
   />
 );
+
+export const Wrapper = (props) => {
+  return (
+    <Box
+      sx={{
+        display: "flex",
+        flexDirection: "column",
+        justifyContent: "center",
+        alignItems: "center",
+      }}
+    >
+      {props.children}
+    </Box>
+  );
+};
 
 export default globalStyles;

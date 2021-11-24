@@ -9,9 +9,9 @@ import {
   toggleIsSessionDone,
   updateMinutes,
   updateSeconds,
-} from "../features/timer";
+} from "../features/timerSlice";
 
-import { updateBlockers } from "../features/settings";
+import { updateBlockers } from "../features/settingsSlice";
 
 const DisplayTimer = () => {
   console.log("DisplayTimer.js");

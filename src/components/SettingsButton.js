@@ -13,9 +13,9 @@ import {
   toggleIsRandom,
   updateBlockers,
   updatePresetMin,
-} from "../features/settings";
+} from "../features/settingsSlice";
 
-import { updateMinutes } from "../features/timer";
+import { updateMinutes } from "../features/timerSlice";
 
 import SettingsIcon from "@mui/icons-material/Settings";
 import CloseIcon from "@mui/icons-material/Close";

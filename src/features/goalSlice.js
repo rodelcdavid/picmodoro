@@ -5,6 +5,10 @@ import { prevImg, prevName } from "../utils/getLocalStorage";
 const initialState = {
   goalName: prevName,
   goalImage: prevImg,
+  //blockers
+  //presetmin
+  //israndom
+  //isdone
 };
 
 export const goalSlice = createSlice({

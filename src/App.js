@@ -5,8 +5,12 @@ import Heading from "./components/_shared/Heading";
 
 import { useSelector } from "react-redux";
 
-import SetupForm from "./views/SetupForm";
-import Main from "./views/Main";
+import Goal from "./routes/goal";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+import Home from "./routes/home";
+import SignIn from "./routes/signin";
+import Register from "./routes/register";
+import Dashboard from "./routes/dashboard";
 
 function App() {
   //Selectors
@@ -22,11 +26,20 @@ function App() {
     localStorage.goalName = JSON.stringify(goalName);
   }, [goalImage, goalName, screenState]);
 
+  //change dashboard route to /:userid/dashboard
+  //change goal route to /:userid/:goalid
   return (
     <>
-      <Heading />
-
-      {screenState === 0 ? <SetupForm /> : <Main />}
+      <BrowserRouter basename="/picmodoro">
+        <Heading />
+        <Routes>
+          <Route path="/" exact element={<Home />} />
+          <Route path="/signin" element={<SignIn />} />
+          <Route path="/register" element={<Register />} />
+          <Route path="/dashboard" element={<Dashboard />} />
+          <Route path="/:goalid" element={<Goal />} />
+        </Routes>
+      </BrowserRouter>
     </>
   );
 }

@@ -1,9 +1,9 @@
 import { combineReducers } from "redux";
-import goalReducer from "./goal";
-import screenReducer from "./screen";
-import settingsReducer from "./settings";
-import timerReducer from "./timer";
-import displayGridReducer from "./displayGrid";
+import goalReducer from "./goalSlice";
+import screenReducer from "./screenSlice";
+import settingsReducer from "./settingsSlice";
+import timerReducer from "./timerSlice";
+import displayGridReducer from "./displayGridSlice";
 
 const rootReducer = combineReducers({
   goalState: goalReducer,
