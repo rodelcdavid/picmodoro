@@ -9,11 +9,17 @@ import {
 } from "@mui/material";
 import { Box } from "@mui/system";
 import React, { useEffect, useRef, useState } from "react";
+// import {
+//   // toggleIsRandom,
+//   // updateBlockers,
+//   // updatePresetMin,
+// } from "../features/settingsSlice";
+
 import {
-  toggleIsRandom,
   updateBlockers,
+  toggleIsRandom,
   updatePresetMin,
-} from "../features/settingsSlice";
+} from "../features/goalSlice";
 
 import { updateMinutes } from "../features/timerSlice";
 
@@ -22,30 +28,40 @@ import CloseIcon from "@mui/icons-material/Close";
 import { useDispatch, useSelector } from "react-redux";
 
 //You can break this down again to minimize rerender on settings change
-const Settings = ({ setGuide }) => {
-  const renderCount = useRef(0);
-  renderCount.current += 1;
-  console.log("Settings rendered:", renderCount.current);
+const Settings = ({ setGuide, goalIdParam, currentGoal }) => {
+  // const { goalList } = useSelector((state) => state.goalState);
+
+  // const currentGoal = goalList.filter((goal) => {
+  //   return goal.id === goalIdParam;
+  // });
+
+  // const { isRandom, blockers, presetMin, isDone } = currentGoal[0];
+  const { isRandom, blockers, presetMin, isDone } = currentGoal;
+
+  // const renderCount = useRef(0);
+  // renderCount.current += 1;
+  // console.log("Settings rendered:", renderCount.current);
   //where should guide state live
   //Local state
   const [open, setOpen] = useState(false);
 
   //Selectors
-  const { isRandom, blockers, presetMin } = useSelector(
-    (state) => state.settingsState
-  );
+  // const { isRandom, blockers, presetMin } = useSelector(
+  //   (state) => state.settingsState
+  // );
 
-  const { isDone } = useSelector((state) => state.displayGridState);
+  // const { isDone } = useSelector((state) => state.displayGridState);
 
   const { isActive } = useSelector((state) => state.timerState);
 
   //Dispatch
   const dispatch = useDispatch();
-  const _toggleIsRandom = (checked) => dispatch(toggleIsRandom(checked));
+  const _toggleIsRandom = (payload) => dispatch(toggleIsRandom(payload));
 
-  const _updateBlockers = (blockers) => dispatch(updateBlockers(blockers));
+  // const _updateBlockers = (blockers) => dispatch(updateBlockers(blockers));
+  const _updateBlockers = (payload) => dispatch(updateBlockers(payload));
 
-  const _updatePresetMin = (min) => dispatch(updatePresetMin(min));
+  const _updatePresetMin = (payload) => dispatch(updatePresetMin(payload));
 
   //Handlers
 
@@ -54,11 +70,16 @@ const Settings = ({ setGuide }) => {
   };
 
   const handleToggle = (e) => {
-    _toggleIsRandom(e.target.checked); //can you refactor this to !isRandom?
+    _toggleIsRandom({ id: goalIdParam, isRandom: e.target.checked }); //can you refactor this to !isRandom?
   };
 
+  //you can just move the payload directly to the reducer instead, separate addBlockers, subtractBlockers
   const onPlus = () => {
-    _updateBlockers([...blockers, { clickable: false, reveal: false }]);
+    _updateBlockers({
+      id: goalIdParam,
+      blockers: [...blockers, { clickable: false, reveal: false }],
+    });
+    // _updateBlockers([...blockers, { clickable: false, reveal: false }]);
   };
 
   const onMinus = () => {
@@ -92,7 +113,7 @@ const Settings = ({ setGuide }) => {
               setGuide(false);
             }}
             color="primary"
-            aria-label="upload picture"
+            aria-label="settings picture"
             component="span"
           >
             <SettingsIcon />
@@ -177,7 +198,11 @@ const Settings = ({ setGuide }) => {
               <IconButton
                 color="primary"
                 onClick={() => {
-                  _updatePresetMin(presetMin - 5);
+                  _updatePresetMin({
+                    id: goalIdParam,
+                    presetMin: presetMin - 5,
+                  });
+                  // _updatePresetMin(presetMin - 5);
                 }}
                 disabled={presetMin === 25 ? true : false}
               >
@@ -189,7 +214,11 @@ const Settings = ({ setGuide }) => {
               <IconButton
                 color="primary"
                 onClick={() => {
-                  _updatePresetMin(presetMin + 5);
+                  _updatePresetMin({
+                    id: goalIdParam,
+                    presetMin: presetMin + 5,
+                  });
+                  // _updatePresetMin(presetMin + 5);
                 }}
               >
                 <KeyboardArrowUp />

@@ -30,7 +30,6 @@ const getGridValues = (numBlockers, wide) => {
 
   //for those that don't divide equally
   if ((imgWidth / gridColumn) % 10 !== 0) {
-    // console.log((imgWidth / gridColumn) % 10);
     gridColumnSize += 0.04;
   }
 
@@ -47,11 +46,12 @@ const getGridValues = (numBlockers, wide) => {
   return gridValues;
 };
 
-const ImageGrid = () => {
+const ImageGrid = ({ currentGoal }) => {
+  const { isDone, goalImage, blockers } = currentGoal;
   //Selectors
-  const { isDone } = useSelector((state) => state.displayGridState);
-  const { goalImage } = useSelector((state) => state.goalState);
-  const { blockers } = useSelector((state) => state.settingsState);
+  // const { isDone } = useSelector((state) => state.displayGridState);
+  // const { goalImage } = useSelector((state) => state.goalState);
+  // const { blockers } = useSelector((state) => state.settingsState);
 
   //this component rerenders on any pomodoro state change
   const wide = useMediaQuery("(min-width:600px");

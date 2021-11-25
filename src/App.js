@@ -15,16 +15,18 @@ import Dashboard from "./routes/dashboard";
 function App() {
   //Selectors
 
-  const { goalName, goalImage } = useSelector((state) => state.goalState);
+  // const { goalName, goalImage } = useSelector((state) => state.goalState);
 
-  const screenState = useSelector((state) => state.screenState.value);
+  // const screenState = useSelector((state) => state.screenState.value);
+  const { goalList } = useSelector((state) => state.goalState);
 
   useEffect(() => {
     // move this to Upload and Pomodoro container
-    localStorage.imgFile = JSON.stringify(goalImage);
-    localStorage.screenState = JSON.stringify(screenState);
-    localStorage.goalName = JSON.stringify(goalName);
-  }, [goalImage, goalName, screenState]);
+    // localStorage.imgFile = JSON.stringify(goalImage);
+    // localStorage.screenState = JSON.stringify(screenState);
+    // localStorage.goalName = JSON.stringify(goalName);
+    localStorage.goalList = JSON.stringify(goalList);
+  }, [goalList]);
 
   //change dashboard route to /:userid/dashboard
   //change goal route to /:userid/:goalid

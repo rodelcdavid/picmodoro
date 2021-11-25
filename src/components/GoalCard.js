@@ -1,7 +1,9 @@
 import { Box } from "@mui/system";
 import React from "react";
 import { Link as RouterLink } from "react-router-dom";
-const GoalCard = ({ id, title, img }) => {
+const GoalCard = ({ id, goalName, goalImage, blockers }) => {
+  const reveal = blockers.map((blocker) => blocker.reveal);
+  const totalReveal = reveal.filter((bool) => bool === true).length;
   return (
     <Box
       sx={{
@@ -13,7 +15,7 @@ const GoalCard = ({ id, title, img }) => {
         borderRadius: "10px",
         justifyContent: "flex-end",
         alignItems: "center",
-        background: `url(${img})`,
+        background: `url(${goalImage})`,
         backgroundPosition: "center",
         backgroundSize: "cover",
         boxShadow: "0 10px 15px rgba(0,0,0,0.5)",
@@ -28,7 +30,7 @@ const GoalCard = ({ id, title, img }) => {
       component={RouterLink}
       to={`/${id}`}
     >
-      <h4
+      <Box
         style={{
           color: "#fff",
           backgroundColor: "#1e3c72",
@@ -36,11 +38,19 @@ const GoalCard = ({ id, title, img }) => {
           textAlign: "center",
           padding: "1rem",
           maxHeight: "50px",
+          display: "flex",
+          flexDirection: "column",
+          justifyContent: "center",
+          alignItems: "center",
         }}
       >
-        {title}
-      </h4>
-      {/* <img src={img} alt="" /> */}
+        <h5>{goalName}</h5>
+        <p style={{ fontSize: "0.7rem" }}>
+          Progress: {totalReveal}/{blockers.length}
+        </p>
+      </Box>
+
+      {/* <goalImage src={goalImage} alt="" /> */}
     </Box>
   );
 };

@@ -4,7 +4,7 @@ import React, { useState } from "react";
 
 import GoalSetup from "./GoalSetup";
 
-const AddGoal = () => {
+const AddGoalButton = () => {
   const [open, setOpen] = useState(false);
 
   const handleClose = () => {
@@ -32,6 +32,7 @@ const AddGoal = () => {
           cursor: "pointer",
           boxShadow: "0 10px 15px rgba(0,0,0,0.5)",
           transition: "all ease-in 200ms",
+          color: "#1e3c72",
           "&:hover": {
             transform: "scale(1.05)",
           },
@@ -62,4 +63,4 @@ const AddGoal = () => {
   );
 };
 
-export default AddGoal;
+export default AddGoalButton;

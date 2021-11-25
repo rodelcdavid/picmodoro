@@ -4,13 +4,18 @@ import placeholder from "../assets/placeholder.jpg";
 import { Box } from "@mui/system";
 
 import { useSelector, useDispatch } from "react-redux";
-import { updateGoalName, updateGoalImage } from "../features/goalSlice";
+import {
+  updateGoalName,
+  updateGoalImage,
+  addGoal,
+} from "../features/goalSlice";
 import { Button, CircularProgress, TextField, Typography } from "@mui/material";
 import { updateScreen } from "../features/screenSlice";
 
 const GoalSetup = () => {
   console.log("Form.js");
   const [inputUrl, setInputUrl] = useState("");
+  const [inputName, setInputName] = useState("");
   const [isImageValid, setIsImageValid] = useState(true);
   const [imageError, setImageError] = useState(false);
   const [nameError, setNameError] = useState(false);
@@ -18,6 +23,7 @@ const GoalSetup = () => {
 
   //Selectors
   const { goalName, goalImage } = useSelector((state) => state.goalState);
+  const { goalList } = useSelector((state) => state.goalState);
 
   //Dispatch
   const dispatch = useDispatch();
@@ -31,7 +37,8 @@ const GoalSetup = () => {
 
   //Handlers
   const nameHandler = (e) => {
-    _updateGoalName(e.target.value); //state should update only onSubmit
+    // _updateGoalName(e.target.value); //state should update only onSubmit
+    setInputName(e.target.value);
   };
 
   let navigate = useNavigate();
@@ -43,15 +50,17 @@ const GoalSetup = () => {
       imageFieldRef.current.focus();
     }
 
-    if (!goalName.length) {
+    if (!inputName.length) {
       setNameError(true);
       nameFieldRef.current.focus();
     }
 
-    if (goalName.length && isImageValid) {
+    if (inputName.length && isImageValid) {
       // _updateScreen(1);
       //add new goal action
-      const id = 1; //goalList.length + 1 for now, try uuid later
+
+      const id = goalList.length + 1; //goalList.length + 1 for now, try uuid later
+      dispatch(addGoal({ id: id, goalName: inputName, goalImage: inputUrl }));
       navigate(`/${id}`); //navigate goal id
     }
   };
@@ -84,10 +93,10 @@ const GoalSetup = () => {
   }, [inputUrl, dispatch]);
 
   useEffect(() => {
-    if (goalName) {
+    if (inputUrl) {
       setNameError(false);
     }
-  }, [goalName]);
+  }, [inputUrl]);
 
   return (
     <Box
@@ -123,7 +132,7 @@ const GoalSetup = () => {
             inputRef={nameFieldRef}
             id="outlined-name"
             label="Enter goal name"
-            value={goalName}
+            value={inputName}
             onChange={nameHandler}
             helperText={
               nameError
@@ -205,7 +214,7 @@ const GoalSetup = () => {
           onClick={onSubmit}
           variant="contained"
           component={RouterLink}
-          to={`/${goalName}`}
+          to={`/${goalName}`} //! change to id
         >
           Submit
         </Button>

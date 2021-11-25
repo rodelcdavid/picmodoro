@@ -1,0 +1,34 @@
+import React from "react";
+import ArrowBackIcon from "@mui/icons-material/ArrowBack";
+import { Box } from "@mui/system";
+import { useNavigate } from "react-router";
+import { IconButton, Tooltip } from "@mui/material";
+const BackButton = ({ isActive }) => {
+  const navigate = useNavigate();
+  return (
+    <Box
+      sx={{
+        marginRight: "auto",
+        boxShadow: "0 5px 5px rgba(0,0,0,0.5)",
+        borderRadius: "100%",
+        backgroundColor: "#fff",
+      }}
+    >
+      <Tooltip title="Back to dashboard">
+        <IconButton
+          disabled={isActive ? true : false}
+          onClick={() => {
+            navigate("/dashboard");
+          }}
+          color="primary"
+          aria-label="back picture"
+          component="span"
+        >
+          <ArrowBackIcon />
+        </IconButton>
+      </Tooltip>
+    </Box>
+  );
+};
+
+export default BackButton;

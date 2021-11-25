@@ -1,12 +1,22 @@
 import { Box } from "@mui/system";
 import React from "react";
 import { useSelector } from "react-redux";
+import { useParams } from "react-router-dom";
 
-const Details = () => {
+const Details = ({ currentGoal }) => {
+  // const { goalList } = useSelector((state) => state.goalState);
+
+  // const currentGoal = goalList.filter((goal) => {
+  //   return goal.id === goalIdParam;
+  // });
+
+  // const { goalName, blockers } = currentGoal[0];
+  const { goalName, blockers } = currentGoal;
+
   //Selectors
-  const { goalName } = useSelector((state) => state.goalState);
+  // const { goalName } = useSelector((state) => state.goalState);
 
-  const { blockers } = useSelector((state) => state.settingsState);
+  // const { blockers } = useSelector((state) => state.settingsState);
 
   const reveal = blockers.map((blocker) => blocker.reveal);
   const totalReveal = reveal.filter((bool) => bool === true).length;

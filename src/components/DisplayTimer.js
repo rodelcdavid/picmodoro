@@ -11,20 +11,18 @@ import {
   updateSeconds,
 } from "../features/timerSlice";
 
-import { updateBlockers } from "../features/settingsSlice";
+// import { updateBlockers } from "../features/settingsSlice";
+import { updateBlockers } from "../features/goalSlice";
 
-const DisplayTimer = () => {
+const DisplayTimer = ({ currentGoal, goalIdParam }) => {
   console.log("DisplayTimer.js");
 
+  const { blockers, isRandom, presetMin } = currentGoal;
   //Local state
 
   //Selectors
   const { minutes, seconds, isActive, isSessionDone } = useSelector(
     (state) => state.timerState
-  );
-
-  const { isRandom, presetMin, blockers } = useSelector(
-    (state) => state.settingsState
   );
 
   const { isDone } = useSelector((state) => state.displayGridState);
@@ -35,7 +33,7 @@ const DisplayTimer = () => {
   const _updateSeconds = (sec) => dispatch(updateSeconds(sec));
   const _toggleIsActive = (bool) => dispatch(toggleIsActive(bool));
   const _toggleIsSessionDone = (bool) => dispatch(toggleIsSessionDone(bool));
-  const _updateBlockers = (blockers) => dispatch(updateBlockers(blockers));
+  const _updateBlockers = (payload) => dispatch(updateBlockers(payload));
 
   //Handlers
   // wrap in useCallback to include in useeffect dependency?
@@ -56,18 +54,20 @@ const DisplayTimer = () => {
 
       //Move this to the reducer instead, passthe required index as payload
       //random: unrevealed[randomIndex], normal: reveal.indexOf(false)
-      _updateBlockers(
-        blockers.map((blocker, i) =>
+      _updateBlockers({
+        id: goalIdParam,
+        blockers: blockers.map((blocker, i) =>
           i === unrevealed[randomIndex] ? { ...blocker, reveal: true } : blocker
-        )
-      );
+        ),
+      });
     } else {
       //Normal reveal
-      _updateBlockers(
-        blockers.map((blocker, i) =>
+      _updateBlockers({
+        id: goalIdParam,
+        blockers: blockers.map((blocker, i) =>
           i === reveal.indexOf(false) ? { ...blocker, reveal: true } : blocker
-        )
-      );
+        ),
+      });
     }
   };
 
