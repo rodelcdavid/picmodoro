@@ -1,6 +1,5 @@
 import { useEffect } from "react";
 
-// import Pomodoro from "./containers/Pomodoro";
 import Heading from "./components/_shared/Heading";
 
 import { useSelector } from "react-redux";
@@ -15,9 +14,6 @@ import Dashboard from "./routes/dashboard";
 function App() {
   //Selectors
 
-  // const { goalName, goalImage } = useSelector((state) => state.goalState);
-
-  // const screenState = useSelector((state) => state.screenState.value);
   const { goalList } = useSelector((state) => state.goalState);
 
   useEffect(() => {

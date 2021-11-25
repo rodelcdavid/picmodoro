@@ -85,7 +85,10 @@ const Settings = ({ setGuide, goalIdParam, currentGoal }) => {
   const onMinus = () => {
     const reveal = blockers.map((blocker) => blocker.reveal);
     const lastItemIndex = reveal.lastIndexOf(false);
-    _updateBlockers(blockers.filter((blocker, i) => i !== lastItemIndex));
+    _updateBlockers({
+      id: goalIdParam,
+      blockers: blockers.filter((blocker, i) => i !== lastItemIndex),
+    });
   };
 
   //useEffects

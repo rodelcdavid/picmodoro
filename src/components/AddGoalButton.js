@@ -12,7 +12,6 @@ const AddGoalButton = () => {
   };
 
   const handleAdd = () => {
-    //Open setup dialog
     setOpen(true);
   };
   return (
@@ -30,12 +29,10 @@ const AddGoalButton = () => {
           fontWeight: "bolder",
           fontSize: "5rem",
           cursor: "pointer",
-          boxShadow: "0 10px 15px rgba(0,0,0,0.5)",
+
           transition: "all ease-in 200ms",
           color: "#1e3c72",
-          "&:hover": {
-            transform: "scale(1.05)",
-          },
+          "&:hover": { boxShadow: "0 10px 15px rgba(0,0,0,0.5)" },
         }}
         component="button"
         onClick={handleAdd}

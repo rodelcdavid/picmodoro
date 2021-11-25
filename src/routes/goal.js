@@ -17,7 +17,7 @@ import BackButton from "../components/BackButton";
 
 function Goal() {
   let urlParams = useParams();
-  const goalIdParam = Number(urlParams.goalid);
+  const goalIdParam = urlParams.goalid;
 
   //Fetch state from server base on goalid, get state from redux for now base on goalid
   const { goalList } = useSelector((state) => state.goalState);

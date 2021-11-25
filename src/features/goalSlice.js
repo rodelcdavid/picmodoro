@@ -33,9 +33,14 @@ export const goalSlice = createSlice({
         isRandom: false,
         isDone: false,
       };
+      console.log(newGoal.id);
       state.goalList.push(newGoal);
     },
     //deleteGoal: => receive goalid, filter goallist
+    deleteGoal: (state, { payload }) => {
+      // const index = state.goalList.findIndex((goal) => goal.id === payload.id);
+      state.goalList = state.goalList.filter((goal) => goal.id !== payload.id);
+    },
     //updateGoalName: => receive goalid, update goalname of that goalid
     //updateGoalImage: => receive goalid, update goalname of that goalid
     //addblockers => receive goalid, add new blocker
@@ -67,6 +72,7 @@ export const {
   updateBlockers,
   toggleIsRandom,
   updatePresetMin,
+  deleteGoal,
 } = goalSlice.actions;
 
 export default goalSlice.reducer;

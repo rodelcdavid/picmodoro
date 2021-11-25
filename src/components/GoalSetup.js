@@ -1,5 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
 import { Link as RouterLink, useNavigate } from "react-router-dom";
+import { v4 as uuidv4 } from "uuid";
 import placeholder from "../assets/placeholder.jpg";
 import { Box } from "@mui/system";
 
@@ -59,7 +60,7 @@ const GoalSetup = () => {
       // _updateScreen(1);
       //add new goal action
 
-      const id = goalList.length + 1; //goalList.length + 1 for now, try uuid later
+      const id = uuidv4(); //goalList.length + 1 for now, try uuid later
       dispatch(addGoal({ id: id, goalName: inputName, goalImage: inputUrl }));
       navigate(`/${id}`); //navigate goal id
     }

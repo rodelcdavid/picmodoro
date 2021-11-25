@@ -3,8 +3,10 @@ import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import { Box } from "@mui/system";
 import { useNavigate } from "react-router";
 import { IconButton, Tooltip } from "@mui/material";
-const BackButton = ({ isActive }) => {
+import { useSelector } from "react-redux";
+const BackButton = () => {
   const navigate = useNavigate();
+  const { isActive } = useSelector((state) => state.timerState);
   return (
     <Box
       sx={{
