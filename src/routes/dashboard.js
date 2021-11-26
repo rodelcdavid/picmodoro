@@ -1,46 +1,32 @@
 import { Box } from "@mui/system";
-import React from "react";
-import { useSelector } from "react-redux";
+import React, { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import AddGoalButton from "../components/AddGoalButton";
 import GoalCard from "../components/GoalCard";
 import Greeting from "../components/Greeting";
+import { getGoalListAsync } from "../features/goalSlice";
 import { Wrapper } from "../utils/globalstyles";
-
-// const goalList = [
-//   {
-//     id: 1,
-//     title: "Eiffel Tower",
-//     img: "https://source.unsplash.com/random/300x200",
-//   },
-//   {
-//     id: 2,
-//     title: "Finish Homework",
-//     img: "https://source.unsplash.com/random/300x201",
-//   },
-//   {
-//     id: 3,
-//     title: "Ace Math Exam",
-//     img: "https://source.unsplash.com/random/300x202",
-//   },
-//   {
-//     id: 4,
-//     title: "Ace Math Exam",
-//     img: "https://source.unsplash.com/random/300x203",
-//   },
-//   {
-//     id: 5,
-//     title: "Ace Math Exam",
-//     img: "https://source.unsplash.com/random/300x204",
-//   },
-// ];
 
 const user = {
   name: "Rodel",
 };
 
+//create asyncthunk instead of fetch
+// const fetchGoals = () => {
+//   fetch("http://localhost:7000/goals")
+//     .then((res) => res.json())
+//     .then((data) => console.log(data));
+// };
+
 const Dashboard = () => {
-  const { goalList } = useSelector((state) => state.goalState);
+  const dispatch = useDispatch();
+  useEffect(() => {
+    dispatch(getGoalListAsync());
+    // fetchGoals();
+  }, []);
+  const { goalList } = useSelector((state) => state.goalState); //get from database, order by date created
+  console.log(goalList);
   const reverseGoalList = [...goalList].reverse();
   return (
     <Wrapper>
@@ -52,7 +38,7 @@ const Dashboard = () => {
           padding: "2rem",
           boxShadow: "0 10px 15px rgba(0,0,0,0.23)",
           backgroundColor: "#fff",
-          borderRadius: "10px",
+          borderRadius: "5px",
           width: ["20rem", "70rem"],
           height: "30rem",
           display: "grid",
@@ -60,6 +46,14 @@ const Dashboard = () => {
           justifyItems: "center",
           gridGap: "30px",
           overflowY: "scroll",
+          "::-webkit-scrollbar": {
+            width: "10px",
+          },
+          "::-webkit-scrollbar-thumb": {
+            background: "#888",
+            borderRadius: "10px",
+          },
+          "::-webkit-scrollbar-thumb:hover": { background: "#555" },
         }}
       >
         <AddGoalButton />
@@ -67,8 +61,8 @@ const Dashboard = () => {
           return (
             <GoalCard
               id={goal.id}
-              goalName={goal.goalName}
-              goalImage={goal.goalImage}
+              goalName={goal.goal_name}
+              goalImage={goal.image_url}
               blockers={goal.blockers}
               key={goal.id}
             />

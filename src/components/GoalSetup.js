@@ -6,9 +6,10 @@ import { Box } from "@mui/system";
 
 import { useSelector, useDispatch } from "react-redux";
 import {
-  updateGoalName,
-  updateGoalImage,
+  // updateGoalName,
+  // updateGoalImage,
   addGoal,
+  addGoalAsync,
 } from "../features/goalSlice";
 import { Button, CircularProgress, TextField, Typography } from "@mui/material";
 import { updateScreen } from "../features/screenSlice";
@@ -28,8 +29,8 @@ const GoalSetup = () => {
 
   //Dispatch
   const dispatch = useDispatch();
-  const _updateGoalName = (name) => dispatch(updateGoalName(name));
-  const _updateScreen = (value) => dispatch(updateScreen(value));
+  // const _updateGoalName = (name) => dispatch(updateGoalName(name));
+  // const _updateScreen = (value) => dispatch(updateScreen(value));
   // const _updateGoalImage = (image) => dispatch(updateGoalImage(image));
 
   //Refs
@@ -61,8 +62,13 @@ const GoalSetup = () => {
       //add new goal action
 
       const id = uuidv4(); //goalList.length + 1 for now, try uuid later
-      dispatch(addGoal({ id: id, goalName: inputName, goalImage: inputUrl }));
-      navigate(`/${id}`); //navigate goal id
+      dispatch(
+        addGoalAsync({ id: id, goalName: inputName, goalImage: inputUrl })
+      );
+      setTimeout(() => {
+        navigate(`/${id}`);
+      }, 1000);
+      //navigate goal id if fulfilled
     }
   };
 
@@ -76,7 +82,7 @@ const GoalSetup = () => {
       if (this.width > 0) {
         // _updateGoalImage(inputUrl); //state should update only onsubmit
         setLoading(false);
-        dispatch(updateGoalImage(inputUrl));
+        // dispatch(updateGoalImage(inputUrl));
         setIsImageValid(true);
         setImageError(false);
       }
@@ -84,7 +90,7 @@ const GoalSetup = () => {
     image.onerror = function () {
       // _updateGoalImage(placeholder);
       setLoading(false);
-      dispatch(updateGoalImage(placeholder));
+      // dispatch(updateGoalImage(placeholder));
       setIsImageValid(false);
     };
 
@@ -182,7 +188,7 @@ const GoalSetup = () => {
                 // maxHeight: "300px",
               }}
               component="img"
-              src={goalImage}
+              src={isImageValid ? inputUrl : placeholder}
               alt=""
             />
           ) : (

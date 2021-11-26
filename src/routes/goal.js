@@ -6,7 +6,6 @@ import { Box } from "@mui/material";
 
 import ImageGrid from "../components/ImageGrid";
 
-import NewGoalButton from "../components/NewGoalButton";
 import DisplayTimer from "../components/DisplayTimer";
 import UpArrow from "../components/UpArrow";
 
@@ -19,6 +18,7 @@ function Goal() {
   let urlParams = useParams();
   const goalIdParam = urlParams.goalid;
 
+  //!goallist state is delayed here
   //Fetch state from server base on goalid, get state from redux for now base on goalid
   const { goalList } = useSelector((state) => state.goalState);
 
