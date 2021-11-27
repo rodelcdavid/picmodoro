@@ -3,6 +3,7 @@ import { Link as RouterLink, useNavigate } from "react-router-dom";
 import { v4 as uuidv4 } from "uuid";
 import placeholder from "../assets/placeholder.jpg";
 import { Box } from "@mui/system";
+import LoadingButton from "@mui/lab/LoadingButton";
 
 import { useSelector, useDispatch } from "react-redux";
 import {
@@ -22,10 +23,11 @@ const GoalSetup = () => {
   const [imageError, setImageError] = useState(false);
   const [nameError, setNameError] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [loadingButton, setLoadingButton] = useState(false);
 
   //Selectors
   const { goalName, goalImage } = useSelector((state) => state.goalState);
-  const { goalList } = useSelector((state) => state.goalState);
+  const { goalList, addStatus } = useSelector((state) => state.goalState);
 
   //Dispatch
   const dispatch = useDispatch();
@@ -60,14 +62,25 @@ const GoalSetup = () => {
     if (inputName.length && isImageValid) {
       // _updateScreen(1);
       //add new goal action
+      setLoadingButton(true);
 
       const id = uuidv4(); //goalList.length + 1 for now, try uuid later
       dispatch(
         addGoalAsync({ id: id, goalName: inputName, goalImage: inputUrl })
+      ).then(() =>
+        setTimeout(() => {
+          navigate(`/${id}`);
+        }, 1000)
       );
-      setTimeout(() => {
-        navigate(`/${id}`);
-      }, 1000);
+      // if (status === "fulfilled") {
+      //   console.log("addstatus", status);
+
+      //   navigate(`/${id}`);
+      // }
+      // setTimeout(() => {
+      //   navigate(`/${id}`);
+      // }, 1000);
+
       //navigate goal id if fulfilled
     }
   };
@@ -87,7 +100,8 @@ const GoalSetup = () => {
         setImageError(false);
       }
     };
-    image.onerror = function () {
+    image.onerror = function (e) {
+      console.log("error", e);
       // _updateGoalImage(placeholder);
       setLoading(false);
       // dispatch(updateGoalImage(placeholder));
@@ -97,13 +111,13 @@ const GoalSetup = () => {
     if (inputUrl.length) {
       setImageError(false);
     }
-  }, [inputUrl, dispatch]);
+  }, [inputUrl]);
 
   useEffect(() => {
-    if (inputUrl) {
+    if (inputName.length) {
       setNameError(false);
     }
-  }, [inputUrl]);
+  }, [inputName]);
 
   return (
     <Box
@@ -215,16 +229,17 @@ const GoalSetup = () => {
           </Box>
           Submit and start!
         </Typography>
-        <Button
-          disabled={loading ? true : false}
-          sx={{ alignSelf: "center", width: "60%" }}
+        <LoadingButton
+          loading={loading || loadingButton ? true : false}
+          loadingPosition="start"
+          sx={{ alignSelf: "center", width: "40%" }}
           onClick={onSubmit}
           variant="contained"
           component={RouterLink}
           to={`/${goalName}`} //! change to id
         >
           Submit
-        </Button>
+        </LoadingButton>
       </Box>
     </Box>
   );

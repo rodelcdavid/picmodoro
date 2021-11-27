@@ -1,3 +1,4 @@
+import { CircularProgress } from "@mui/material";
 import { Box } from "@mui/system";
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
@@ -25,7 +26,7 @@ const Dashboard = () => {
     dispatch(getGoalListAsync());
     // fetchGoals();
   }, []);
-  const { goalList } = useSelector((state) => state.goalState); //get from database, order by date created
+  const { goalList, fetchStatus } = useSelector((state) => state.goalState); //get from database, order by date created
   console.log(goalList);
   const reverseGoalList = [...goalList].reverse();
   return (
@@ -46,6 +47,7 @@ const Dashboard = () => {
           justifyItems: "center",
           gridGap: "30px",
           overflowY: "scroll",
+          position: "relative",
           "::-webkit-scrollbar": {
             width: "10px",
           },
@@ -56,7 +58,31 @@ const Dashboard = () => {
           "::-webkit-scrollbar-thumb:hover": { background: "#555" },
         }}
       >
-        <AddGoalButton />
+        {fetchStatus === "fulfilled" ? (
+          <>
+            <AddGoalButton />
+            {reverseGoalList.map((goal) => {
+              return (
+                <GoalCard
+                  id={goal.id}
+                  goalName={goal.goal_name}
+                  goalImage={goal.image_url}
+                  blockers={goal.blockers}
+                  key={goal.id}
+                />
+              );
+            })}
+          </>
+        ) : (
+          <CircularProgress
+            sx={{
+              position: "absolute",
+              top: "calc((100% / 2) - 1rem)",
+            }}
+          />
+        )}
+        {/* <AddGoalButton />
+
         {reverseGoalList.map((goal) => {
           return (
             <GoalCard
@@ -67,7 +93,7 @@ const Dashboard = () => {
               key={goal.id}
             />
           );
-        })}
+        })} */}
       </Box>
     </Wrapper>
   );

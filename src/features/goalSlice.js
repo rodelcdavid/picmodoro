@@ -36,6 +36,26 @@ export const addGoalAsync = createAsyncThunk(
   }
 );
 
+export const deleteGoalAsync = createAsyncThunk(
+  "goals/deleteGoalAsync",
+  async (payload) => {
+    const response = await fetch("http://localhost:7000/goals", {
+      method: "DELETE",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        id: payload.id,
+      }),
+    });
+    if (response.ok) {
+      const goalToDelete = await response.json();
+
+      return { goalToDelete };
+    }
+  }
+);
+
 const initialState = {
   // goalName: prevName,
   // goalImage: prevImg,
@@ -45,6 +65,8 @@ const initialState = {
   //isdone
   // goalList: prevGoalList,
   goalList: [],
+  fetchStatus: "",
+  addStatus: "",
 };
 
 export const goalSlice = createSlice({
@@ -100,15 +122,33 @@ export const goalSlice = createSlice({
   extraReducers: {
     [getGoalListAsync.fulfilled]: (state, { payload }) => {
       state.goalList = payload.goalList;
+      state.fetchStatus = "fulfilled";
+      console.log("fulfilled");
     },
     [getGoalListAsync.pending]: (state, { payload }) => {
+      state.fetchStatus = "pending";
       console.log("fetching...");
     },
     [addGoalAsync.fulfilled]: (state, { payload }) => {
       state.goalList.push(payload.goal);
+      state.addStatus = "fulfilled";
     },
     [addGoalAsync.pending]: (state, { payload }) => {
+      state.addStatus = "pending";
       console.log("adding...");
+    },
+    [deleteGoalAsync.fulfilled]: (state, { payload }) => {
+      console.log("to delete", payload.goalToDelete);
+      state.goalList = state.goalList.filter(
+        (goal) => goal.id !== payload.goalToDelete.id
+      );
+      // state.goalList = payload.goalToDelete;
+      // state.addStatus = "fulfilled";
+    },
+
+    [deleteGoalAsync.pending]: (state, { payload }) => {
+      // state.addStatus = "pending";
+      console.log("deleting...");
     },
   },
 });

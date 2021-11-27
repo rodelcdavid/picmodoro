@@ -36,7 +36,12 @@ const Settings = ({ setGuide, goalIdParam, currentGoal }) => {
   // });
 
   // const { isRandom, blockers, presetMin, isDone } = currentGoal[0];
-  const { isRandom, blockers, presetMin, isDone } = currentGoal;
+  const {
+    is_random: isRandom,
+    blockers,
+    preset_min: presetMin,
+    is_done: isDone,
+  } = currentGoal;
 
   // const renderCount = useRef(0);
   // renderCount.current += 1;

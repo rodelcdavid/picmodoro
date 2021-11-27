@@ -11,7 +11,7 @@ const Details = ({ currentGoal }) => {
   // });
 
   // const { goalName, blockers } = currentGoal[0];
-  const { goalName, blockers } = currentGoal;
+  const { goal_name: goalName, blockers } = currentGoal;
 
   //Selectors
   // const { goalName } = useSelector((state) => state.goalState);

@@ -17,7 +17,7 @@ import { updateBlockers } from "../features/goalSlice";
 const DisplayTimer = ({ currentGoal, goalIdParam }) => {
   console.log("DisplayTimer.js");
 
-  const { blockers, isRandom, presetMin } = currentGoal;
+  const { blockers, is_random: isRandom, preset_min: presetMin } = currentGoal;
   //Local state
 
   //Selectors

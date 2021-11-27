@@ -47,7 +47,7 @@ const getGridValues = (numBlockers, wide) => {
 };
 
 const ImageGrid = ({ currentGoal }) => {
-  const { isDone, goalImage, blockers } = currentGoal;
+  const { is_done: isDone, image_url: goalImage, blockers } = currentGoal;
   //Selectors
   // const { isDone } = useSelector((state) => state.displayGridState);
   // const { goalImage } = useSelector((state) => state.goalState);

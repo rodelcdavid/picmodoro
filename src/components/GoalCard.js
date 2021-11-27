@@ -4,7 +4,7 @@ import React, { useState } from "react";
 import { Link as RouterLink } from "react-router-dom";
 import { Divider, IconButton, Popover } from "@mui/material";
 import { useDispatch } from "react-redux";
-import { deleteGoal } from "../features/goalSlice";
+import { deleteGoal, deleteGoalAsync } from "../features/goalSlice";
 
 const GoalCard = ({ id, goalName, goalImage, blockers }) => {
   const reveal = blockers.map((blocker) => blocker.reveal);
@@ -27,7 +27,7 @@ const GoalCard = ({ id, goalName, goalImage, blockers }) => {
 
   const handleDelete = (e) => {
     e.preventDefault();
-    dispatch(deleteGoal({ id: id }));
+    dispatch(deleteGoalAsync({ id: id }));
   };
 
   const open = Boolean(anchorEl);
