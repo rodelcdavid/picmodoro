@@ -1,6 +1,9 @@
-import { KeyboardArrowDown, KeyboardArrowUp } from "@mui/icons-material";
+import { KeyboardArrowDown, KeyboardArrowUp, Save } from "@mui/icons-material";
 import {
+  Button,
   Dialog,
+  DialogActions,
+  DialogContent,
   DialogTitle,
   Divider,
   IconButton,
@@ -19,6 +22,7 @@ import {
   updateBlockers,
   toggleIsRandom,
   updatePresetMin,
+  saveSettingsAsync,
 } from "../features/goalSlice";
 
 import { updateMinutes } from "../features/timerSlice";
@@ -42,7 +46,7 @@ const Settings = ({ setGuide, goalIdParam, currentGoal }) => {
     preset_min: presetMin,
     is_done: isDone,
   } = currentGoal;
-
+  console.log("isRandom", isRandom);
   // const renderCount = useRef(0);
   // renderCount.current += 1;
   // console.log("Settings rendered:", renderCount.current);
@@ -67,16 +71,22 @@ const Settings = ({ setGuide, goalIdParam, currentGoal }) => {
   const _updateBlockers = (payload) => dispatch(updateBlockers(payload));
 
   const _updatePresetMin = (payload) => dispatch(updatePresetMin(payload));
+  // const _updatePresetMin = (payload) => console.log(payload);
 
   //Handlers
 
   const handleClose = () => {
+    //TODO: save settings
+    //payload currentGoal
+    dispatch(saveSettingsAsync({ currentGoal: currentGoal }));
     setOpen(false);
   };
 
   const handleToggle = (e) => {
     _toggleIsRandom({ id: goalIdParam, isRandom: e.target.checked }); //can you refactor this to !isRandom?
   };
+
+  const handleSave = () => {};
 
   //you can just move the payload directly to the reducer instead, separate addBlockers, subtractBlockers
   const onPlus = () => {
@@ -156,7 +166,7 @@ const Settings = ({ setGuide, goalIdParam, currentGoal }) => {
           <Divider />
 
           {/* Here */}
-          <Box sx={{ textAlign: "center", padding: "1rem" }}>
+          <DialogContent sx={{ textAlign: "center", padding: "1rem" }}>
             {/* Random */}
             <h5>Random Reveal</h5>
             <Switch
@@ -232,7 +242,18 @@ const Settings = ({ setGuide, goalIdParam, currentGoal }) => {
                 <KeyboardArrowUp />
               </IconButton>
             </Box>
-          </Box>
+          </DialogContent>
+          <Divider />
+          <DialogActions sx={{ display: "flex", justifyContent: "center" }}>
+            <Button
+              startIcon={<Save />}
+              variant="contained"
+              color="error"
+              onClick={handleSave}
+            >
+              Save
+            </Button>
+          </DialogActions>
           {/* Here */}
         </Box>
       </Dialog>

@@ -7,6 +7,7 @@ import AddGoalButton from "../components/AddGoalButton";
 import GoalCard from "../components/GoalCard";
 import Greeting from "../components/Greeting";
 import { getGoalListAsync } from "../features/goalSlice";
+import { resetTimerState } from "../features/timerSlice";
 import { Wrapper } from "../utils/globalstyles";
 
 const user = {
@@ -24,11 +25,12 @@ const Dashboard = () => {
   const dispatch = useDispatch();
   useEffect(() => {
     dispatch(getGoalListAsync());
+
     // fetchGoals();
-  }, []);
+  }, [dispatch]);
   const { goalList, fetchStatus } = useSelector((state) => state.goalState); //get from database, order by date created
   console.log(goalList);
-  const reverseGoalList = [...goalList].reverse();
+  // const reverseGoalList = [...goalList].reverse();
   return (
     <Wrapper>
       <h2 style={{ color: "#fff" }}>Dashboard</h2>
@@ -61,7 +63,7 @@ const Dashboard = () => {
         {fetchStatus === "fulfilled" ? (
           <>
             <AddGoalButton />
-            {reverseGoalList.map((goal) => {
+            {goalList.map((goal) => {
               return (
                 <GoalCard
                   id={goal.id}

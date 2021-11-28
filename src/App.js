@@ -16,6 +16,7 @@ function App() {
 
   const { goalList } = useSelector((state) => state.goalState);
 
+  //TODO: TRY NOT USING LOCALSTORAGE
   useEffect(() => {
     // move this to Upload and Pomodoro container
     // localStorage.imgFile = JSON.stringify(goalImage);

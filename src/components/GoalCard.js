@@ -2,7 +2,13 @@ import { Box } from "@mui/system";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
 import React, { useState } from "react";
 import { Link as RouterLink } from "react-router-dom";
-import { Divider, IconButton, Popover } from "@mui/material";
+import {
+  Backdrop,
+  CircularProgress,
+  Divider,
+  IconButton,
+  Popover,
+} from "@mui/material";
 import { useDispatch } from "react-redux";
 import { deleteGoal, deleteGoalAsync } from "../features/goalSlice";
 
@@ -14,6 +20,9 @@ const GoalCard = ({ id, goalName, goalImage, blockers }) => {
 
   //Popover
   const [anchorEl, setAnchorEl] = useState(null);
+
+  //Backdrop
+  const [openBackdrop, setOpenBackdrop] = useState(false);
 
   const handlePopOver = (e) => {
     e.preventDefault();
@@ -27,7 +36,8 @@ const GoalCard = ({ id, goalName, goalImage, blockers }) => {
 
   const handleDelete = (e) => {
     e.preventDefault();
-    dispatch(deleteGoalAsync({ id: id }));
+    setOpenBackdrop(true);
+    dispatch(deleteGoalAsync({ id: id })).then(() => setOpenBackdrop(false));
   };
 
   const open = Boolean(anchorEl);
@@ -127,7 +137,19 @@ const GoalCard = ({ id, goalName, goalImage, blockers }) => {
         </Popover>
       </Box>
 
-      {/* <goalImage src={goalImage} alt="" /> */}
+      {/* Backdrop */}
+      <Backdrop
+        sx={{
+          color: "#fff",
+          zIndex: "1250",
+          display: "flex",
+          flexDirection: "column",
+        }}
+        open={openBackdrop}
+        // onClick={handleClose}
+      >
+        <CircularProgress color="inherit" />
+      </Backdrop>
     </Box>
   );
 };

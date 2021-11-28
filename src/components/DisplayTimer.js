@@ -5,6 +5,7 @@ import { Box } from "@mui/system";
 import { useDispatch, useSelector } from "react-redux";
 
 import {
+  resetTimerState,
   toggleIsActive,
   toggleIsSessionDone,
   updateMinutes,
@@ -12,7 +13,7 @@ import {
 } from "../features/timerSlice";
 
 // import { updateBlockers } from "../features/settingsSlice";
-import { updateBlockers } from "../features/goalSlice";
+import { saveSettingsAsync, updateBlockers } from "../features/goalSlice";
 
 const DisplayTimer = ({ currentGoal, goalIdParam }) => {
   console.log("DisplayTimer.js");
@@ -21,6 +22,7 @@ const DisplayTimer = ({ currentGoal, goalIdParam }) => {
   //Local state
 
   //Selectors
+  //TODO: Reset these when changing to different goal
   const { minutes, seconds, isActive, isSessionDone } = useSelector(
     (state) => state.timerState
   );
@@ -118,6 +120,16 @@ const DisplayTimer = ({ currentGoal, goalIdParam }) => {
     };
   }, [isActive, presetMin, dispatch]); //too many dependencies
 
+  //Save to database when session ended
+  useEffect(() => {
+    dispatch(saveSettingsAsync({ currentGoal: currentGoal }));
+  }, [isSessionDone]);
+
+  //Reset on component did mount
+  useEffect(() => {
+    dispatch(resetTimerState());
+    _updateMinutes(presetMin);
+  }, [dispatch]);
   //if timer is active, discard
   //if timer is not active && issessiondone, reset
   //if timer is not active && isDone congrats

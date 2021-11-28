@@ -23,6 +23,13 @@ export const timerSlice = createSlice({
     toggleIsSessionDone: (state, { payload }) => {
       state.isSessionDone = payload;
     },
+    resetTimerState: (state, { payload }) => {
+      //?IS there a shorter way to do this?
+      state.minutes = 0;
+      state.seconds = 0;
+      state.isActive = false;
+      state.isSessionDone = false;
+    },
   },
 });
 
@@ -32,6 +39,7 @@ export const {
   updateSeconds,
   toggleIsActive,
   toggleIsSessionDone,
+  resetTimerState,
 } = timerSlice.actions;
 
 export default timerSlice.reducer;

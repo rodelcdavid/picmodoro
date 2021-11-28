@@ -12,7 +12,13 @@ import {
   addGoal,
   addGoalAsync,
 } from "../features/goalSlice";
-import { Button, CircularProgress, TextField, Typography } from "@mui/material";
+import {
+  Backdrop,
+  Button,
+  CircularProgress,
+  TextField,
+  Typography,
+} from "@mui/material";
 import { updateScreen } from "../features/screenSlice";
 
 const GoalSetup = () => {
@@ -24,6 +30,7 @@ const GoalSetup = () => {
   const [nameError, setNameError] = useState(false);
   const [loading, setLoading] = useState(false);
   const [loadingButton, setLoadingButton] = useState(false);
+  const [openBackdrop, setOpenBackdrop] = useState(false);
 
   //Selectors
   const { goalName, goalImage } = useSelector((state) => state.goalState);
@@ -63,15 +70,19 @@ const GoalSetup = () => {
       // _updateScreen(1);
       //add new goal action
       setLoadingButton(true);
+      setOpenBackdrop(true);
 
-      const id = uuidv4(); //goalList.length + 1 for now, try uuid later
+      const id = uuidv4();
+
       dispatch(
         addGoalAsync({ id: id, goalName: inputName, goalImage: inputUrl })
       ).then(() =>
         setTimeout(() => {
+          setOpenBackdrop(false);
           navigate(`/${id}`);
         }, 1000)
       );
+
       // if (status === "fulfilled") {
       //   console.log("addstatus", status);
 
@@ -236,10 +247,22 @@ const GoalSetup = () => {
           onClick={onSubmit}
           variant="contained"
           component={RouterLink}
-          to={`/${goalName}`} //! change to id
+          to={`/dashboard`} //! change to id
         >
           Submit
         </LoadingButton>
+        <Backdrop
+          sx={{
+            color: "#fff",
+            zIndex: "1250",
+            display: "flex",
+            flexDirection: "column",
+          }}
+          open={openBackdrop}
+          // onClick={handleClose}
+        >
+          <CircularProgress color="inherit" />
+        </Backdrop>
       </Box>
     </Box>
   );

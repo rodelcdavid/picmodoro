@@ -56,6 +56,40 @@ export const deleteGoalAsync = createAsyncThunk(
   }
 );
 
+//savesettings => receive goalid, update all settings to database
+export const saveSettingsAsync = createAsyncThunk(
+  "goals/saveSettingsAsync",
+  async (payload) => {
+    const response = await fetch("http://localhost:7000/goals", {
+      method: "PATCH",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        currentGoal: payload.currentGoal,
+      }),
+    });
+    if (response.ok) {
+      const goalToUpdate = await response.json();
+
+      return { goalToUpdate };
+    }
+  }
+);
+
+export const getCurrentGoalAsync = createAsyncThunk(
+  "goals/getCurrentGoalAsync",
+  async (payload) => {
+    console.log("fetching", payload.id);
+    const response = await fetch(`http://localhost:7000/${payload.id}`);
+    if (response.ok) {
+      const currentGoal = await response.json();
+
+      return { currentGoal };
+    }
+  }
+);
+
 const initialState = {
   // goalName: prevName,
   // goalImage: prevImg,
@@ -65,6 +99,7 @@ const initialState = {
   //isdone
   // goalList: prevGoalList,
   goalList: [],
+  currentGoal: {},
   fetchStatus: "",
   addStatus: "",
 };
@@ -110,12 +145,13 @@ export const goalSlice = createSlice({
     //updatePresetMin => receive goalid, update presetmin of that goalid
     updatePresetMin: (state, { payload }) => {
       const index = state.goalList.findIndex((goal) => goal.id === payload.id);
-      state.goalList[index].presetMin = payload.presetMin;
+      console.log("presetmin", state.goalList[index]);
+      state.goalList[index].preset_min = payload.presetMin;
     },
     //toggleIsRandom => receive goalid, update israndom of that goalid
     toggleIsRandom: (state, { payload }) => {
       const index = state.goalList.findIndex((goal) => goal.id === payload.id);
-      state.goalList[index].isRandom = payload.isRandom;
+      state.goalList[index].is_random = payload.isRandom;
     },
     //toggleisDone => receive goalid, update isDone of that goalid
   },
@@ -123,7 +159,7 @@ export const goalSlice = createSlice({
     [getGoalListAsync.fulfilled]: (state, { payload }) => {
       state.goalList = payload.goalList;
       state.fetchStatus = "fulfilled";
-      console.log("fulfilled");
+      console.log("get fulfilled");
     },
     [getGoalListAsync.pending]: (state, { payload }) => {
       state.fetchStatus = "pending";
@@ -131,7 +167,7 @@ export const goalSlice = createSlice({
     },
     [addGoalAsync.fulfilled]: (state, { payload }) => {
       state.goalList.push(payload.goal);
-      state.addStatus = "fulfilled";
+      state.addStatus = "add fulfilled";
     },
     [addGoalAsync.pending]: (state, { payload }) => {
       state.addStatus = "pending";
@@ -149,6 +185,28 @@ export const goalSlice = createSlice({
     [deleteGoalAsync.pending]: (state, { payload }) => {
       // state.addStatus = "pending";
       console.log("deleting...");
+    },
+    [saveSettingsAsync.pending]: (state, { payload }) => {
+      // state.addStatus = "pending";
+
+      console.log("saving...");
+    },
+    [saveSettingsAsync.fulfilled]: (state, { payload }) => {
+      const index = state.goalList.findIndex(
+        (goal) => goal.id === payload.goalToUpdate.id
+      );
+      state.goalList[index] = payload.goalToUpdate;
+    },
+    [getCurrentGoalAsync.pending]: (state, { payload }) => {
+      // state.addStatus = "pending";
+      state.fetchStatus = "pending";
+      console.log("getting current goal...");
+    },
+    [getCurrentGoalAsync.fulfilled]: (state, { payload }) => {
+      state.currentGoal = payload.currentGoal;
+
+      state.fetchStatus = "fulfilled";
+      // console.log("get fulfilled");
     },
   },
 });
