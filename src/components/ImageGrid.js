@@ -66,7 +66,7 @@ const ImageGrid = ({ currentGoal }) => {
             key={i}
             sx={{
               border: isDone ? "none" : "solid 1px #1e3c72",
-              backgroundColor: blocker.reveal ? "none" : "#F6F5F5",
+              backgroundColor: blocker.reveal ? "transparent" : "#F6F5F5",
               cursor: blocker.clickable ? "pointer" : "default",
             }}
           />

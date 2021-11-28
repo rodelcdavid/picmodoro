@@ -38,6 +38,7 @@ const Settings = ({ setGuide, goalIdParam, currentGoal }) => {
   // const currentGoal = goalList.filter((goal) => {
   //   return goal.id === goalIdParam;
   // });
+  console.log(currentGoal);
 
   // const { isRandom, blockers, presetMin, isDone } = currentGoal[0];
   const {

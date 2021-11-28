@@ -18,8 +18,8 @@ const AddGoalButton = () => {
     <>
       <Box
         sx={{
-          width: ["100px", "200px"],
-          height: ["100px", "200px"],
+          width: "200px",
+          height: "200px",
           display: "flex",
           flexDirection: "column",
           border: "solid 1px black",

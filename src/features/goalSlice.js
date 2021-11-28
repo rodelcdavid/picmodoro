@@ -1,7 +1,5 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 
-import { prevImg, prevName, prevGoalList } from "../utils/getLocalStorage";
-
 export const getGoalListAsync = createAsyncThunk(
   "goals/getGoalListAsync",
   async () => {
@@ -91,13 +89,6 @@ export const getCurrentGoalAsync = createAsyncThunk(
 );
 
 const initialState = {
-  // goalName: prevName,
-  // goalImage: prevImg,
-  //blockers
-  //presetmin
-  //israndom
-  //isdone
-  // goalList: prevGoalList,
   goalList: [],
   currentGoal: {},
   fetchStatus: "",
@@ -137,21 +128,27 @@ export const goalSlice = createSlice({
     //updateGoalImage: => receive goalid, update goalname of that goalid
     //addblockers => receive goalid, add new blocker
     updateBlockers: (state, { payload }) => {
-      const index = state.goalList.findIndex((goal) => goal.id === payload.id);
+      // const index = state.goalList.findIndex((goal) => goal.id === payload.id);
 
-      state.goalList[index].blockers = payload.blockers;
+      // state.goalList[index].blockers = payload.blockers;
+      state.currentGoal.blockers = payload.blockers;
     },
     //updateReveal => receive goalid, determine index of blocker(random or normal), update rev
     //updatePresetMin => receive goalid, update presetmin of that goalid
     updatePresetMin: (state, { payload }) => {
-      const index = state.goalList.findIndex((goal) => goal.id === payload.id);
-      console.log("presetmin", state.goalList[index]);
-      state.goalList[index].preset_min = payload.presetMin;
+      // const index = state.goalList.findIndex((goal) => goal.id === payload.id);
+      // console.log("presetmin", state.goalList[index]);
+      // state.goalList[index].preset_min = payload.presetMin;
+      state.currentGoal.preset_min = payload.presetMin;
     },
     //toggleIsRandom => receive goalid, update israndom of that goalid
     toggleIsRandom: (state, { payload }) => {
-      const index = state.goalList.findIndex((goal) => goal.id === payload.id);
-      state.goalList[index].is_random = payload.isRandom;
+      // const index = state.goalList.findIndex((goal) => goal.id === payload.id);
+      // state.goalList[index].is_random = payload.isRandom;
+      state.currentGoal.is_random = payload.isRandom;
+    },
+    resetCurrentGoal: (state, { payload }) => {
+      state.currentGoal = {};
     },
     //toggleisDone => receive goalid, update isDone of that goalid
   },
@@ -220,6 +217,7 @@ export const {
   toggleIsRandom,
   updatePresetMin,
   deleteGoal,
+  resetCurrentGoal,
 } = goalSlice.actions;
 
 export default goalSlice.reducer;

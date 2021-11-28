@@ -20,16 +20,16 @@ const Goal = () => {
   console.log("Goal parent component");
   let urlParams = useParams();
   const goalIdParam = urlParams.goalid;
-  console.log("idparam", goalIdParam);
+
   //Fetch state from server base on goalid, get state from redux for now base on goalid
-  const { goalList } = useSelector((state) => state.goalState);
+  // const { goalList } = useSelector((state) => state.goalState);
 
   //can i pass this down as props?
   //or useSelector each component and just props goalidparam
   //should i put all the state in just one goalList array
-  const currentGoal = goalList.find((goal) => {
-    return goal.id === goalIdParam;
-  });
+  // const currentGoal = goalList.find((goal) => {
+  //   return goal.id === goalIdParam;
+  // });
 
   //Local state
   //this should be included in redux
@@ -41,17 +41,13 @@ const Goal = () => {
   const dispatch = useDispatch();
 
   //FIXME: Error on refresh, currentGoal is undefined
-  // useEffect(() => {
-  //   console.log("useffect triggered");
-  //   dispatch(getCurrentGoalAsync({ id: goalIdParam }));
-  // }, [dispatch]);
-  // const { currentGoal, fetchStatus } = useSelector((state) => state.goalState);
+  useEffect(() => {
+    console.log("useffect triggered");
+    dispatch(getCurrentGoalAsync({ id: goalIdParam }));
+  }, [dispatch]);
+  const { currentGoal } = useSelector((state) => state.goalState);
 
   const { blockers } = currentGoal;
-  // if (Object.keys(currentGoal).length) {
-  //   console.log(currentGoal.blockers[0]);
-  // }
-  // console.log("goal blockers", blockers);
 
   useEffect(() => {
     console.log("useEffect triggered hereeeeee");
@@ -60,10 +56,8 @@ const Goal = () => {
         const reveal = blockers.map((blocker) => blocker.reveal);
         const totalReveal = reveal.filter((bool) => bool === true).length;
         if (totalReveal === blockers.length) {
-          // _toggleIsDone(true);
           dispatch(toggleIsDone(true));
         } else {
-          // _toggleIsDone(false);
           dispatch(toggleIsDone(false));
         }
 
@@ -75,124 +69,75 @@ const Goal = () => {
     }
   }, [blockers, dispatch]);
 
-  // return <h1>{currentGoal.image_url}</h1>;
-  // // console.log("currentGoal", currentGoal);
+  //Update if isDone
+  //Triggered when you change settings or when timer is finished
+  //you can just put this as a local state
+  //TODO: Update database when isDone
 
-  // //Update if isDone
-  // //Triggered when you change settings or when timer is finished
-  // //you can just put this as a local state
-  // //TODO: Update database when isDone
-
-  return (
-    <Box
-      sx={{
-        textAlign: "center",
-        display: "grid",
-        gridTemplateRows: "1fr 3fr 1fr",
-        alignItems: "center",
-        width: ["100%", "450px"],
-        margin: "1rem auto",
-        // border: "solid 2px rgba(0,0,0,0.23)",
-        borderRadius: "20px",
-        boxShadow: "0 10px 15px rgba(0,0,0,0.5)",
-        backgroundColor: "#fff",
-      }}
-    >
+  if (Object.keys(currentGoal).length) {
+    return (
       <Box
         sx={{
-          display: "flex",
+          textAlign: "center",
+          display: "grid",
+          gridTemplateRows: "1fr 3fr 1fr",
           alignItems: "center",
-          width: "350px",
-          margin: "0 auto",
-          position: "relative",
-          background:
-            "linear-gradient(to top, #1e3c72 0%, #1e3c72 1%, #2a5298 100%)",
-          borderRadius: "10px",
-          color: "#fff",
-          padding: "15px",
-          boxShadow: "0 5px 10px rgba(0,0,0,0.25)",
+          width: ["100%", "450px"],
+          margin: "1rem auto",
+          // border: "solid 2px rgba(0,0,0,0.23)",
+          borderRadius: "20px",
+          boxShadow: "0 10px 15px rgba(0,0,0,0.5)",
+          backgroundColor: "#fff",
         }}
       >
-        {/* <NewGoalButton /> */}
-        <BackButton />
-        <Details currentGoal={currentGoal} />
-        <SettingsButton
-          setGuide={setGuide}
-          currentGoal={currentGoal}
-          goalIdParam={goalIdParam}
-        />
-        <UpArrow guide={guide ? 1 : 0} />
+        <Box
+          sx={{
+            display: "flex",
+            alignItems: "center",
+            width: "350px",
+            margin: "0 auto",
+            position: "relative",
+            background:
+              "linear-gradient(to top, #1e3c72 0%, #1e3c72 1%, #2a5298 100%)",
+            borderRadius: "10px",
+            color: "#fff",
+            padding: "15px",
+            boxShadow: "0 5px 10px rgba(0,0,0,0.25)",
+          }}
+        >
+          {/* <NewGoalButton /> */}
+          <BackButton />
+          <Details currentGoal={currentGoal} />
+          <SettingsButton
+            setGuide={setGuide}
+            currentGoal={currentGoal}
+            goalIdParam={goalIdParam}
+          />
+          <UpArrow guide={guide ? 1 : 0} />
+        </Box>
+        <ImageGrid currentGoal={currentGoal} />
+        <DisplayTimer currentGoal={currentGoal} goalIdParam={goalIdParam} />
       </Box>
-      <ImageGrid currentGoal={currentGoal} />
-      <DisplayTimer currentGoal={currentGoal} goalIdParam={goalIdParam} />
-    </Box>
-  );
-
-  // if (fetchStatus === "fulfilled") {
-  //   return (
-  //     <Box
-  //       sx={{
-  //         textAlign: "center",
-  //         display: "grid",
-  //         gridTemplateRows: "1fr 3fr 1fr",
-  //         alignItems: "center",
-  //         width: ["100%", "450px"],
-  //         margin: "1rem auto",
-  //         // border: "solid 2px rgba(0,0,0,0.23)",
-  //         borderRadius: "20px",
-  //         boxShadow: "0 10px 15px rgba(0,0,0,0.5)",
-  //         backgroundColor: "#fff",
-  //       }}
-  //     >
-  //       <Box
-  //         sx={{
-  //           display: "flex",
-  //           alignItems: "center",
-  //           width: "350px",
-  //           margin: "0 auto",
-  //           position: "relative",
-  //           background:
-  //             "linear-gradient(to top, #1e3c72 0%, #1e3c72 1%, #2a5298 100%)",
-  //           borderRadius: "10px",
-  //           color: "#fff",
-  //           padding: "15px",
-  //           boxShadow: "0 5px 10px rgba(0,0,0,0.25)",
-  //         }}
-  //       >
-  //         {/* <NewGoalButton /> */}
-  //         <BackButton />
-  //         <Details currentGoal={currentGoal} />
-  //         <SettingsButton
-  //           setGuide={setGuide}
-  //           currentGoal={currentGoal}
-  //           goalIdParam={goalIdParam}
-  //         />
-  //         <UpArrow guide={guide ? 1 : 0} />
-  //       </Box>
-  //       <ImageGrid currentGoal={currentGoal} />
-  //       <DisplayTimer currentGoal={currentGoal} goalIdParam={goalIdParam} />
-  //     </Box>
-  //   );
-  // } else {
-  //   return (
-  //     <>
-  //       <Backdrop
-  //         sx={{
-  //           color: "#fff",
-  //           zIndex: "1250",
-  //           display: "flex",
-  //           flexDirection: "column",
-  //         }}
-  //         open
-  //         // onClick={handleClose}
-  //       >
-  //         <h2>Loading goal...</h2>
-  //         <br />
-  //         <CircularProgress color="inherit" />
-  //       </Backdrop>
-  //     </>
-  //   );
-  // }
+    );
+  } else {
+    return (
+      <>
+        <Backdrop
+          sx={{
+            color: "#fff",
+            zIndex: "1250",
+            display: "flex",
+            flexDirection: "column",
+          }}
+          open
+        >
+          <h2>Loading goal...</h2>
+          <br />
+          <CircularProgress color="inherit" />
+        </Backdrop>
+      </>
+    );
+  }
 };
 
 export default Goal;

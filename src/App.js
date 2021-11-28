@@ -18,10 +18,6 @@ function App() {
 
   //TODO: TRY NOT USING LOCALSTORAGE
   useEffect(() => {
-    // move this to Upload and Pomodoro container
-    // localStorage.imgFile = JSON.stringify(goalImage);
-    // localStorage.screenState = JSON.stringify(screenState);
-    // localStorage.goalName = JSON.stringify(goalName);
     localStorage.goalList = JSON.stringify(goalList);
   }, [goalList]);
 
