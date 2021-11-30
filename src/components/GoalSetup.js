@@ -35,7 +35,7 @@ const GoalSetup = () => {
   //Selectors
   const { goalName, goalImage } = useSelector((state) => state.goalState);
   const { goalList, addStatus } = useSelector((state) => state.goalState);
-
+  const { id: ownerId } = useSelector((state) => state.userState);
   //Dispatch
   const dispatch = useDispatch();
   // const _updateGoalName = (name) => dispatch(updateGoalName(name));
@@ -75,7 +75,12 @@ const GoalSetup = () => {
       const id = uuidv4();
 
       dispatch(
-        addGoalAsync({ id: id, goalName: inputName, goalImage: inputUrl })
+        addGoalAsync({
+          ownerId: ownerId,
+          id: id,
+          goalName: inputName,
+          goalImage: inputUrl,
+        })
       ).then(() =>
         setTimeout(() => {
           setOpenBackdrop(false);

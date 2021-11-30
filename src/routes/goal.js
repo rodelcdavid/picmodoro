@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import Details from "../components/Details";
 
 import { Backdrop, Box, CircularProgress } from "@mui/material";
@@ -45,7 +45,9 @@ const Goal = () => {
     console.log("useffect triggered");
     dispatch(getCurrentGoalAsync({ id: goalIdParam }));
   }, [dispatch]);
-  const { currentGoal } = useSelector((state) => state.goalState);
+  const { currentGoal, currentGoalStatus } = useSelector(
+    (state) => state.goalState
+  );
 
   const { blockers } = currentGoal;
 
@@ -74,7 +76,43 @@ const Goal = () => {
   //you can just put this as a local state
   //TODO: Update database when isDone
 
-  if (Object.keys(currentGoal).length) {
+  if (currentGoalStatus === "pending") {
+    return (
+      <>
+        <Backdrop
+          sx={{
+            color: "#fff",
+            zIndex: "1250",
+            display: "flex",
+            flexDirection: "column",
+          }}
+          open
+        >
+          <h2>Loading goal...</h2>
+          <br />
+          <CircularProgress color="inherit" />
+        </Backdrop>
+      </>
+    );
+  }
+
+  if (currentGoalStatus === "rejected") {
+    return (
+      <Box
+        sx={{
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          color: "#fff",
+          height: "100%",
+        }}
+      >
+        <h3>404 not found</h3>
+      </Box>
+    );
+  }
+
+  if (currentGoalStatus === "fulfilled") {
     return (
       <Box
         sx={{
@@ -118,24 +156,6 @@ const Goal = () => {
         <ImageGrid currentGoal={currentGoal} />
         <DisplayTimer currentGoal={currentGoal} goalIdParam={goalIdParam} />
       </Box>
-    );
-  } else {
-    return (
-      <>
-        <Backdrop
-          sx={{
-            color: "#fff",
-            zIndex: "1250",
-            display: "flex",
-            flexDirection: "column",
-          }}
-          open
-        >
-          <h2>Loading goal...</h2>
-          <br />
-          <CircularProgress color="inherit" />
-        </Backdrop>
-      </>
     );
   }
 };

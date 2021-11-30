@@ -2,8 +2,8 @@ import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 
 export const getGoalListAsync = createAsyncThunk(
   "goals/getGoalListAsync",
-  async () => {
-    const response = await fetch("http://localhost:7000/goals");
+  async (payload) => {
+    const response = await fetch(`http://localhost:7000/user/${payload.id}`);
     if (response.ok) {
       const goalList = await response.json();
 
@@ -21,6 +21,7 @@ export const addGoalAsync = createAsyncThunk(
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
+        ownerId: payload.ownerId,
         id: payload.id,
         goalName: payload.goalName,
         goalImage: payload.goalImage,
@@ -80,9 +81,12 @@ export const getCurrentGoalAsync = createAsyncThunk(
   async (payload) => {
     console.log("fetching", payload.id);
     const response = await fetch(`http://localhost:7000/${payload.id}`);
+    console.log("response", response);
     if (response.ok) {
       const currentGoal = await response.json();
-
+      return { currentGoal };
+    } else {
+      const currentGoal = {};
       return { currentGoal };
     }
   }
@@ -91,6 +95,7 @@ export const getCurrentGoalAsync = createAsyncThunk(
 const initialState = {
   goalList: [],
   currentGoal: {},
+  currentGoalStatus: "pending",
   fetchStatus: "",
   addStatus: "",
 };
@@ -150,37 +155,35 @@ export const goalSlice = createSlice({
     resetCurrentGoal: (state, { payload }) => {
       state.currentGoal = {};
     },
+    resetCurrentGoalStatus: (state, { payload }) => {
+      state.currentGoalStatus = "pending";
+    },
     //toggleisDone => receive goalid, update isDone of that goalid
   },
   extraReducers: {
     [getGoalListAsync.fulfilled]: (state, { payload }) => {
       state.goalList = payload.goalList;
       state.fetchStatus = "fulfilled";
-      console.log("get fulfilled");
+      console.log("fulfilled");
     },
     [getGoalListAsync.pending]: (state, { payload }) => {
       state.fetchStatus = "pending";
-      console.log("fetching...");
+      console.log("pending");
     },
     [addGoalAsync.fulfilled]: (state, { payload }) => {
-      state.goalList.push(payload.goal);
-      state.addStatus = "add fulfilled";
+      state.goalList.unshift(payload.goal);
+      state.addStatus = "fulfilled";
     },
     [addGoalAsync.pending]: (state, { payload }) => {
       state.addStatus = "pending";
-      console.log("adding...");
     },
     [deleteGoalAsync.fulfilled]: (state, { payload }) => {
-      console.log("to delete", payload.goalToDelete);
       state.goalList = state.goalList.filter(
         (goal) => goal.id !== payload.goalToDelete.id
       );
-      // state.goalList = payload.goalToDelete;
-      // state.addStatus = "fulfilled";
     },
 
     [deleteGoalAsync.pending]: (state, { payload }) => {
-      // state.addStatus = "pending";
       console.log("deleting...");
     },
     [saveSettingsAsync.pending]: (state, { payload }) => {
@@ -196,13 +199,24 @@ export const goalSlice = createSlice({
     },
     [getCurrentGoalAsync.pending]: (state, { payload }) => {
       // state.addStatus = "pending";
-      state.fetchStatus = "pending";
+      state.currentGoalStatus = "pending";
       console.log("getting current goal...");
     },
     [getCurrentGoalAsync.fulfilled]: (state, { payload }) => {
-      state.currentGoal = payload.currentGoal;
+      if (Object.keys(payload.currentGoal).length) {
+        state.currentGoal = payload.currentGoal;
+        state.currentGoalStatus = "fulfilled";
+      } else {
+        state.currentGoalStatus = "rejected";
+      }
 
-      state.fetchStatus = "fulfilled";
+      // console.log("get fulfilled");
+    },
+    [getCurrentGoalAsync.rejected]: (state, { payload }) => {
+      // state.currentGoal = payload.currentGoal;
+      console.log("calling rejected reducer");
+      state.currentGoal = {};
+      state.currentGoalStatus = "rejected";
       // console.log("get fulfilled");
     },
   },
@@ -218,6 +232,7 @@ export const {
   updatePresetMin,
   deleteGoal,
   resetCurrentGoal,
+  resetCurrentGoalStatus,
 } = goalSlice.actions;
 
 export default goalSlice.reducer;

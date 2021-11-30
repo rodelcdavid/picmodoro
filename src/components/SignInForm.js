@@ -1,9 +1,47 @@
 import { TextField, Button } from "@mui/material";
 import { Box } from "@mui/system";
-import React from "react";
-import { Link as RouterLink } from "react-router-dom";
+import React, { useState } from "react";
+import { useDispatch } from "react-redux";
+import { Link as RouterLink, useNavigate } from "react-router-dom";
+import { updateUser } from "../features/userSlice";
 
 const SignInForm = () => {
+  //TODO: validate form client side
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+
+  const handleSignIn = async (e) => {
+    e.preventDefault();
+    const res = await fetch("http://localhost:7000/signin", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        email,
+        password,
+      }),
+    });
+    console.log(res);
+    if (res.ok) {
+      const user = await res.json();
+
+      dispatch(
+        updateUser({
+          id: user.id,
+          name: user.name,
+          email: user.email,
+          isAuthenticated: true,
+        })
+      );
+      //Redirect tp dashboard
+      navigate("/dashboard");
+    } else {
+      alert("Error signing in");
+    }
+  };
+
   return (
     <Box
       sx={{
@@ -17,12 +55,18 @@ const SignInForm = () => {
       }}
     >
       <h2 style={{ textAlign: "center" }}>Sign In</h2>
-      <TextField sx={{ marginTop: "10px" }} fullWidth label="Email address" />
+      <TextField
+        sx={{ marginTop: "10px" }}
+        fullWidth
+        label="Email address"
+        onChange={(e) => setEmail(e.target.value)}
+      />
       <TextField
         sx={{ marginTop: "10px" }}
         type="password"
         fullWidth
         label="Password"
+        onChange={(e) => setPassword(e.target.value)}
       >
         Password
       </TextField>
@@ -31,6 +75,7 @@ const SignInForm = () => {
         to="/dashboard"
         variant="contained"
         component={RouterLink}
+        onClick={handleSignIn}
       >
         Sign In
       </Button>
