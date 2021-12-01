@@ -47,7 +47,7 @@ const Goal = () => {
     dispatch(getCurrentGoalAsync({ id: goalIdParam })).catch(() =>
       console.log("There was a problem connecting to the server")
     );
-  }, [dispatch]);
+  }, [dispatch, goalIdParam]);
   const { currentGoal, currentGoalStatus } = useSelector(
     (state) => state.goalState
   );
@@ -72,7 +72,7 @@ const Goal = () => {
         }
       }
     }
-  }, [blockers, dispatch]);
+  }, [blockers, dispatch, currentGoal]);
 
   //Update if isDone
   //Triggered when you change settings or when timer is finished

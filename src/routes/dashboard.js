@@ -21,30 +21,20 @@ const Dashboard = () => {
     (state) => state.authState
   );
   const dispatch = useDispatch();
-  const navigate = useNavigate();
+
   useEffect(() => {
     dispatch(getGoalListAsync({ id: id })).catch(() =>
       console.log("There was a problem connecting to the server")
     );
     dispatch(resetCurrentGoal());
     dispatch(resetCurrentGoalStatus());
-    // fetchGoals();
   }, [dispatch]);
-  const { goalList, fetchStatus } = useSelector((state) => state.goalState); //get from
-
-  //save user to localstorage, should be refreshtoken though
-  useEffect(() => {
-    localStorage.user = JSON.stringify({
-      id,
-      name,
-      email,
-      isUserAuthenticated,
-    });
-  }, [id, name, email, isUserAuthenticated]);
+  const { goalList, fetchStatus } = useSelector((state) => state.goalState);
 
   const handleLogout = () => {
-    dispatch(updateUser({ isUserAuthenticated: false })); //refactor this, what to reset?
-    navigate("/home");
+    setTimeout(() => {
+      dispatch(updateUser({ isUserAuthenticated: false }));
+    }, 500);
   };
 
   return (

@@ -18,50 +18,38 @@ function App() {
   //Selectors
 
   const { goalList } = useSelector((state) => state.goalState);
-
-  //TODO: TRY NOT USING LOCALSTORAGE
+  const { id, name, email, isUserAuthenticated } = useSelector(
+    (state) => state.authState
+  );
+  //goallist localstorage might not be necessary
   useEffect(() => {
     localStorage.goalList = JSON.stringify(goalList);
   }, [goalList]);
 
-  const { isUserAuthenticated } = useSelector((state) => state.authState);
+  //should be refreshtoken
+  useEffect(() => {
+    localStorage.auth = JSON.stringify({
+      id,
+      name,
+      email,
+      isUserAuthenticated,
+    });
+  }, [id, name, email, isUserAuthenticated]);
 
   //change dashboard route to /:userid/dashboard
   //change goal route to /:userid/:goalid
+  //!add browserrouter basename for github pages
   return (
     <>
-      <BrowserRouter basename="/picmodoro">
+      {/* <BrowserRouter basename="/picmodoro"> */}
+      <BrowserRouter>
         <Heading />
-        {/* <Routes>
-          <Route
-            path="/"
-            exact
-            element={
-              isUserAuthenticated ? (
-                <Navigate to="/dashboard" />
-              ) : (
-                <Navigate to="/home" />
-              )
-            }
-          />
-          <Route path="/home" element={<Home />} />
-          <Route path="/signin" element={<SignIn />} />
-          <Route path="/register" element={<Register />} />
-          <Route path="/dashboard" element={<Dashboard />} />
-          <Route path="/:goalid" element={<Goal />} />
-          <Route path="*" element={<NotFound />} />
-        </Routes> */}
-
         <Routes>
           <Route
             path="/"
             exact
             element={
-              isUserAuthenticated ? (
-                <Navigate to="/dashboard" />
-              ) : (
-                <Navigate to="/home" />
-              )
+              isUserAuthenticated ? <Navigate to="/dashboard" /> : <Home />
             }
           />
           <Route element={<PrivateRoutes />}>
@@ -70,7 +58,6 @@ function App() {
           </Route>
 
           <Route element={<PublicRoutes />}>
-            <Route path="/home" element={<Home />} />
             <Route path="/signin" element={<SignIn />} />
             <Route path="/register" element={<Register />} />
           </Route>

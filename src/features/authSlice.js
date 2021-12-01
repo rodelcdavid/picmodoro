@@ -1,5 +1,5 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import { prevUser } from "../utils/getLocalStorage";
+import { prevAuth } from "../utils/getLocalStorage";
 
 const initialState = {
   //currentUser:{},
@@ -7,14 +7,14 @@ const initialState = {
   //isUserAuthenticated:false,
   //loading: false
 
-  id: prevUser.id,
-  name: prevUser.name,
-  email: prevUser.email,
-  isUserAuthenticated: prevUser.isUserAuthenticated,
+  id: prevAuth.id,
+  name: prevAuth.name,
+  email: prevAuth.email,
+  isUserAuthenticated: prevAuth.isUserAuthenticated,
 };
 
 export const authSlice = createSlice({
-  name: "user",
+  name: "auth",
   initialState,
   reducers: {
     updateUser: (state, { payload }) => {
