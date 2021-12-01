@@ -11,6 +11,8 @@ import SignIn from "./routes/signin";
 import Register from "./routes/register";
 import Dashboard from "./routes/dashboard";
 import NotFound from "./components/_shared/NotFound";
+import PrivateRoutes from "./outlet/PrivateRoutes";
+import PublicRoutes from "./outlet/PublicRoutes";
 
 function App() {
   //Selectors
@@ -22,7 +24,7 @@ function App() {
     localStorage.goalList = JSON.stringify(goalList);
   }, [goalList]);
 
-  const { isUserAuthenticated } = useSelector((state) => state.userState);
+  const { isUserAuthenticated } = useSelector((state) => state.authState);
 
   //change dashboard route to /:userid/dashboard
   //change goal route to /:userid/:goalid
@@ -30,7 +32,7 @@ function App() {
     <>
       <BrowserRouter basename="/picmodoro">
         <Heading />
-        <Routes>
+        {/* <Routes>
           <Route
             path="/"
             exact
@@ -47,6 +49,31 @@ function App() {
           <Route path="/register" element={<Register />} />
           <Route path="/dashboard" element={<Dashboard />} />
           <Route path="/:goalid" element={<Goal />} />
+          <Route path="*" element={<NotFound />} />
+        </Routes> */}
+
+        <Routes>
+          <Route
+            path="/"
+            exact
+            element={
+              isUserAuthenticated ? (
+                <Navigate to="/dashboard" />
+              ) : (
+                <Navigate to="/home" />
+              )
+            }
+          />
+          <Route element={<PrivateRoutes />}>
+            <Route path="/dashboard" element={<Dashboard />} />
+            <Route path="/:goalid" element={<Goal />} />
+          </Route>
+
+          <Route element={<PublicRoutes />}>
+            <Route path="/home" element={<Home />} />
+            <Route path="/signin" element={<SignIn />} />
+            <Route path="/register" element={<Register />} />
+          </Route>
           <Route path="*" element={<NotFound />} />
         </Routes>
       </BrowserRouter>

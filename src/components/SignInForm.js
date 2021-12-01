@@ -2,8 +2,8 @@ import { TextField, Button } from "@mui/material";
 import { Box } from "@mui/system";
 import React, { useState } from "react";
 import { useDispatch } from "react-redux";
-import { Link as RouterLink, useNavigate } from "react-router-dom";
-import { updateUser } from "../features/userSlice";
+import { Link as RouterLink, useNavigate, useLocation } from "react-router-dom";
+import { updateUser } from "../features/authSlice";
 
 const SignInForm = () => {
   //TODO: validate form client side
@@ -12,6 +12,9 @@ const SignInForm = () => {
 
   const navigate = useNavigate();
   const dispatch = useDispatch();
+
+  let location = useLocation();
+  // let from = location.state?.from?.pathname || "/dashboard";
 
   const handleSignIn = async (e) => {
     e.preventDefault();
@@ -33,10 +36,11 @@ const SignInForm = () => {
             id: user.id,
             name: user.name,
             email: user.email,
-            isAuthenticated: true,
+            isUserAuthenticated: true,
           })
         );
         //Redirect tp dashboard
+        // navigate(from, { replace: true });
         navigate("/dashboard");
       } else {
         alert(await res.json());

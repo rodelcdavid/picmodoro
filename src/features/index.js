@@ -4,11 +4,11 @@ import screenReducer from "./screenSlice";
 import settingsReducer from "./settingsSlice";
 import timerReducer from "./timerSlice";
 import displayGridReducer from "./displayGridSlice";
-import userReducer from "./userSlice";
+import userReducer from "./authSlice";
 
 const rootReducer = combineReducers({
   goalState: goalReducer,
-  userState: userReducer,
+  authState: userReducer,
   screenState: screenReducer,
   settingsState: settingsReducer,
   timerState: timerReducer,

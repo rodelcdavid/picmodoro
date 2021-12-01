@@ -3,7 +3,7 @@ import { Box } from "@mui/system";
 import React, { useState } from "react";
 import { useDispatch } from "react-redux";
 import { Link as RouterLink, useNavigate } from "react-router-dom";
-import { updateUser } from "../features/userSlice";
+import { updateUser } from "../features/authSlice";
 
 const RegisterForm = () => {
   //TODO: validate form client side
@@ -34,7 +34,7 @@ const RegisterForm = () => {
             id: user.id,
             name: user.name,
             email: user.email,
-            isAuthenticated: true,
+            isUserAuthenticated: true,
           })
         );
         //Redirect to dashboard

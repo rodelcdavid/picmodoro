@@ -13,12 +13,12 @@ import {
   resetCurrentGoalStatus,
 } from "../features/goalSlice";
 import { resetTimerState } from "../features/timerSlice";
-import { updateUser } from "../features/userSlice";
+import { updateUser } from "../features/authSlice";
 import { Wrapper } from "../utils/globalstyles";
 
 const Dashboard = () => {
   const { id, name, email, isUserAuthenticated } = useSelector(
-    (state) => state.userState
+    (state) => state.authState
   );
   const dispatch = useDispatch();
   const navigate = useNavigate();

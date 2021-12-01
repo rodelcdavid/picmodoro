@@ -35,7 +35,7 @@ const GoalSetup = () => {
   //Selectors
   const { goalName, goalImage } = useSelector((state) => state.goalState);
   const { goalList, addStatus } = useSelector((state) => state.goalState);
-  const { id: ownerId } = useSelector((state) => state.userState);
+  const { id: ownerId } = useSelector((state) => state.authState);
   //Dispatch
   const dispatch = useDispatch();
   // const _updateGoalName = (name) => dispatch(updateGoalName(name));
