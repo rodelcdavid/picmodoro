@@ -37,7 +37,11 @@ const GoalCard = ({ id, goalName, goalImage, blockers }) => {
   const handleDelete = (e) => {
     e.preventDefault();
     setOpenBackdrop(true);
-    dispatch(deleteGoalAsync({ id: id })).then(() => setOpenBackdrop(false));
+    dispatch(deleteGoalAsync({ id: id }))
+      .then(() => setOpenBackdrop(false))
+      .catch(() =>
+        console.log("There was a problem connecting to the server.")
+      );
   };
 
   const open = Boolean(anchorEl);

@@ -15,30 +15,35 @@ const SignInForm = () => {
 
   const handleSignIn = async (e) => {
     e.preventDefault();
-    const res = await fetch("http://localhost:7000/signin", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        email,
-        password,
-      }),
-    });
-    console.log(res);
-    if (res.ok) {
-      const user = await res.json();
+    try {
+      const res = await fetch("http://localhost:7000/signin", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          email,
+          password,
+        }),
+      });
 
-      dispatch(
-        updateUser({
-          id: user.id,
-          name: user.name,
-          email: user.email,
-          isAuthenticated: true,
-        })
-      );
-      //Redirect tp dashboard
-      navigate("/dashboard");
-    } else {
-      alert("Error signing in");
+      if (res.ok) {
+        const user = await res.json();
+
+        dispatch(
+          updateUser({
+            id: user.id,
+            name: user.name,
+            email: user.email,
+            isAuthenticated: true,
+          })
+        );
+        //Redirect tp dashboard
+        navigate("/dashboard");
+      } else {
+        alert(await res.json());
+      }
+    } catch {
+      alert("There was a problem signing in.");
+      return;
     }
   };
 

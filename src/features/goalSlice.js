@@ -3,11 +3,16 @@ import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 export const getGoalListAsync = createAsyncThunk(
   "goals/getGoalListAsync",
   async (payload) => {
-    const response = await fetch(`http://localhost:7000/user/${payload.id}`);
-    if (response.ok) {
-      const goalList = await response.json();
+    try {
+      const response = await fetch(`http://localhost:7000/user/${payload.id}`);
+      if (response.ok) {
+        const goalList = await response.json();
 
-      return { goalList };
+        return { goalList };
+      }
+    } catch {
+      // console.log("There was a problem connecting to the server.");
+      return; // return status rejected
     }
   }
 );
@@ -15,22 +20,27 @@ export const getGoalListAsync = createAsyncThunk(
 export const addGoalAsync = createAsyncThunk(
   "goals/addGoalAsync",
   async (payload) => {
-    const response = await fetch("http://localhost:7000/goals", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        ownerId: payload.ownerId,
-        id: payload.id,
-        goalName: payload.goalName,
-        goalImage: payload.goalImage,
-      }),
-    });
-    if (response.ok) {
-      const goal = await response.json();
+    try {
+      const response = await fetch("http://localhost:7000/goals", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          ownerId: payload.ownerId,
+          id: payload.id,
+          goalName: payload.goalName,
+          goalImage: payload.goalImage,
+        }),
+      });
+      if (response.ok) {
+        const goal = await response.json();
 
-      return { goal };
+        return { goal };
+      }
+    } catch {
+      // console.log("There was a problem connecting to the server");
+      return; //return status rejected
     }
   }
 );
@@ -38,19 +48,23 @@ export const addGoalAsync = createAsyncThunk(
 export const deleteGoalAsync = createAsyncThunk(
   "goals/deleteGoalAsync",
   async (payload) => {
-    const response = await fetch("http://localhost:7000/goals", {
-      method: "DELETE",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        id: payload.id,
-      }),
-    });
-    if (response.ok) {
-      const goalToDelete = await response.json();
+    try {
+      const response = await fetch("http://localhost:7000/goals", {
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          id: payload.id,
+        }),
+      });
+      if (response.ok) {
+        const goalToDelete = await response.json();
 
-      return { goalToDelete };
+        return { goalToDelete };
+      }
+    } catch {
+      return; //return status rejected
     }
   }
 );
@@ -59,19 +73,23 @@ export const deleteGoalAsync = createAsyncThunk(
 export const saveSettingsAsync = createAsyncThunk(
   "goals/saveSettingsAsync",
   async (payload) => {
-    const response = await fetch("http://localhost:7000/goals", {
-      method: "PATCH",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        currentGoal: payload.currentGoal,
-      }),
-    });
-    if (response.ok) {
-      const goalToUpdate = await response.json();
+    try {
+      const response = await fetch("http://localhost:7000/goals", {
+        method: "PATCH",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          currentGoal: payload.currentGoal,
+        }),
+      });
+      if (response.ok) {
+        const goalToUpdate = await response.json();
 
-      return { goalToUpdate };
+        return { goalToUpdate };
+      }
+    } catch {
+      return; //return status rejected
     }
   }
 );
@@ -79,15 +97,20 @@ export const saveSettingsAsync = createAsyncThunk(
 export const getCurrentGoalAsync = createAsyncThunk(
   "goals/getCurrentGoalAsync",
   async (payload) => {
-    console.log("fetching", payload.id);
-    const response = await fetch(`http://localhost:7000/${payload.id}`);
-    console.log("response", response);
-    if (response.ok) {
-      const currentGoal = await response.json();
-      return { currentGoal };
-    } else {
-      const currentGoal = {};
-      return { currentGoal };
+    try {
+      console.log("fetching", payload.id);
+      const response = await fetch(`http://localhost:7000/${payload.id}`);
+      console.log("response", response);
+      if (response.ok) {
+        const currentGoal = await response.json();
+        return { currentGoal };
+      } else {
+        const currentGoal = {};
+        return { currentGoal };
+      }
+    } catch {
+      // console.log("There was a problem connecting to the server");
+      return; //return status rejected
     }
   }
 );

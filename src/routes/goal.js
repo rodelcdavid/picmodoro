@@ -21,7 +21,8 @@ const Goal = () => {
   let urlParams = useParams();
   const goalIdParam = urlParams.goalid;
 
-  //Fetch state from server base on goalid, get state from redux for now base on goalid
+  //Fetch state from server
+  //  base on goalid, get state from redux for now base on goalid
   // const { goalList } = useSelector((state) => state.goalState);
 
   //can i pass this down as props?
@@ -43,7 +44,9 @@ const Goal = () => {
   //FIXME: Error on refresh, currentGoal is undefined
   useEffect(() => {
     console.log("useffect triggered");
-    dispatch(getCurrentGoalAsync({ id: goalIdParam }));
+    dispatch(getCurrentGoalAsync({ id: goalIdParam })).catch(() =>
+      console.log("There was a problem connecting to the server")
+    );
   }, [dispatch]);
   const { currentGoal, currentGoalStatus } = useSelector(
     (state) => state.goalState

@@ -23,7 +23,9 @@ const Dashboard = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   useEffect(() => {
-    dispatch(getGoalListAsync({ id: id }));
+    dispatch(getGoalListAsync({ id: id })).catch(() =>
+      console.log("There was a problem connecting to the server")
+    );
     dispatch(resetCurrentGoal());
     dispatch(resetCurrentGoalStatus());
     // fetchGoals();
@@ -49,13 +51,10 @@ const Dashboard = () => {
     <Wrapper>
       <h2 style={{ color: "#fff" }}>Dashboard</h2>
       <Greeting name={name} />
-      <Button onClick={handleLogout} variant="contained">
-        Logout
-      </Button>
 
       <Box
         sx={{
-          padding: "2rem",
+          padding: "3rem 2rem",
           boxShadow: "0 10px 15px rgba(0,0,0,0.23)",
           backgroundColor: "#fff",
           borderRadius: "5px",
@@ -77,6 +76,13 @@ const Dashboard = () => {
           "::-webkit-scrollbar-thumb:hover": { background: "#555" },
         }}
       >
+        <Button
+          onClick={handleLogout}
+          variant="outlined"
+          sx={{ position: "absolute", right: "0" }}
+        >
+          Logout
+        </Button>
         {fetchStatus === "fulfilled" ? (
           <>
             <AddGoalButton />

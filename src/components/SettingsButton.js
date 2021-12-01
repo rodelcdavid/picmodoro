@@ -79,7 +79,9 @@ const Settings = ({ setGuide, goalIdParam, currentGoal }) => {
   const handleClose = () => {
     //TODO: save settings
     //payload currentGoal
-    dispatch(saveSettingsAsync({ currentGoal: currentGoal }));
+    dispatch(saveSettingsAsync({ currentGoal: currentGoal })).catch(() =>
+      console.log("There was a problem connecting to the server.")
+    );
     setOpen(false);
   };
 

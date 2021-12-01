@@ -16,30 +16,35 @@ const RegisterForm = () => {
   const navigate = useNavigate();
   const handleRegister = async (e) => {
     e.preventDefault();
-    const res = await fetch("http://localhost:7000/register", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        name,
-        email,
-        password,
-      }),
-    });
-    console.log("res", res);
-    if (res.ok) {
-      const user = await res.json();
-      dispatch(
-        updateUser({
-          id: user.id,
-          name: user.name,
-          email: user.email,
-          isAuthenticated: true,
-        })
-      );
-      //Redirect to dashboard
-      navigate("/dashboard");
-    } else {
-      alert(await res.json());
+    try {
+      const res = await fetch("http://localhost:7000/register", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          name,
+          email,
+          password,
+        }),
+      });
+      console.log("res", res);
+      if (res.ok) {
+        const user = await res.json();
+        dispatch(
+          updateUser({
+            id: user.id,
+            name: user.name,
+            email: user.email,
+            isAuthenticated: true,
+          })
+        );
+        //Redirect to dashboard
+        navigate("/dashboard");
+      } else {
+        alert(await res.json());
+      }
+    } catch {
+      alert("There was a problem registering.");
+      return;
     }
   };
   return (

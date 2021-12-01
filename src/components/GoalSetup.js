@@ -81,12 +81,16 @@ const GoalSetup = () => {
           goalName: inputName,
           goalImage: inputUrl,
         })
-      ).then(() =>
-        setTimeout(() => {
-          setOpenBackdrop(false);
-          navigate(`/${id}`);
-        }, 1000)
-      );
+      )
+        .then(() =>
+          setTimeout(() => {
+            setOpenBackdrop(false);
+            navigate(`/${id}`);
+          }, 1000)
+        )
+        .catch(() =>
+          console.log("There was a problem connecting to the server")
+        );
 
       // if (status === "fulfilled") {
       //   console.log("addstatus", status);
