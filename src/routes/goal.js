@@ -11,7 +11,7 @@ import UpArrow from "../components/UpArrow";
 
 import { useSelector, useDispatch } from "react-redux";
 import { toggleIsDone } from "../features/displayGridSlice";
-import SettingsButton from "../components/SettingsButton";
+import GoalSettings from "../components/GoalSettings";
 import BackButton from "../components/BackButton";
 import { resetTimerState } from "../features/timerSlice";
 import { getCurrentGoalAsync, getGoalListAsync } from "../features/goalSlice";
@@ -149,7 +149,7 @@ const Goal = () => {
           {/* <NewGoalButton /> */}
           <BackButton />
           <Details currentGoal={currentGoal} />
-          <SettingsButton
+          <GoalSettings
             setGuide={setGuide}
             currentGoal={currentGoal}
             goalIdParam={goalIdParam}

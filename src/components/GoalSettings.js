@@ -32,7 +32,7 @@ import CloseIcon from "@mui/icons-material/Close";
 import { useDispatch, useSelector } from "react-redux";
 
 //You can break this down again to minimize rerender on settings change
-const Settings = ({ setGuide, goalIdParam, currentGoal }) => {
+const GoalSettings = ({ setGuide, goalIdParam, currentGoal }) => {
   // const { goalList } = useSelector((state) => state.goalState);
 
   // const currentGoal = goalList.filter((goal) => {
@@ -156,7 +156,7 @@ const Settings = ({ setGuide, goalIdParam, currentGoal }) => {
               bgcolor: "#1976D2",
             }}
           >
-            <DialogTitle sx={{ color: "white" }}>Settings</DialogTitle>
+            <DialogTitle sx={{ color: "white" }}>Goal Settings</DialogTitle>
             <IconButton
               sx={{ marginLeft: "auto", color: "white" }}
               onClick={handleClose}
@@ -247,7 +247,7 @@ const Settings = ({ setGuide, goalIdParam, currentGoal }) => {
             </Box>
           </DialogContent>
           <Divider />
-          <DialogActions sx={{ display: "flex", justifyContent: "center" }}>
+          {/* <DialogActions sx={{ display: "flex", justifyContent: "center" }}>
             <Button
               startIcon={<Save />}
               variant="contained"
@@ -256,7 +256,7 @@ const Settings = ({ setGuide, goalIdParam, currentGoal }) => {
             >
               Save
             </Button>
-          </DialogActions>
+          </DialogActions> */}
           {/* Here */}
         </Box>
       </Dialog>
@@ -264,4 +264,4 @@ const Settings = ({ setGuide, goalIdParam, currentGoal }) => {
   );
 };
 
-export default Settings;
+export default GoalSettings;

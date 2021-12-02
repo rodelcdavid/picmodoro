@@ -149,11 +149,11 @@ const GoalSetup = () => {
         // width: "calc(100vw - 2rem)",
         width: ["350px", "450px"],
         // maxWidth: "400px",
-        padding: "1rem",
-        boxShadow: "0 10px 15px rgba(0,0,0,0.5)",
+        // padding: "0.5rem",
+        // boxShadow: "0 10px 15px rgba(0,0,0,0.5)",
         // boxShadow: 3, why is this not working
-        borderRadius: "20px",
-        marginTop: "1rem",
+        // borderRadius: "20px",
+        // marginTop: "1rem",
         backgroundColor: "#fff",
       }}
     >
