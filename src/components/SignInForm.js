@@ -6,7 +6,7 @@ import { Link as RouterLink, useNavigate, useLocation } from "react-router-dom";
 import { updateUser } from "../features/authSlice";
 
 const SignInForm = () => {
-  //TODO: validate form client side
+  //TODO: use react hook form
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
@@ -46,7 +46,7 @@ const SignInForm = () => {
         alert(await res.json());
       }
     } catch {
-      alert("There was a problem signing in.");
+      alert("There was a problem connecting to the server.");
       return;
     }
   };

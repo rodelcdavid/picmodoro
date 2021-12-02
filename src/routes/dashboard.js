@@ -56,6 +56,7 @@ const Dashboard = () => {
           gridGap: "30px",
           overflowY: "scroll",
           position: "relative",
+          //SCROLLBAR BUT NOT FOR MOBILE??
           "::-webkit-scrollbar": {
             width: "10px",
           },

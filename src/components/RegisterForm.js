@@ -5,48 +5,94 @@ import { useDispatch } from "react-redux";
 import { Link as RouterLink, useNavigate } from "react-router-dom";
 import { updateUser } from "../features/authSlice";
 
+import { useForm, Controller } from "react-hook-form";
+import { yupResolver } from "@hookform/resolvers/yup";
+import * as yup from "yup";
+
+//Validation
+const schema = yup.object({
+  name: yup.string().required("This field is required."),
+  email: yup
+    .string()
+    .email("Invalid email address.")
+    .required("This field is required.")
+    .test(
+      "Unique Email",
+      "Email already in use.", // <- key, message
+      async (email) => {
+        return new Promise(async (resolve, reject) => {
+          try {
+            const res = await fetch(`http://localhost:7000/check/${email}`);
+            if (res.ok) {
+              resolve(true);
+            } else {
+              resolve(false);
+            }
+          } catch {
+            alert("There was a problem connecting to the server.");
+            return;
+          }
+        });
+      }
+    ),
+  password: yup.string().required("This field is required."),
+  passwordConfirmation: yup
+    .string()
+    .test("passwords-match", "Passwords must match.", function (value) {
+      return this.parent.password === value;
+    })
+    .required("This field is required."),
+});
+
 const RegisterForm = () => {
-  //TODO: validate form client side
-  const [name, setName] = useState("");
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const {
+    handleSubmit,
+    control,
+    formState: { errors },
+  } = useForm({
+    mode: "onSubmit",
+    resolver: yupResolver(schema),
+  });
 
   const dispatch = useDispatch();
 
   const navigate = useNavigate();
-  const handleRegister = async (e) => {
-    e.preventDefault();
-    try {
-      const res = await fetch("http://localhost:7000/register", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          name,
-          email,
-          password,
-        }),
-      });
-      console.log("res", res);
-      if (res.ok) {
-        const user = await res.json();
-        dispatch(
-          updateUser({
-            id: user.id,
-            name: user.name,
-            email: user.email,
-            isUserAuthenticated: true,
-          })
-        );
-        //Redirect to dashboard
-        navigate("/dashboard");
-      } else {
-        alert(await res.json());
+
+  const onRegister = async (data) => {
+    if (data) {
+      const { name, email, password } = data;
+
+      try {
+        const res = await fetch("http://localhost:7000/register", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            name,
+            email,
+            password,
+          }),
+        });
+        console.log("res", res);
+        if (res.ok) {
+          const user = await res.json();
+          dispatch(
+            updateUser({
+              id: user.id,
+              name: user.name,
+              email: user.email,
+              isUserAuthenticated: true,
+            })
+          );
+
+          navigate("/dashboard");
+        }
+      } catch {
+        alert("There was a problem connecting to the server.");
+        return;
       }
-    } catch {
-      alert("There was a problem registering.");
-      return;
     }
   };
+
   return (
     <Box
       sx={{
@@ -60,41 +106,90 @@ const RegisterForm = () => {
       }}
     >
       <h2 style={{ textAlign: "center" }}>Register</h2>
-      <TextField
-        sx={{ marginTop: "10px" }}
-        fullWidth
-        label="Name"
-        onChange={(e) => setName(e.target.value)}
-      />
-      <TextField
-        sx={{ marginTop: "10px" }}
-        fullWidth
-        label="Email address"
-        onChange={(e) => setEmail(e.target.value)}
-      />
-      <TextField
-        sx={{ marginTop: "10px" }}
-        type="password"
-        fullWidth
-        label="Password"
-        onChange={(e) => setPassword(e.target.value)}
-      />
 
-      <TextField
-        sx={{ marginTop: "10px" }}
-        type="password"
-        fullWidth
-        label="Confirm password"
-      />
-      <Button
-        sx={{ marginTop: "1rem" }}
-        to="/dashboard"
-        variant="contained"
-        component={RouterLink}
-        onClick={handleRegister}
-      >
-        Register
-      </Button>
+      <form onSubmit={handleSubmit(onRegister)}>
+        <Controller
+          render={({ field }) => (
+            <TextField
+              {...field}
+              sx={{ marginTop: "5px" }}
+              fullWidth
+              id="outlined-error-helper-text"
+              label="Name *"
+              error={errors.name ? true : false}
+              helperText={errors.name?.message || " "}
+            />
+          )}
+          name="name"
+          control={control}
+          defaultValue=""
+          className="materialUIInput"
+        />
+        <Controller
+          render={({ field }) => (
+            <TextField
+              {...field}
+              sx={{ marginTop: "5px" }}
+              fullWidth
+              id="outlined-error-helper-text"
+              label="Email address *"
+              error={errors.email ? true : false}
+              helperText={errors.email?.message || " "}
+            />
+          )}
+          name="email"
+          control={control}
+          defaultValue=""
+          className="materialUIInput"
+        />
+        <Controller
+          render={({ field }) => (
+            <TextField
+              {...field}
+              sx={{ marginTop: "5px" }}
+              fullWidth
+              type="password"
+              id="outlined-error-helper-text"
+              label="Password *"
+              error={errors.password ? true : false}
+              helperText={errors.password?.message || " "}
+            />
+          )}
+          name="password"
+          control={control}
+          defaultValue=""
+          className="materialUIInput"
+        />
+        <Controller
+          render={({ field }) => (
+            <TextField
+              {...field}
+              sx={{ marginTop: "5px" }}
+              fullWidth
+              type="password"
+              id="outlined-error-helper-text"
+              label="Confirm password *"
+              error={errors?.passwordConfirmation ? true : false}
+              helperText={errors.passwordConfirmation?.message || " "}
+            />
+          )}
+          name="passwordConfirmation"
+          control={control}
+          defaultValue=""
+          className="materialUIInput"
+        />
+        <Button
+          type="submit"
+          sx={{ marginTop: "0.2rem", width: "100%" }}
+          // to="/dashboard"
+          variant="contained"
+          // component={RouterLink}
+          // onClick={onRegister}
+        >
+          Register
+        </Button>
+      </form>
+
       <p style={{ fontSize: "0.8rem", marginTop: "10px" }}>
         Already have an account?{" "}
         <Box
