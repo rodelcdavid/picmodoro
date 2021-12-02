@@ -6,9 +6,9 @@ import { Link as RouterLink, useNavigate, useLocation } from "react-router-dom";
 import { updateUser } from "../features/authSlice";
 
 const SignInForm = () => {
-  //TODO: use react hook form
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [error, setError] = useState(false);
 
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -30,7 +30,7 @@ const SignInForm = () => {
 
       if (res.ok) {
         const user = await res.json();
-
+        setError(false);
         dispatch(
           updateUser({
             id: user.id,
@@ -39,11 +39,12 @@ const SignInForm = () => {
             isUserAuthenticated: true,
           })
         );
-        //Redirect tp dashboard
+        //Redirect to dashboard
         // navigate(from, { replace: true });
         navigate("/dashboard");
       } else {
-        alert(await res.json());
+        // alert(await res.json());
+        setError(true);
       }
     } catch {
       alert("There was a problem connecting to the server.");
@@ -64,6 +65,21 @@ const SignInForm = () => {
       }}
     >
       <h2 style={{ textAlign: "center" }}>Sign In</h2>
+      {error && (
+        <Box
+          style={{
+            color: "black",
+            textAlign: "center",
+            padding: "0.5rem",
+            marginTop: "1rem",
+            border: "solid 1px red",
+            backgroundColor: "seashell",
+            fontSize: "0.8rem",
+          }}
+        >
+          Email and password combination is incorrect. Please try again.
+        </Box>
+      )}
       <TextField
         sx={{ marginTop: "10px" }}
         fullWidth
@@ -79,6 +95,7 @@ const SignInForm = () => {
       >
         Password
       </TextField>
+
       <Button
         sx={{ marginTop: "1rem" }}
         to="/dashboard"
