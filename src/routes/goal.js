@@ -43,7 +43,8 @@ const Goal = () => {
 
   //FIXME: Error on refresh, currentGoal is undefined
   useEffect(() => {
-    console.log("useffect triggered");
+    //if accessToken is invalid, set userauthenticated to false => signin
+
     dispatch(getCurrentGoalAsync({ id: goalIdParam })).catch(() =>
       console.log("There was a problem connecting to the server")
     );

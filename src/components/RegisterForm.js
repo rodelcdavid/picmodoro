@@ -74,7 +74,8 @@ const RegisterForm = () => {
         });
         console.log("res", res);
         if (res.ok) {
-          const user = await res.json();
+          const { user, refreshToken, accessToken } = await res.json();
+
           dispatch(
             updateUser({
               id: user.id,
@@ -83,7 +84,7 @@ const RegisterForm = () => {
               isUserAuthenticated: true,
             })
           );
-
+          // console.log("TOKENS", accessToken, refreshToken);
           navigate("/dashboard");
         }
       } catch {
@@ -105,7 +106,7 @@ const RegisterForm = () => {
         borderRadius: "10px",
       }}
     >
-      <h2 style={{ textAlign: "center" }}>Register</h2>
+      <h2 style={{ textAlign: "center", color: "#1976D2" }}>Register</h2>
 
       <form onSubmit={handleSubmit(onRegister)}>
         <Controller

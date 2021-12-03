@@ -16,6 +16,19 @@ const SignInForm = () => {
   let location = useLocation();
   // let from = location.state?.from?.pathname || "/dashboard";
 
+  const handleTest = (e) => {
+    e.preventDefault();
+    dispatch(
+      updateUser({
+        id: 1,
+        name: "Tester",
+        email: "tester@gmail.com",
+        isUserAuthenticated: true,
+      })
+    );
+    navigate("/dashboard");
+  };
+
   const handleSignIn = async (e) => {
     e.preventDefault();
     try {
@@ -29,7 +42,7 @@ const SignInForm = () => {
       });
 
       if (res.ok) {
-        const user = await res.json();
+        const { user, accessToken, refreshToken } = await res.json();
         setError(false);
         dispatch(
           updateUser({
@@ -39,6 +52,9 @@ const SignInForm = () => {
             isUserAuthenticated: true,
           })
         );
+        localStorage.accessToken = JSON.stringify(accessToken);
+        localStorage.refreshToken = JSON.stringify(refreshToken);
+        // console.log("TOKENS IN SIGNIN", accessToken, refreshToken);
         //Redirect to dashboard
         // navigate(from, { replace: true });
         navigate("/dashboard");
@@ -64,7 +80,7 @@ const SignInForm = () => {
         borderRadius: "10px",
       }}
     >
-      <h2 style={{ textAlign: "center" }}>Sign In</h2>
+      <h2 style={{ textAlign: "center", color: "#1976D2" }}>Sign In</h2>
       {error && (
         <Box
           style={{
@@ -111,6 +127,7 @@ const SignInForm = () => {
         variant="contained"
         color="warning"
         component={RouterLink}
+        onClick={handleTest}
       >
         Test
       </Button>

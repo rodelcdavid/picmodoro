@@ -1,18 +1,84 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 
+//id params, token headers
+//endpoint should be /dashboard/:ownerId
+import axios from "axios";
+import jwt_decode from "jwt-decode";
+
+export const axiosJWT = axios.create();
+
+const refreshToken = async () => {
+  try {
+    const refreshToken = JSON.parse(localStorage.getItem("refreshToken"));
+    console.log("refreshToken received from localstorage", refreshToken);
+    const res = await axios.post("http://localhost:7000/refresh", {
+      token: refreshToken,
+    }); //get refreshtoken from localstorage
+
+    console.log("res data from refresh", res.data);
+    //update user with tokens
+    localStorage.accessToken = JSON.stringify(res.data.accessToken);
+    localStorage.refreshToken = JSON.stringify(res.data.refreshToken);
+    //dispatch(updateUser)
+
+    return res.data;
+  } catch (err) {
+    console.log(err);
+  }
+};
+
+axiosJWT.interceptors.request.use(
+  async (config) => {
+    const accessToken = localStorage.getItem("accessToken");
+    let currentDate = new Date();
+    const decodedToken = jwt_decode(accessToken); //get accesstoken from localstorage
+
+    if (decodedToken.exp * 1000 < currentDate.getTime()) {
+      console.log("expired");
+      const data = await refreshToken();
+      config.headers["authorization"] = "Bearer " + data.accessToken;
+    }
+    return config;
+  },
+  (err) => {
+    return Promise.reject(err);
+  }
+);
+
 export const getGoalListAsync = createAsyncThunk(
   "goals/getGoalListAsync",
   async (payload) => {
     try {
-      const response = await fetch(`http://localhost:7000/user/${payload.id}`);
-      if (response.ok) {
-        const goalList = await response.json();
-
-        return { goalList };
+      const accessToken = JSON.parse(localStorage.getItem("accessToken"));
+      console.log("token", accessToken);
+      // const response = await fetch(`http://localhost:7000/user/${payload.id}`);
+      const response = await axiosJWT.get(
+        `http://localhost:7000/user/${payload.id}`,
+        {
+          headers: { authorization: "Bearer " + accessToken },
+        }
+      );
+      console.log(response);
+      if (response.status === 200) {
+        // const goalList = await response.json();
+        const goalList = response.data;
+        const isUserValid = true;
+        return { isUserValid, goalList };
       }
-    } catch {
-      // console.log("There was a problem connecting to the server.");
-      return; // return status rejected
+    } catch (err) {
+      if (err.response?.status === 401) {
+        // if (err.response.status === 401) {
+        console.log("Invalid token");
+        const isUserValid = false;
+        return { isUserValid };
+        //set userauthenticated = false
+      } else if (err.request) {
+        console.log("There was a problem connecting to the server.");
+      } else {
+        console.log("Error");
+      }
+
+      // return; // return status rejected
     }
   }
 );
@@ -38,6 +104,9 @@ export const addGoalAsync = createAsyncThunk(
 
         return { goal };
       }
+      // else{
+      //   //userauthenticated = false
+      // }
     } catch {
       // console.log("There was a problem connecting to the server");
       return; //return status rejected
@@ -63,6 +132,9 @@ export const deleteGoalAsync = createAsyncThunk(
 
         return { goalToDelete };
       }
+      // else{
+      //   //userauthenticated = false
+      // }
     } catch {
       return; //return status rejected
     }
@@ -88,6 +160,9 @@ export const saveSettingsAsync = createAsyncThunk(
 
         return { goalToUpdate };
       }
+      // else{
+      //   //userauthenticated = false
+      // }
     } catch {
       return; //return status rejected
     }
@@ -121,6 +196,7 @@ const initialState = {
   currentGoalStatus: "pending",
   fetchStatus: "",
   addStatus: "",
+  error: "",
 };
 
 export const goalSlice = createSlice({
@@ -185,9 +261,13 @@ export const goalSlice = createSlice({
   },
   extraReducers: {
     [getGoalListAsync.fulfilled]: (state, { payload }) => {
-      state.goalList = payload.goalList;
-      state.fetchStatus = "fulfilled";
-      console.log("fulfilled");
+      if (payload.isUserValid) {
+        state.goalList = payload.goalList;
+        state.fetchStatus = "fulfilled";
+        console.log("fulfilled");
+      } else {
+        state.error = "Invalid token";
+      }
     },
     [getGoalListAsync.pending]: (state, { payload }) => {
       state.fetchStatus = "pending";
