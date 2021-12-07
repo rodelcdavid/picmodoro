@@ -4,7 +4,6 @@ import { Navigate, Outlet, useLocation } from "react-router-dom";
 const PrivateRoutes = () => {
   const location = useLocation();
   const { isUserAuthenticated } = useSelector((state) => state.authState);
-  //   console.log("authLogin", authLogin);
 
   return isUserAuthenticated ? (
     <Outlet />

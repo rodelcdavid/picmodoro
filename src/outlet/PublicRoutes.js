@@ -5,7 +5,6 @@ const PublicRoutes = () => {
   const location = useLocation();
   const navigate = useNavigate();
   const { isUserAuthenticated } = useSelector((state) => state.authState);
-  //   console.log("authLogin", authLogin);
 
   return !isUserAuthenticated ? (
     <Outlet />

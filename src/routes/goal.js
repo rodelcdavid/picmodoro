@@ -56,7 +56,6 @@ const Goal = () => {
   const { blockers } = currentGoal;
 
   useEffect(() => {
-    console.log("useEffect triggered hereeeeee");
     if (Object.keys(currentGoal).length) {
       if (blockers.length) {
         const reveal = blockers.map((blocker) => blocker.reveal);
@@ -116,6 +115,7 @@ const Goal = () => {
     );
   }
 
+  //can omit if statement for fulfilled
   if (currentGoalStatus === "fulfilled") {
     return (
       <Box

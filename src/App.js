@@ -2,7 +2,7 @@ import { useEffect } from "react";
 
 import Heading from "./components/_shared/Heading";
 
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 
 import Goal from "./routes/goal";
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
@@ -14,17 +14,23 @@ import NotFound from "./components/_shared/NotFound";
 import PrivateRoutes from "./outlet/PrivateRoutes";
 import PublicRoutes from "./outlet/PublicRoutes";
 
+import { updateUser } from "./features/authSlice";
+import { updateError } from "./features/goalSlice";
+
 function App() {
   //Selectors
 
-  const { goalList } = useSelector((state) => state.goalState);
+  const { goalList, error } = useSelector((state) => state.goalState);
   const { id, name, email, isUserAuthenticated } = useSelector(
     (state) => state.authState
   );
+
+  const dispatch = useDispatch();
+
   //goallist localstorage might not be necessary
   useEffect(() => {
-    localStorage.goalList = JSON.stringify(goalList);
-  }, [goalList]);
+    localStorage.goalList = JSON.stringify(goalList.data);
+  }, [goalList.data]);
 
   //should be refreshtoken
   useEffect(() => {
@@ -35,6 +41,18 @@ function App() {
       isUserAuthenticated,
     });
   }, [id, name, email, isUserAuthenticated]);
+
+  useEffect(() => {
+    if (error === "Invalid token") {
+      localStorage.removeItem("accessToken");
+      localStorage.removeItem("refreshToken");
+      dispatch(updateError(""));
+      setTimeout(() => {
+        dispatch(updateUser({ isUserAuthenticated: false }));
+      }, 500);
+      alert("Please relogin.");
+    }
+  }, [error]);
 
   //change dashboard route to /:userid/dashboard
   //change goal route to /:userid/:goalid

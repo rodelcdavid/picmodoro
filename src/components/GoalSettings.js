@@ -38,7 +38,7 @@ const GoalSettings = ({ setGuide, goalIdParam, currentGoal }) => {
   // const currentGoal = goalList.filter((goal) => {
   //   return goal.id === goalIdParam;
   // });
-  console.log(currentGoal);
+  
 
   // const { isRandom, blockers, presetMin, isDone } = currentGoal[0];
   const {
@@ -47,7 +47,7 @@ const GoalSettings = ({ setGuide, goalIdParam, currentGoal }) => {
     preset_min: presetMin,
     is_done: isDone,
   } = currentGoal;
-  console.log("isRandom", isRandom);
+ 
   // const renderCount = useRef(0);
   // renderCount.current += 1;
   // console.log("Settings rendered:", renderCount.current);

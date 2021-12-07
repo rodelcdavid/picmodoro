@@ -251,7 +251,7 @@ const GoalSetup = () => {
         </Typography>
         <LoadingButton
           loading={loading || loadingButton ? true : false}
-          loadingPosition="start"
+          // loadingPosition="start"
           sx={{ alignSelf: "center", width: "40%" }}
           onClick={onSubmit}
           variant="contained"

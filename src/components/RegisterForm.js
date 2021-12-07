@@ -72,7 +72,7 @@ const RegisterForm = () => {
             password,
           }),
         });
-        console.log("res", res);
+
         if (res.ok) {
           const { user, refreshToken, accessToken } = await res.json();
 

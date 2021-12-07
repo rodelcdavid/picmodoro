@@ -7,22 +7,29 @@ import jwt_decode from "jwt-decode";
 
 export const axiosJWT = axios.create();
 
+// const auth = JSON.parse(localStorage.getItem("auth"));
+
 const refreshToken = async () => {
   try {
     const refreshToken = JSON.parse(localStorage.getItem("refreshToken"));
-    console.log("refreshToken received from localstorage", refreshToken);
+
     const res = await axios.post("http://localhost:7000/refresh", {
       token: refreshToken,
     }); //get refreshtoken from localstorage
 
-    console.log("res data from refresh", res.data);
-    //update user with tokens
-    localStorage.accessToken = JSON.stringify(res.data.accessToken);
-    localStorage.refreshToken = JSON.stringify(res.data.refreshToken);
-    //dispatch(updateUser)
+    if (res.status === 200) {
+      //update user with tokens
+      localStorage.accessToken = JSON.stringify(res.data.accessToken);
+      localStorage.refreshToken = JSON.stringify(res.data.refreshToken);
 
-    return res.data;
+      return res.data;
+    }
   } catch (err) {
+    // when refresh token is invalid, status is 401 => axios error
+
+    // if (err.response.status === 401) {
+    //   return err;
+    // }
     console.log(err);
   }
 };
@@ -34,9 +41,11 @@ axiosJWT.interceptors.request.use(
     const decodedToken = jwt_decode(accessToken); //get accesstoken from localstorage
 
     if (decodedToken.exp * 1000 < currentDate.getTime()) {
-      console.log("expired");
       const data = await refreshToken();
-      config.headers["authorization"] = "Bearer " + data.accessToken;
+
+      if (data) {
+        config.headers["authorization"] = "Bearer " + data.accessToken;
+      }
     }
     return config;
   },
@@ -50,7 +59,7 @@ export const getGoalListAsync = createAsyncThunk(
   async (payload) => {
     try {
       const accessToken = JSON.parse(localStorage.getItem("accessToken"));
-      console.log("token", accessToken);
+
       // const response = await fetch(`http://localhost:7000/user/${payload.id}`);
       const response = await axiosJWT.get(
         `http://localhost:7000/user/${payload.id}`,
@@ -58,7 +67,7 @@ export const getGoalListAsync = createAsyncThunk(
           headers: { authorization: "Bearer " + accessToken },
         }
       );
-      console.log(response);
+
       if (response.status === 200) {
         // const goalList = await response.json();
         const goalList = response.data;
@@ -114,30 +123,66 @@ export const addGoalAsync = createAsyncThunk(
   }
 );
 
+//params: userid, goalid
 export const deleteGoalAsync = createAsyncThunk(
   "goals/deleteGoalAsync",
   async (payload) => {
     try {
-      const response = await fetch("http://localhost:7000/goals", {
-        method: "DELETE",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          id: payload.id,
-        }),
-      });
-      if (response.ok) {
-        const goalToDelete = await response.json();
+      const accessToken = JSON.parse(localStorage.getItem("accessToken"));
+      const auth = JSON.parse(localStorage.getItem("auth"));
 
-        return { goalToDelete };
+      // const response = await fetch(`http://localhost:7000/user/${payload.id}`);
+      const response = await axiosJWT.delete(
+        `http://localhost:7000/${auth.id}/${payload.id}`,
+        {
+          headers: { authorization: "Bearer " + accessToken },
+        }
+      );
+      console.log(response);
+      if (response.status === 200) {
+        // const goalList = await response.json();
+        const goalToDelete = response.data;
+        const isUserValid = true;
+        return { isUserValid, goalToDelete };
       }
-      // else{
-      //   //userauthenticated = false
-      // }
-    } catch {
-      return; //return status rejected
+    } catch (err) {
+      console.log(err.response);
+      if (err.response?.status === 401) {
+        // if (err.response.status === 401) {
+        console.log("Invalid token");
+        const isUserValid = false;
+        return { isUserValid };
+        //set userauthenticated = false
+      } else if (err.request) {
+        console.log("There was a problem connecting to the server.");
+      } else {
+        console.log("Error");
+      }
+
+      // return; // return status rejected
     }
+
+    // try {
+    //   const response = await fetch("http://localhost:7000/goals", {
+    //     method: "DELETE",
+    //     headers: {
+    //       "Content-Type": "application/json",
+    //     },
+    //     body: JSON.stringify({
+    //       id: payload.id,
+    //     }),
+    //   });
+    //   if (response.ok) {
+    //     const goalToDelete = await response.json();
+
+    //     return { goalToDelete };
+    //   }
+    //   // else{
+    //   //   //userauthenticated = false
+    //   // }
+    // } catch {
+    //   return; //return status rejected
+    // }
   }
 );
 
@@ -173,9 +218,8 @@ export const getCurrentGoalAsync = createAsyncThunk(
   "goals/getCurrentGoalAsync",
   async (payload) => {
     try {
-      console.log("fetching", payload.id);
       const response = await fetch(`http://localhost:7000/${payload.id}`);
-      console.log("response", response);
+
       if (response.ok) {
         const currentGoal = await response.json();
         return { currentGoal };
@@ -191,7 +235,11 @@ export const getCurrentGoalAsync = createAsyncThunk(
 );
 
 const initialState = {
-  goalList: [],
+  goalList: {
+    data: [],
+    status: "",
+  },
+  // goalList: [],
   currentGoal: {},
   currentGoalStatus: "pending",
   fetchStatus: "",
@@ -203,52 +251,16 @@ export const goalSlice = createSlice({
   name: "goals",
   initialState,
   reducers: {
-    // updateGoalName: (state, { payload }) => {
-    //   state.goalName = payload;
-    // },
-    // updateGoalImage: (state, { payload }) => {
-    //   state.goalImage = payload;
-    // },
-    //addGoal: => create goalid, receive goalname and goalimage, rest are default >> then push
-    addGoal: (state, { payload }) => {
-      const newGoal = {
-        id: payload.id,
-        goalName: payload.goalName,
-        goalImage: payload.goalImage,
-        blockers: [{ clickable: false, reveal: false }],
-        presetMin: 0.1,
-        isRandom: false,
-        isDone: false,
-      };
-      console.log(newGoal.id);
-      state.goalList.push(newGoal);
-    },
-    //deleteGoal: => receive goalid, filter goallist
-    deleteGoal: (state, { payload }) => {
-      // const index = state.goalList.findIndex((goal) => goal.id === payload.id);
-      state.goalList = state.goalList.filter((goal) => goal.id !== payload.id);
-    },
     //updateGoalName: => receive goalid, update goalname of that goalid
     //updateGoalImage: => receive goalid, update goalname of that goalid
     //addblockers => receive goalid, add new blocker
     updateBlockers: (state, { payload }) => {
-      // const index = state.goalList.findIndex((goal) => goal.id === payload.id);
-
-      // state.goalList[index].blockers = payload.blockers;
       state.currentGoal.blockers = payload.blockers;
     },
-    //updateReveal => receive goalid, determine index of blocker(random or normal), update rev
-    //updatePresetMin => receive goalid, update presetmin of that goalid
     updatePresetMin: (state, { payload }) => {
-      // const index = state.goalList.findIndex((goal) => goal.id === payload.id);
-      // console.log("presetmin", state.goalList[index]);
-      // state.goalList[index].preset_min = payload.presetMin;
       state.currentGoal.preset_min = payload.presetMin;
     },
-    //toggleIsRandom => receive goalid, update israndom of that goalid
     toggleIsRandom: (state, { payload }) => {
-      // const index = state.goalList.findIndex((goal) => goal.id === payload.id);
-      // state.goalList[index].is_random = payload.isRandom;
       state.currentGoal.is_random = payload.isRandom;
     },
     resetCurrentGoal: (state, { payload }) => {
@@ -257,37 +269,51 @@ export const goalSlice = createSlice({
     resetCurrentGoalStatus: (state, { payload }) => {
       state.currentGoalStatus = "pending";
     },
+    updateError: (state, { payload }) => {
+      state.error = payload;
+    },
     //toggleisDone => receive goalid, update isDone of that goalid
   },
   extraReducers: {
     [getGoalListAsync.fulfilled]: (state, { payload }) => {
       if (payload.isUserValid) {
-        state.goalList = payload.goalList;
-        state.fetchStatus = "fulfilled";
-        console.log("fulfilled");
+        state.goalList.data = payload.goalList;
+        state.goalList.status = "fulfilled";
       } else {
         state.error = "Invalid token";
       }
     },
     [getGoalListAsync.pending]: (state, { payload }) => {
+      state.goalList.status = "pending";
       state.fetchStatus = "pending";
-      console.log("pending");
     },
+    // [getGoalListAsync.rejected]: (state, { payload }) => {
+    //   console.log("invalid token in rejected");
+
+    //   state.error = "Invalid token";
+    // },
     [addGoalAsync.fulfilled]: (state, { payload }) => {
-      state.goalList.unshift(payload.goal);
+      state.goalList.data.unshift(payload.goal);
       state.addStatus = "fulfilled";
     },
     [addGoalAsync.pending]: (state, { payload }) => {
       state.addStatus = "pending";
     },
     [deleteGoalAsync.fulfilled]: (state, { payload }) => {
-      state.goalList = state.goalList.filter(
-        (goal) => goal.id !== payload.goalToDelete.id
-      );
+      if (payload.isUserValid) {
+        state.goalList.data = state.goalList.data.filter(
+          (goal) => goal.id !== payload.goalToDelete.id
+        );
+      } else {
+        state.error = "Invalid token";
+      }
     },
 
     [deleteGoalAsync.pending]: (state, { payload }) => {
       console.log("deleting...");
+    },
+    [deleteGoalAsync.rejected]: (state, { payload }) => {
+      console.log("delete rejected...");
     },
     [saveSettingsAsync.pending]: (state, { payload }) => {
       // state.addStatus = "pending";
@@ -295,10 +321,10 @@ export const goalSlice = createSlice({
       console.log("saving...");
     },
     [saveSettingsAsync.fulfilled]: (state, { payload }) => {
-      const index = state.goalList.findIndex(
+      const index = state.goalList.data.findIndex(
         (goal) => goal.id === payload.goalToUpdate.id
       );
-      state.goalList[index] = payload.goalToUpdate;
+      state.goalList.data[index] = payload.goalToUpdate;
     },
     [getCurrentGoalAsync.pending]: (state, { payload }) => {
       // state.addStatus = "pending";
@@ -336,6 +362,7 @@ export const {
   deleteGoal,
   resetCurrentGoal,
   resetCurrentGoalStatus,
+  updateError,
 } = goalSlice.actions;
 
 export default goalSlice.reducer;
