@@ -30,7 +30,7 @@ const refreshToken = async () => {
     // if (err.response.status === 401) {
     //   return err;
     // }
-    console.log(err);
+    console.log("refreshToken error", err);
   }
 };
 
@@ -47,6 +47,7 @@ axiosJWT.interceptors.request.use(
         config.headers["authorization"] = "Bearer " + data.accessToken;
       }
     }
+    console.log(config);
     return config;
   },
   (err) => {
@@ -59,35 +60,22 @@ export const getGoalListAsync = createAsyncThunk(
   async (payload) => {
     try {
       const accessToken = JSON.parse(localStorage.getItem("accessToken"));
-
-      // const response = await fetch(`http://localhost:7000/user/${payload.id}`);
       const response = await axiosJWT.get(
         `http://localhost:7000/user/${payload.id}`,
         {
           headers: { authorization: "Bearer " + accessToken },
         }
       );
-
-      if (response.status === 200) {
-        // const goalList = await response.json();
-        const goalList = response.data;
-        const isUserValid = true;
-        return { isUserValid, goalList };
-      }
+      const goalList = response.data;
+      return { goalList };
     } catch (err) {
       if (err.response?.status === 401) {
-        // if (err.response.status === 401) {
-        console.log("Invalid token");
-        const isUserValid = false;
-        return { isUserValid };
-        //set userauthenticated = false
+        return Promise.reject(err);
       } else if (err.request) {
         console.log("There was a problem connecting to the server.");
       } else {
-        console.log("Error");
+        console.log("Error", err);
       }
-
-      // return; // return status rejected
     }
   }
 );
@@ -276,22 +264,16 @@ export const goalSlice = createSlice({
   },
   extraReducers: {
     [getGoalListAsync.fulfilled]: (state, { payload }) => {
-      if (payload.isUserValid) {
-        state.goalList.data = payload.goalList;
-        state.goalList.status = "fulfilled";
-      } else {
-        state.error = "Invalid token";
-      }
+      state.goalList.data = payload.goalList;
+      state.goalList.status = "fulfilled";
     },
     [getGoalListAsync.pending]: (state, { payload }) => {
       state.goalList.status = "pending";
       state.fetchStatus = "pending";
     },
-    // [getGoalListAsync.rejected]: (state, { payload }) => {
-    //   console.log("invalid token in rejected");
-
-    //   state.error = "Invalid token";
-    // },
+    [getGoalListAsync.rejected]: (state, { payload }) => {
+      state.error = "Invalid token";
+    },
     [addGoalAsync.fulfilled]: (state, { payload }) => {
       state.goalList.data.unshift(payload.goal);
       state.addStatus = "fulfilled";
