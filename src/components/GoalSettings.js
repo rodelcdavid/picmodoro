@@ -38,7 +38,6 @@ const GoalSettings = ({ setGuide, goalIdParam, currentGoal }) => {
   // const currentGoal = goalList.filter((goal) => {
   //   return goal.id === goalIdParam;
   // });
-  
 
   // const { isRandom, blockers, presetMin, isDone } = currentGoal[0];
   const {
@@ -47,7 +46,7 @@ const GoalSettings = ({ setGuide, goalIdParam, currentGoal }) => {
     preset_min: presetMin,
     is_done: isDone,
   } = currentGoal;
- 
+
   // const renderCount = useRef(0);
   // renderCount.current += 1;
   // console.log("Settings rendered:", renderCount.current);
@@ -79,9 +78,10 @@ const GoalSettings = ({ setGuide, goalIdParam, currentGoal }) => {
   const handleClose = () => {
     //TODO: save settings
     //payload currentGoal
-    dispatch(saveSettingsAsync({ currentGoal: currentGoal })).catch(() =>
-      console.log("There was a problem connecting to the server.")
-    );
+    console.log(currentGoal);
+    dispatch(
+      saveSettingsAsync({ currentGoal: currentGoal, id: currentGoal.id })
+    ).catch(() => console.log("There was a problem connecting to the server."));
     setOpen(false);
   };
 

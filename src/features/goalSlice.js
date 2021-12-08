@@ -133,7 +133,6 @@ export const addGoalAsync = createAsyncThunk(
       return { goal };
     } catch (err) {
       if (err.response?.status === 401) {
-        console.log("add goal catch error 401");
         return Promise.reject(err);
       } else if (err.request) {
         console.log("There was a problem connecting to the server.");
@@ -173,29 +172,65 @@ export const deleteGoalAsync = createAsyncThunk(
 );
 
 //savesettings => receive goalid, update all settings to database
+// export const saveSettingsAsync = createAsyncThunk(
+//   "goals/saveSettingsAsync",
+//   async (payload) => {
+//     try {
+//       const response = await fetch("http://localhost:7000/goals", {
+//         method: "PATCH",
+//         headers: {
+//           "Content-Type": "application/json",
+//         },
+//         body: JSON.stringify({
+//           currentGoal: payload.currentGoal,
+//         }),
+//       });
+//       if (response.ok) {
+//         const goalToUpdate = await response.json();
+
+//         return { goalToUpdate };
+//       }
+//       // else{
+//       //   //userauthenticated = false
+//       // }
+//     } catch {
+//       return; //return status rejected
+//     }
+//   }
+// );
+
 export const saveSettingsAsync = createAsyncThunk(
   "goals/saveSettingsAsync",
   async (payload) => {
     try {
-      const response = await fetch("http://localhost:7000/goals", {
-        method: "PATCH",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          currentGoal: payload.currentGoal,
-        }),
-      });
-      if (response.ok) {
-        const goalToUpdate = await response.json();
+      const accessToken = JSON.parse(localStorage.getItem("accessToken"));
+      const auth = JSON.parse(localStorage.getItem("auth"));
 
-        return { goalToUpdate };
+      const data = {
+        currentGoal: payload.currentGoal,
+      };
+
+      const response = await axiosJWT.patch(
+        `http://localhost:7000/${auth.id}/${payload.id}`,
+        data,
+        {
+          headers: {
+            authorization: "Bearer " + accessToken,
+            "Content-Type": "application/json",
+          },
+        }
+      );
+
+      const goalToUpdate = response.data;
+      return { goalToUpdate };
+    } catch (err) {
+      if (err.response?.status === 401) {
+        return Promise.reject(err);
+      } else if (err.request) {
+        console.log("There was a problem connecting to the server.");
+      } else {
+        console.log("Error");
       }
-      // else{
-      //   //userauthenticated = false
-      // }
-    } catch {
-      return; //return status rejected
     }
   }
 );
@@ -273,7 +308,6 @@ export const goalSlice = createSlice({
       state.error = "Invalid token";
     },
     [addGoalAsync.fulfilled]: (state, { payload }) => {
-      console.log("add goal fulfilled");
       state.goalList.data.unshift(payload.goal);
       state.addStatus = "fulfilled";
     },
@@ -281,7 +315,6 @@ export const goalSlice = createSlice({
       state.addStatus = "pending";
     },
     [addGoalAsync.rejected]: (state, { payload }) => {
-      console.log("add goal rejected");
       state.error = "Invalid token";
     },
     [deleteGoalAsync.fulfilled]: (state, { payload }) => {
@@ -295,16 +328,19 @@ export const goalSlice = createSlice({
     [deleteGoalAsync.rejected]: (state, { payload }) => {
       state.error = "Invalid token";
     },
-    [saveSettingsAsync.pending]: (state, { payload }) => {
-      // state.addStatus = "pending";
-
-      console.log("saving...");
-    },
     [saveSettingsAsync.fulfilled]: (state, { payload }) => {
       const index = state.goalList.data.findIndex(
         (goal) => goal.id === payload.goalToUpdate.id
       );
       state.goalList.data[index] = payload.goalToUpdate;
+    },
+    [saveSettingsAsync.pending]: (state, { payload }) => {
+      // state.addStatus = "pending";
+
+      console.log("saving...");
+    },
+    [saveSettingsAsync.rejected]: (state, { payload }) => {
+      state.error = "Invalid token";
     },
     [getCurrentGoalAsync.pending]: (state, { payload }) => {
       // state.addStatus = "pending";
