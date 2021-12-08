@@ -25,12 +25,7 @@ const refreshToken = async () => {
       return res.data;
     }
   } catch (err) {
-    // when refresh token is invalid, status is 401 => axios error
-
-    // if (err.response.status === 401) {
-    //   return err;
-    // }
-    console.log("refreshToken error", err);
+    console.log(err);
   }
 };
 
@@ -47,7 +42,6 @@ axiosJWT.interceptors.request.use(
         config.headers["authorization"] = "Bearer " + data.accessToken;
       }
     }
-    console.log(config);
     return config;
   },
   (err) => {
@@ -60,10 +54,11 @@ export const getGoalListAsync = createAsyncThunk(
   async (payload) => {
     try {
       const accessToken = JSON.parse(localStorage.getItem("accessToken"));
+
       const response = await axiosJWT.get(
-        `http://localhost:7000/user/${payload.id}`,
+        `http://localhost:7000/${payload.id}/goal-list`,
         {
-          headers: { authorization: "Bearer " + accessToken },
+          headers: { authorization: `Bearer ${accessToken}` },
         }
       );
       const goalList = response.data;
@@ -80,33 +75,71 @@ export const getGoalListAsync = createAsyncThunk(
   }
 );
 
+// export const addGoalAsync = createAsyncThunk(
+//   "goals/addGoalAsync",
+//   async (payload) => {
+//     try {
+//       const response = await fetch("http://localhost:7000/goals", {
+//         method: "POST",
+//         headers: {
+//           "Content-Type": "application/json",
+//         },
+//         body: JSON.stringify({
+//           ownerId: payload.ownerId,
+//           id: payload.id,
+//           goalName: payload.goalName,
+//           goalImage: payload.goalImage,
+//         }),
+//       });
+//       if (response.ok) {
+//         const goal = await response.json();
+
+//         return { goal };
+//       }
+//       // else{
+//       //   //userauthenticated = false
+//       // }
+//     } catch {
+//       // console.log("There was a problem connecting to the server");
+//       return; //return status rejected
+//     }
+//   }
+// );
+
 export const addGoalAsync = createAsyncThunk(
   "goals/addGoalAsync",
   async (payload) => {
     try {
-      const response = await fetch("http://localhost:7000/goals", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          ownerId: payload.ownerId,
-          id: payload.id,
-          goalName: payload.goalName,
-          goalImage: payload.goalImage,
-        }),
-      });
-      if (response.ok) {
-        const goal = await response.json();
+      const accessToken = JSON.parse(localStorage.getItem("accessToken"));
+      const auth = JSON.parse(localStorage.getItem("auth"));
 
-        return { goal };
+      const data = {
+        goalName: payload.goalName,
+        goalImage: payload.goalImage,
+      };
+
+      const response = await axiosJWT.post(
+        `http://localhost:7000/${auth.id}/${payload.id}`,
+        data,
+        {
+          headers: {
+            authorization: "Bearer " + accessToken,
+            "Content-Type": "application/json",
+          },
+        }
+      );
+
+      const goal = response.data;
+      return { goal };
+    } catch (err) {
+      if (err.response?.status === 401) {
+        console.log("add goal catch error 401");
+        return Promise.reject(err);
+      } else if (err.request) {
+        console.log("There was a problem connecting to the server.");
+      } else {
+        console.log("Error");
       }
-      // else{
-      //   //userauthenticated = false
-      // }
-    } catch {
-      // console.log("There was a problem connecting to the server");
-      return; //return status rejected
     }
   }
 );
@@ -119,58 +152,23 @@ export const deleteGoalAsync = createAsyncThunk(
       const accessToken = JSON.parse(localStorage.getItem("accessToken"));
       const auth = JSON.parse(localStorage.getItem("auth"));
 
-      // const response = await fetch(`http://localhost:7000/user/${payload.id}`);
       const response = await axiosJWT.delete(
         `http://localhost:7000/${auth.id}/${payload.id}`,
         {
           headers: { authorization: "Bearer " + accessToken },
         }
       );
-      console.log(response);
-      if (response.status === 200) {
-        // const goalList = await response.json();
-        const goalToDelete = response.data;
-        const isUserValid = true;
-        return { isUserValid, goalToDelete };
-      }
+      const goalToDelete = response.data;
+      return { goalToDelete };
     } catch (err) {
-      console.log(err.response);
       if (err.response?.status === 401) {
-        // if (err.response.status === 401) {
-        console.log("Invalid token");
-        const isUserValid = false;
-        return { isUserValid };
-        //set userauthenticated = false
+        return Promise.reject(err);
       } else if (err.request) {
         console.log("There was a problem connecting to the server.");
       } else {
         console.log("Error");
       }
-
-      // return; // return status rejected
     }
-
-    // try {
-    //   const response = await fetch("http://localhost:7000/goals", {
-    //     method: "DELETE",
-    //     headers: {
-    //       "Content-Type": "application/json",
-    //     },
-    //     body: JSON.stringify({
-    //       id: payload.id,
-    //     }),
-    //   });
-    //   if (response.ok) {
-    //     const goalToDelete = await response.json();
-
-    //     return { goalToDelete };
-    //   }
-    //   // else{
-    //   //   //userauthenticated = false
-    //   // }
-    // } catch {
-    //   return; //return status rejected
-    // }
   }
 );
 
@@ -275,27 +273,27 @@ export const goalSlice = createSlice({
       state.error = "Invalid token";
     },
     [addGoalAsync.fulfilled]: (state, { payload }) => {
+      console.log("add goal fulfilled");
       state.goalList.data.unshift(payload.goal);
       state.addStatus = "fulfilled";
     },
     [addGoalAsync.pending]: (state, { payload }) => {
       state.addStatus = "pending";
     },
-    [deleteGoalAsync.fulfilled]: (state, { payload }) => {
-      if (payload.isUserValid) {
-        state.goalList.data = state.goalList.data.filter(
-          (goal) => goal.id !== payload.goalToDelete.id
-        );
-      } else {
-        state.error = "Invalid token";
-      }
+    [addGoalAsync.rejected]: (state, { payload }) => {
+      console.log("add goal rejected");
+      state.error = "Invalid token";
     },
-
+    [deleteGoalAsync.fulfilled]: (state, { payload }) => {
+      state.goalList.data = state.goalList.data.filter(
+        (goal) => goal.id !== payload.goalToDelete.id
+      );
+    },
     [deleteGoalAsync.pending]: (state, { payload }) => {
       console.log("deleting...");
     },
     [deleteGoalAsync.rejected]: (state, { payload }) => {
-      console.log("delete rejected...");
+      state.error = "Invalid token";
     },
     [saveSettingsAsync.pending]: (state, { payload }) => {
       // state.addStatus = "pending";

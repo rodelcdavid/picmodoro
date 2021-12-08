@@ -76,18 +76,20 @@ const GoalSetup = () => {
 
       dispatch(
         addGoalAsync({
-          ownerId: ownerId,
+          // ownerId: ownerId,
           id: id,
           goalName: inputName,
           goalImage: inputUrl,
         })
       )
-        .then(() =>
+        .then(() => {
+          // console.log("Still triggered?");
+          //this triggers an error when user is redirected to signin on invalid token
           setTimeout(() => {
             setOpenBackdrop(false);
             navigate(`/${id}`);
-          }, 1000)
-        )
+          }, 1000);
+        })
         .catch(() =>
           console.log("There was a problem connecting to the server")
         );
