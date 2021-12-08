@@ -235,22 +235,54 @@ export const saveSettingsAsync = createAsyncThunk(
   }
 );
 
+// export const getCurrentGoalAsync = createAsyncThunk(
+//   "goals/getCurrentGoalAsync",
+//   async (payload) => {
+//     try {
+//       const response = await fetch(`http://localhost:7000/${payload.id}`);
+
+//       if (response.ok) {
+//         const currentGoal = await response.json();
+//         return { currentGoal };
+//       } else {
+//         const currentGoal = {};
+//         return { currentGoal };
+//       }
+//     } catch {
+//       // console.log("There was a problem connecting to the server");
+//       return; //return status rejected
+//     }
+//   }
+// );
+
 export const getCurrentGoalAsync = createAsyncThunk(
   "goals/getCurrentGoalAsync",
   async (payload) => {
     try {
-      const response = await fetch(`http://localhost:7000/${payload.id}`);
+      console.log("payload id current", payload.id);
+      const accessToken = JSON.parse(localStorage.getItem("accessToken"));
+      const auth = JSON.parse(localStorage.getItem("auth"));
 
-      if (response.ok) {
-        const currentGoal = await response.json();
-        return { currentGoal };
-      } else {
+      const response = await axiosJWT.get(
+        `http://localhost:7000/${auth.id}/${payload.id}`,
+        {
+          headers: { authorization: `Bearer ${accessToken}` },
+        }
+      );
+      const currentGoal = response.data;
+      return { currentGoal };
+    } catch (err) {
+      if (err.response.status === 404) {
         const currentGoal = {};
         return { currentGoal };
       }
-    } catch {
-      // console.log("There was a problem connecting to the server");
-      return; //return status rejected
+      if (err.response?.status === 401) {
+        return Promise.reject(err);
+      } else if (err.request) {
+        console.log("There was a problem connecting to the server.");
+      } else {
+        console.log("Error", err);
+      }
     }
   }
 );
@@ -352,7 +384,7 @@ export const goalSlice = createSlice({
         state.currentGoal = payload.currentGoal;
         state.currentGoalStatus = "fulfilled";
       } else {
-        state.currentGoalStatus = "rejected";
+        state.currentGoalStatus = "not found";
       }
 
       // console.log("get fulfilled");
@@ -360,8 +392,9 @@ export const goalSlice = createSlice({
     [getCurrentGoalAsync.rejected]: (state, { payload }) => {
       // state.currentGoal = payload.currentGoal;
       console.log("calling rejected reducer");
-      state.currentGoal = {};
+      // state.currentGoal = {};
       state.currentGoalStatus = "rejected";
+      state.error = "Invalid token";
       // console.log("get fulfilled");
     },
   },

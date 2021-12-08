@@ -122,7 +122,9 @@ const DisplayTimer = ({ currentGoal, goalIdParam }) => {
 
   //Save to database when session ended
   useEffect(() => {
-    dispatch(saveSettingsAsync({ currentGoal: currentGoal }));
+    dispatch(
+      saveSettingsAsync({ currentGoal: currentGoal, id: currentGoal.id })
+    );
   }, [isSessionDone]);
 
   //Reset on component did mount

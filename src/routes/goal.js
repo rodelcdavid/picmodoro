@@ -99,7 +99,7 @@ const Goal = () => {
     );
   }
 
-  if (currentGoalStatus === "rejected") {
+  if (currentGoalStatus === "not found") {
     return (
       <Box
         sx={{
@@ -110,7 +110,7 @@ const Goal = () => {
           height: "100%",
         }}
       >
-        <h3>404 not found</h3>
+        <h3>Goal not found</h3>
       </Box>
     );
   }
@@ -162,6 +162,8 @@ const Goal = () => {
       </Box>
     );
   }
+  //Fix this, nothing is returned if it doesn't match any currentgoalstatus
+  return <h1>Loading</h1>;
 };
 
 export default Goal;
