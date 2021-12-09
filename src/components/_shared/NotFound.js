@@ -8,6 +8,7 @@ const NotFound = () => {
         justifyContent: "center",
         alignItems: "center",
         flexDirection: "column",
+        color: "#fff",
       }}
     >
       <h1>404</h1>

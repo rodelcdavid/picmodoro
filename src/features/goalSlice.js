@@ -206,6 +206,7 @@ export const getCurrentGoalAsync = createAsyncThunk(
   }
 );
 
+//why does auth fails when client recompile?
 export const saveNameAsync = createAsyncThunk(
   "goals/saveNameAsync",
   async (payload) => {

@@ -90,8 +90,15 @@ const GoalCard = ({ id, goalName, goalImage, blockers }) => {
   }, [renameMode]);
 
   //save to database when name changes
+  //this rerender too much
+
+  const firstLoad = useRef(false);
   useEffect(() => {
-    dispatch(saveNameAsync({ id: id, goalName: name }));
+    if (!firstLoad.current) {
+      firstLoad.current = true;
+    } else {
+      dispatch(saveNameAsync({ id: id, goalName: name }));
+    }
   }, [dispatch, name]);
 
   const open = Boolean(anchorEl);
@@ -197,7 +204,7 @@ const GoalCard = ({ id, goalName, goalImage, blockers }) => {
           <Box
             sx={{
               backgroundColor: "#fff",
-
+              fontSize: "0.9rem",
               cursor: "pointer",
               "& p": {
                 padding: "1rem",
@@ -208,7 +215,7 @@ const GoalCard = ({ id, goalName, goalImage, blockers }) => {
             }}
           >
             <p onClick={handleRenameOption}>Edit goal name</p>
-            <p>Change image url</p>
+            <p>Change goal image</p>
             <p onClick={handleDelete}>Delete</p>
           </Box>
         </Popover>
