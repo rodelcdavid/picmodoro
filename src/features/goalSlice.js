@@ -75,37 +75,6 @@ export const getGoalListAsync = createAsyncThunk(
   }
 );
 
-// export const addGoalAsync = createAsyncThunk(
-//   "goals/addGoalAsync",
-//   async (payload) => {
-//     try {
-//       const response = await fetch("http://localhost:7000/goals", {
-//         method: "POST",
-//         headers: {
-//           "Content-Type": "application/json",
-//         },
-//         body: JSON.stringify({
-//           ownerId: payload.ownerId,
-//           id: payload.id,
-//           goalName: payload.goalName,
-//           goalImage: payload.goalImage,
-//         }),
-//       });
-//       if (response.ok) {
-//         const goal = await response.json();
-
-//         return { goal };
-//       }
-//       // else{
-//       //   //userauthenticated = false
-//       // }
-//     } catch {
-//       // console.log("There was a problem connecting to the server");
-//       return; //return status rejected
-//     }
-//   }
-// );
-
 export const addGoalAsync = createAsyncThunk(
   "goals/addGoalAsync",
   async (payload) => {
@@ -143,7 +112,6 @@ export const addGoalAsync = createAsyncThunk(
   }
 );
 
-//params: userid, goalid
 export const deleteGoalAsync = createAsyncThunk(
   "goals/deleteGoalAsync",
   async (payload) => {
@@ -170,34 +138,6 @@ export const deleteGoalAsync = createAsyncThunk(
     }
   }
 );
-
-//savesettings => receive goalid, update all settings to database
-// export const saveSettingsAsync = createAsyncThunk(
-//   "goals/saveSettingsAsync",
-//   async (payload) => {
-//     try {
-//       const response = await fetch("http://localhost:7000/goals", {
-//         method: "PATCH",
-//         headers: {
-//           "Content-Type": "application/json",
-//         },
-//         body: JSON.stringify({
-//           currentGoal: payload.currentGoal,
-//         }),
-//       });
-//       if (response.ok) {
-//         const goalToUpdate = await response.json();
-
-//         return { goalToUpdate };
-//       }
-//       // else{
-//       //   //userauthenticated = false
-//       // }
-//     } catch {
-//       return; //return status rejected
-//     }
-//   }
-// );
 
 export const saveSettingsAsync = createAsyncThunk(
   "goals/saveSettingsAsync",
@@ -235,31 +175,10 @@ export const saveSettingsAsync = createAsyncThunk(
   }
 );
 
-// export const getCurrentGoalAsync = createAsyncThunk(
-//   "goals/getCurrentGoalAsync",
-//   async (payload) => {
-//     try {
-//       const response = await fetch(`http://localhost:7000/${payload.id}`);
-
-//       if (response.ok) {
-//         const currentGoal = await response.json();
-//         return { currentGoal };
-//       } else {
-//         const currentGoal = {};
-//         return { currentGoal };
-//       }
-//     } catch {
-//       // console.log("There was a problem connecting to the server");
-//       return; //return status rejected
-//     }
-//   }
-// );
-
 export const getCurrentGoalAsync = createAsyncThunk(
   "goals/getCurrentGoalAsync",
   async (payload) => {
     try {
-      console.log("payload id current", payload.id);
       const accessToken = JSON.parse(localStorage.getItem("accessToken"));
       const auth = JSON.parse(localStorage.getItem("auth"));
 
@@ -282,6 +201,42 @@ export const getCurrentGoalAsync = createAsyncThunk(
         console.log("There was a problem connecting to the server.");
       } else {
         console.log("Error", err);
+      }
+    }
+  }
+);
+
+export const saveNameAsync = createAsyncThunk(
+  "goals/saveNameAsync",
+  async (payload) => {
+    try {
+      const accessToken = JSON.parse(localStorage.getItem("accessToken"));
+      const auth = JSON.parse(localStorage.getItem("auth"));
+
+      const data = {
+        goalName: payload.goalName,
+      };
+
+      const response = await axiosJWT.patch(
+        `http://localhost:7000/${auth.id}/${payload.id}/rename`,
+        data,
+        {
+          headers: {
+            authorization: "Bearer " + accessToken,
+            "Content-Type": "application/json",
+          },
+        }
+      );
+
+      const goalToUpdate = response.data;
+      return { goalToUpdate };
+    } catch (err) {
+      if (err.response?.status === 401) {
+        return Promise.reject(err);
+      } else if (err.request) {
+        console.log("There was a problem connecting to the server.");
+      } else {
+        console.log("Error");
       }
     }
   }
@@ -386,16 +341,25 @@ export const goalSlice = createSlice({
       } else {
         state.currentGoalStatus = "not found";
       }
-
-      // console.log("get fulfilled");
     },
     [getCurrentGoalAsync.rejected]: (state, { payload }) => {
-      // state.currentGoal = payload.currentGoal;
-      console.log("calling rejected reducer");
-      // state.currentGoal = {};
       state.currentGoalStatus = "rejected";
       state.error = "Invalid token";
-      // console.log("get fulfilled");
+    },
+    [saveNameAsync.fulfilled]: (state, { payload }) => {
+      console.log("rename fulfilled");
+      const index = state.goalList.data.findIndex(
+        (goal) => goal.id === payload.goalToUpdate.id
+      );
+      state.goalList.data[index] = payload.goalToUpdate;
+    },
+    [saveNameAsync.pending]: (state, { payload }) => {
+      // state.addStatus = "pending";
+
+      console.log("renaming...");
+    },
+    [saveNameAsync.rejected]: (state, { payload }) => {
+      state.error = "Invalid token";
     },
   },
 });

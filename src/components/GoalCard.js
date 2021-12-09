@@ -1,6 +1,6 @@
 import { Box } from "@mui/system";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
-import React, { useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { Link as RouterLink } from "react-router-dom";
 import {
   Backdrop,
@@ -10,7 +10,11 @@ import {
   Popover,
 } from "@mui/material";
 import { useDispatch } from "react-redux";
-import { deleteGoal, deleteGoalAsync } from "../features/goalSlice";
+import {
+  deleteGoal,
+  deleteGoalAsync,
+  saveNameAsync,
+} from "../features/goalSlice";
 
 const GoalCard = ({ id, goalName, goalImage, blockers }) => {
   const reveal = blockers.map((blocker) => blocker.reveal);
@@ -23,6 +27,12 @@ const GoalCard = ({ id, goalName, goalImage, blockers }) => {
 
   //Backdrop
   const [openBackdrop, setOpenBackdrop] = useState(false);
+
+  //Edit mode
+  const [renameMode, setRenameMode] = useState(false);
+
+  //Name
+  const [name, setName] = useState(goalName);
 
   const handlePopOver = (e) => {
     e.preventDefault();
@@ -43,6 +53,46 @@ const GoalCard = ({ id, goalName, goalImage, blockers }) => {
         console.log("There was a problem connecting to the server.")
       );
   };
+
+  const renameRef = useRef();
+
+  const handleRename = (e) => {
+    e.preventDefault();
+  };
+
+  const handleRenameOption = (e) => {
+    e.preventDefault();
+    setRenameMode(true);
+
+    setAnchorEl(null);
+  };
+
+  const handleBlur = (e) => {
+    setRenameMode(false);
+    setName(e.target.value);
+  };
+
+  const handleKeyDown = (e) => {
+    if (e.keyCode === 13) {
+      setRenameMode(false);
+      setName(e.target.value);
+    }
+    if (e.keyCode === 27) {
+      setRenameMode(false);
+    }
+  };
+
+  //focus input
+  useEffect(() => {
+    if (renameMode) {
+      renameRef.current.focus();
+    }
+  }, [renameMode]);
+
+  //save to database when name changes
+  useEffect(() => {
+    dispatch(saveNameAsync({ id: id, goalName: name }));
+  }, [dispatch, name]);
 
   const open = Boolean(anchorEl);
   const popOverId = open ? "simple-popover" : undefined;
@@ -86,7 +136,30 @@ const GoalCard = ({ id, goalName, goalImage, blockers }) => {
           position: "relative",
         }}
       >
-        <h5>{goalName}</h5>
+        {renameMode ? (
+          <div>
+            <input
+              style={{
+                width: "150px",
+                outline: "none",
+              }}
+              type="text"
+              ref={renameRef}
+              defaultValue={name}
+              onClick={handleRename}
+              onBlur={handleBlur}
+              onKeyDown={handleKeyDown}
+            />
+          </div>
+        ) : (
+          <h5
+            style={{
+              maxWidth: "150px",
+            }}
+          >
+            {name}
+          </h5>
+        )}
 
         <p style={{ fontSize: "0.7rem" }}>
           Progress: {totalReveal}/{blockers.length}
@@ -134,7 +207,7 @@ const GoalCard = ({ id, goalName, goalImage, blockers }) => {
               },
             }}
           >
-            <p>Edit goal name</p>
+            <p onClick={handleRenameOption}>Edit goal name</p>
             <p>Change image url</p>
             <p onClick={handleDelete}>Delete</p>
           </Box>
