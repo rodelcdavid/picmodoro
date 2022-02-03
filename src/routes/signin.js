@@ -4,11 +4,7 @@ import SignInForm from "../components/SignInForm";
 import { Wrapper } from "../utils/globalstyles";
 
 const SignIn = () => {
-  return (
-    <Wrapper>
-      <SignInForm />
-    </Wrapper>
-  );
+  return <SignInForm />;
 };
 
 export default SignIn;

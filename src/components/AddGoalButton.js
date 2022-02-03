@@ -22,7 +22,7 @@ const AddGoalButton = () => {
           height: "200px",
           display: "flex",
           flexDirection: "column",
-          border: "solid 1px black",
+          border: "solid 1px #aaa",
           borderRadius: "10px",
           justifyContent: "center",
           alignItems: "center",
@@ -31,8 +31,10 @@ const AddGoalButton = () => {
           cursor: "pointer",
 
           transition: "all ease-in 200ms",
-          color: "#1e3c72",
-          "&:hover": { boxShadow: "0 10px 15px rgba(0,0,0,0.5)" },
+          backgroundColor: "#e5e5e5",
+          // color: "#1e3c72",
+          color: "#000",
+          "&:hover": { boxShadow: "0 5px 10px rgba(0,0,0,0.5)" },
         }}
         component="button"
         onClick={handleAdd}

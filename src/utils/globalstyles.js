@@ -12,9 +12,13 @@ const globalStyles = (
       body: {
         fontFamily: "'Montserrat', sans-serif",
         minHeight: "100vh",
-        overflowY: "scroll",
-        backgroundImage:
-          "linear-gradient(to top, #1e3c72 0%, #1e3c72 1%, #2a5298 100%)",
+        maxWidth: "100%",
+        backgroundColor: "#e5e5e5",
+        overflow: "hidden",
+
+        // overflowY: "scroll",
+        // backgroundImage:
+        //   "linear-gradient(to top, #1e3c72 0%, #1e3c72 1%, #2a5298 100%)",
       },
     }}
   />
@@ -28,6 +32,8 @@ export const Wrapper = (props) => {
         flexDirection: "column",
         justifyContent: "center",
         alignItems: "center",
+        width: "100%",
+        height: "100%",
       }}
     >
       {props.children}

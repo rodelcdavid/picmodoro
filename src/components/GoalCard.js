@@ -5,9 +5,13 @@ import { Link as RouterLink } from "react-router-dom";
 import {
   Backdrop,
   CircularProgress,
+  ClickAwayListener,
   Divider,
   IconButton,
+  Menu,
+  MenuItem,
   Popover,
+  Popper,
 } from "@mui/material";
 import { useDispatch } from "react-redux";
 import {
@@ -15,6 +19,8 @@ import {
   deleteGoalAsync,
   saveNameAsync,
 } from "../features/goalSlice";
+import EditIcon from "@mui/icons-material/Edit";
+import DeleteIcon from "@mui/icons-material/Delete";
 
 const GoalCard = ({ id, goalName, goalImage, blockers }) => {
   const reveal = blockers.map((blocker) => blocker.reveal);
@@ -111,7 +117,7 @@ const GoalCard = ({ id, goalName, goalImage, blockers }) => {
         height: "200px",
         display: "flex",
         flexDirection: "column",
-        border: "solid 1px black",
+        border: "solid 1px #aaa",
         borderRadius: "10px",
         justifyContent: "flex-end",
         alignItems: "center",
@@ -123,17 +129,18 @@ const GoalCard = ({ id, goalName, goalImage, blockers }) => {
         textDecoration: "none",
         transition: "all ease-in 200ms",
 
-        "&:hover": { boxShadow: "0 10px 15px rgba(0,0,0,0.5)" },
+        "&:hover": { boxShadow: "0 5px 5px rgba(0,0,0,0.5)" },
       }}
       component={RouterLink}
       to={`/${id}`}
     >
       <Box
-        style={{
-          color: "#fff",
-          backgroundColor: "#1e3c72",
+        sx={{
+          color: "#000",
+          // backgroundColor: "#1e3c72",
+          backgroundColor: "#e5e5e5",
           width: "100%",
-
+          borderTop: "1px solid #aaa",
           padding: "1rem",
           maxHeight: "50px",
           display: "flex",
@@ -149,6 +156,7 @@ const GoalCard = ({ id, goalName, goalImage, blockers }) => {
               style={{
                 width: "150px",
                 outline: "none",
+                fontWeight: "bolder",
               }}
               type="text"
               ref={renameRef}
@@ -173,7 +181,7 @@ const GoalCard = ({ id, goalName, goalImage, blockers }) => {
         </p>
         <IconButton
           sx={{
-            color: "#fff",
+            color: "#000",
             position: "absolute",
             right: 0,
             "&:hover": {
@@ -181,13 +189,13 @@ const GoalCard = ({ id, goalName, goalImage, blockers }) => {
             },
           }}
           onClick={handlePopOver}
-          color="primary"
+          // color="primary"
           aria-label="more options"
           component="span"
         >
           <MoreVertIcon />
         </IconButton>
-        <Popover
+        <Menu
           id={popOverId}
           open={open}
           anchorEl={anchorEl}
@@ -206,19 +214,24 @@ const GoalCard = ({ id, goalName, goalImage, blockers }) => {
               backgroundColor: "#fff",
               fontSize: "0.9rem",
               cursor: "pointer",
-              "& p": {
+              "& li": {
+                display: "flex",
+                gap: "10px",
                 padding: "1rem",
-                "&:hover": {
-                  backgroundColor: "rgba(0,0,0,0.23)",
-                },
               },
             }}
           >
-            <p onClick={handleRenameOption}>Edit goal name</p>
-            <p>Change goal image</p>
-            <p onClick={handleDelete}>Delete</p>
+            <MenuItem onClick={handleRenameOption}>
+              <EditIcon />
+              Edit goal name
+            </MenuItem>
+            {/* <p>Change goal image</p> */}
+            <MenuItem onClick={handleDelete}>
+              <DeleteIcon />
+              Delete
+            </MenuItem>
           </Box>
-        </Popover>
+        </Menu>
       </Box>
 
       {/* Backdrop */}

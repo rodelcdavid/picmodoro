@@ -1,4 +1,4 @@
-import { Button, CircularProgress } from "@mui/material";
+import { Button, CircularProgress, Typography } from "@mui/material";
 import { Box } from "@mui/system";
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
@@ -24,6 +24,7 @@ const Dashboard = () => {
   const dispatch = useDispatch();
 
   useEffect(() => {
+    console.log("dashboard useeffect");
     dispatch(getGoalListAsync({ id: id })).catch((err) => {
       //should catch be here? make a way so that undefined goallist will still run
 
@@ -36,39 +37,42 @@ const Dashboard = () => {
     (state) => state.goalState
   );
 
-  const handleLogout = async () => {
-    const refreshToken = JSON.parse(localStorage.getItem("refreshToken"));
-    const response = await fetch("http://localhost:7000/logout", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        token: refreshToken,
-      }),
-    });
-
-    if (response.ok) {
-      localStorage.removeItem("accessToken");
-      localStorage.removeItem("refreshToken");
-
-      setTimeout(() => {
-        dispatch(updateUser({ isUserAuthenticated: false }));
-      }, 500);
-    }
-  };
-
   return (
-    <Wrapper>
-      <h2 style={{ color: "#fff" }}>Dashboard</h2>
-      <Greeting name={name} />
+    <Box
+      sx={{
+        display: "flex",
+        flexDirection: "column",
+        // justifyContent: "center",
+        alignItems: "center",
+        // padding: "0.5rem",
+        // marginTop: "0.5rem",
+        height: "100%",
+      }}
+    >
+      <Typography
+        variant="h6"
+        sx={{
+          color: "#1e3c72",
+          width: "100%",
+          textAlign: "center",
+          padding: "0.5rem",
+          borderBottom: "2px solid #aaa",
+        }}
+      >
+        Dashboard
+      </Typography>
 
       <Box
         sx={{
-          padding: "3rem 2rem",
-          boxShadow: "0 10px 15px rgba(0,0,0,0.23)",
-          backgroundColor: "#fff",
-          borderRadius: "5px",
-          width: ["20rem", "70rem"],
-          height: "30rem",
+          padding: "1.5rem",
+          // boxShadow: "0 10px 10px rgba(0,0,0,0.23)",
+          // border: "2px solid #000",
+          // backgroundColor: "#fff",
+          height: "70vh",
+
+          // width: ["20rem", "70rem"],
+          width: "100%",
+          // minHeight: "450px",
           display: "grid",
           gridTemplateColumns: "repeat(auto-fill, minmax(200px, 1fr))",
           justifyItems: "center",
@@ -81,18 +85,15 @@ const Dashboard = () => {
           },
           "::-webkit-scrollbar-thumb": {
             background: "#888",
-            borderRadius: "10px",
+            // borderRadius: "10px",
           },
           "::-webkit-scrollbar-thumb:hover": { background: "#555" },
+
+          "@media (min-height:550px)": {
+            height: "80vh",
+          },
         }}
       >
-        <Button
-          onClick={handleLogout}
-          variant="outlined"
-          sx={{ position: "absolute", right: "0" }}
-        >
-          Logout
-        </Button>
         {goalList.status === "fulfilled" ? (
           <>
             <AddGoalButton />
@@ -117,7 +118,7 @@ const Dashboard = () => {
           />
         )}
       </Box>
-    </Wrapper>
+    </Box>
   );
 };
 

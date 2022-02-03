@@ -85,6 +85,8 @@ const RegisterForm = () => {
             })
           );
           // console.log("TOKENS", accessToken, refreshToken);
+          localStorage.accessToken = JSON.stringify(accessToken);
+          localStorage.refreshToken = JSON.stringify(refreshToken);
           navigate("/dashboard");
         }
       } catch {
@@ -97,114 +99,128 @@ const RegisterForm = () => {
   return (
     <Box
       sx={{
+        width: "100%",
+        height: "100vh",
+        minHeight: "520px",
         display: "flex",
-        flexDirection: "column",
-        width: "400px",
-        backgroundColor: "#fff",
-        boxShadow: "0 10px 15px rgba(0,0,0,0.5)",
-        padding: "2rem",
-        borderRadius: "10px",
+        alignItems: "center",
+        justifyContent: "center",
+        backgroundImage:
+          "linear-gradient(to top, #1e3c72 0%, #1e3c72 1%, #2a5298 100%)",
       }}
     >
-      <h2 style={{ textAlign: "center", color: "#1976D2" }}>Register</h2>
+      <Box
+        sx={{
+          display: "flex",
+          flexDirection: "column",
+          width: "90%",
+          maxWidth: "400px",
+          backgroundColor: "#fff",
+          boxShadow: "0 10px 15px rgba(0,0,0,0.5)",
+          padding: "2rem",
+          borderRadius: "10px",
+        }}
+      >
+        <h2 style={{ textAlign: "center", color: "#1976D2" }}>Register</h2>
 
-      <form onSubmit={handleSubmit(onRegister)}>
-        <Controller
-          render={({ field }) => (
-            <TextField
-              {...field}
-              sx={{ marginTop: "5px" }}
-              fullWidth
-              id="outlined-error-helper-text"
-              label="Name *"
-              error={errors.name ? true : false}
-              helperText={errors.name?.message || " "}
-            />
-          )}
-          name="name"
-          control={control}
-          defaultValue=""
-          className="materialUIInput"
-        />
-        <Controller
-          render={({ field }) => (
-            <TextField
-              {...field}
-              sx={{ marginTop: "5px" }}
-              fullWidth
-              id="outlined-error-helper-text"
-              label="Email address *"
-              error={errors.email ? true : false}
-              helperText={errors.email?.message || " "}
-            />
-          )}
-          name="email"
-          control={control}
-          defaultValue=""
-          className="materialUIInput"
-        />
-        <Controller
-          render={({ field }) => (
-            <TextField
-              {...field}
-              sx={{ marginTop: "5px" }}
-              fullWidth
-              type="password"
-              id="outlined-error-helper-text"
-              label="Password *"
-              error={errors.password ? true : false}
-              helperText={errors.password?.message || " "}
-            />
-          )}
-          name="password"
-          control={control}
-          defaultValue=""
-          className="materialUIInput"
-        />
-        <Controller
-          render={({ field }) => (
-            <TextField
-              {...field}
-              sx={{ marginTop: "5px" }}
-              fullWidth
-              type="password"
-              id="outlined-error-helper-text"
-              label="Confirm password *"
-              error={errors?.passwordConfirmation ? true : false}
-              helperText={errors.passwordConfirmation?.message || " "}
-            />
-          )}
-          name="passwordConfirmation"
-          control={control}
-          defaultValue=""
-          className="materialUIInput"
-        />
-        <Button
-          type="submit"
-          sx={{ marginTop: "0.2rem", width: "100%" }}
-          // to="/dashboard"
-          variant="contained"
-          // component={RouterLink}
-          // onClick={onRegister}
-        >
-          Register
-        </Button>
-      </form>
+        <form onSubmit={handleSubmit(onRegister)}>
+          <Controller
+            render={({ field }) => (
+              <TextField
+                {...field}
+                sx={{ marginTop: "5px" }}
+                fullWidth
+                id="outlined-error-helper-text"
+                label="Name *"
+                error={errors.name ? true : false}
+                helperText={errors.name?.message || " "}
+              />
+            )}
+            name="name"
+            control={control}
+            defaultValue=""
+            className="materialUIInput"
+          />
+          <Controller
+            render={({ field }) => (
+              <TextField
+                {...field}
+                sx={{ marginTop: "5px" }}
+                fullWidth
+                id="outlined-error-helper-text"
+                label="Email address *"
+                error={errors.email ? true : false}
+                helperText={errors.email?.message || " "}
+              />
+            )}
+            name="email"
+            control={control}
+            defaultValue=""
+            className="materialUIInput"
+          />
+          <Controller
+            render={({ field }) => (
+              <TextField
+                {...field}
+                sx={{ marginTop: "5px" }}
+                fullWidth
+                type="password"
+                id="outlined-error-helper-text"
+                label="Password *"
+                error={errors.password ? true : false}
+                helperText={errors.password?.message || " "}
+              />
+            )}
+            name="password"
+            control={control}
+            defaultValue=""
+            className="materialUIInput"
+          />
+          <Controller
+            render={({ field }) => (
+              <TextField
+                {...field}
+                sx={{ marginTop: "5px" }}
+                fullWidth
+                type="password"
+                id="outlined-error-helper-text"
+                label="Confirm password *"
+                error={errors?.passwordConfirmation ? true : false}
+                helperText={errors.passwordConfirmation?.message || " "}
+              />
+            )}
+            name="passwordConfirmation"
+            control={control}
+            defaultValue=""
+            className="materialUIInput"
+          />
+          <Button
+            type="submit"
+            sx={{ marginTop: "0.2rem", width: "100%" }}
+            // to="/dashboard"
+            variant="contained"
+            // component={RouterLink}
+            // onClick={onRegister}
+          >
+            Register
+          </Button>
+        </form>
 
-      <p style={{ fontSize: "0.8rem", marginTop: "10px" }}>
-        Already have an account?{" "}
-        <Box
-          sx={{
-            textDecoration: "none",
-            color: "#1976D2",
-            fontWeight: "bolder",
-          }}
-          component={RouterLink}
-          to="/signin"
-        >
-          SIGN IN
-        </Box>
-      </p>
+        <p style={{ fontSize: "0.8rem", marginTop: "10px" }}>
+          Already have an account?{" "}
+          <Box
+            sx={{
+              textDecoration: "none",
+              color: "#1976D2",
+              fontWeight: "bolder",
+            }}
+            component={RouterLink}
+            to="/signin"
+          >
+            SIGN IN
+          </Box>
+        </p>
+      </Box>
     </Box>
   );
 };

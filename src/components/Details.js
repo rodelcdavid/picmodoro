@@ -33,9 +33,9 @@ const Details = ({ currentGoal }) => {
       </h3>
       <p
         style={{
-          color: "#fff",
+          color: "#e5e5e5",
           fontSize: "0.7rem",
-          fontWeight: "bolder",
+          // fontWeight: "bolder",
           marginTop: "5px",
         }}
       >

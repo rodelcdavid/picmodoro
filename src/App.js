@@ -16,6 +16,7 @@ import PublicRoutes from "./outlet/PublicRoutes";
 
 import { updateUser } from "./features/authSlice";
 import { updateError } from "./features/goalSlice";
+import Footer from "./components/_shared/Footer";
 
 function App() {
   //Selectors
@@ -60,13 +61,12 @@ function App() {
   return (
     <>
       <BrowserRouter basename="/picmodoro">
-        <Heading />
         <Routes>
           <Route
             path="/"
             exact
             element={
-              isUserAuthenticated ? <Navigate to="/dashboard" /> : <Home />
+              isUserAuthenticated ? <Navigate to="/dashboard" /> : <SignIn />
             }
           />
           <Route element={<PrivateRoutes />}>
@@ -80,6 +80,7 @@ function App() {
           </Route>
           <Route path="*" element={<NotFound />} />
         </Routes>
+        {/* <Footer /> */}
       </BrowserRouter>
     </>
   );
