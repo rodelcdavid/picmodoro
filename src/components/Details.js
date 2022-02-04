@@ -25,7 +25,9 @@ const Details = ({ currentGoal }) => {
   return (
     <Box
       sx={{
-        width: "80%",
+        // width: "100%",
+        // margin: "0 auto",
+        justifySelf: "center",
       }}
     >
       <h3 style={{ fontSize: goalName.length > 10 ? "1rem" : "1.5rem" }}>
@@ -33,7 +35,7 @@ const Details = ({ currentGoal }) => {
       </h3>
       <p
         style={{
-          color: "#e5e5e5",
+          color: "#2a5298",
           fontSize: "0.7rem",
           // fontWeight: "bolder",
           marginTop: "5px",

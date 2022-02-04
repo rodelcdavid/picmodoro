@@ -10,14 +10,16 @@ const BackButton = () => {
   return (
     <Box
       sx={{
-        marginRight: "auto",
-        boxShadow: "0 5px 5px rgba(0,0,0,0.5)",
+        // marginRight: "auto",
+        justifySelf: "flex-start",
+        // boxShadow: "0 5px 5px rgba(0,0,0,0.5)",
         borderRadius: "100%",
-        backgroundColor: "#fff",
+        // backgroundColor: "#fff",
       }}
     >
       <Tooltip title="Back to dashboard">
         <IconButton
+          sx={{ color: "#2a5298" }}
           disabled={isActive ? true : false}
           onClick={() => {
             navigate("/dashboard");

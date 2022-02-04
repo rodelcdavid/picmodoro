@@ -12,8 +12,11 @@ import {
   updateSeconds,
 } from "../features/timerSlice";
 
-// import { updateBlockers } from "../features/settingsSlice";
-import { saveSettingsAsync, updateBlockers } from "../features/goalSlice";
+import {
+  saveSettingsAsync,
+  updateBlockers,
+  updateIsDone,
+} from "../features/goalSlice";
 
 const DisplayTimer = ({ currentGoal, goalIdParam }) => {
   console.log("DisplayTimer.js");
@@ -36,8 +39,17 @@ const DisplayTimer = ({ currentGoal, goalIdParam }) => {
   const _toggleIsActive = (bool) => dispatch(toggleIsActive(bool));
   const _toggleIsSessionDone = (bool) => dispatch(toggleIsSessionDone(bool));
   const _updateBlockers = (payload) => dispatch(updateBlockers(payload));
+  const _updateIsDone = (payload) => dispatch(updateIsDone(payload));
 
   //Handlers
+
+  //Simulate reveal TODO:To be deleted
+  const handleReveal = () => {
+    // dispatch(updateMinutes(0));
+    // dispatch(updateSeconds(5));
+    onReveal();
+    dispatch(toggleIsSessionDone(true));
+  };
   // wrap in useCallback to include in useeffect dependency?
   //can i move this out of this component?
   const onReveal = () => {
@@ -125,7 +137,17 @@ const DisplayTimer = ({ currentGoal, goalIdParam }) => {
     dispatch(
       saveSettingsAsync({ currentGoal: currentGoal, id: currentGoal.id })
     );
-  }, [isSessionDone]);
+  }, [isSessionDone, isDone]);
+
+  //Save to database when all are revealed (isdone)
+  useEffect(() => {
+    dispatch(
+      _updateIsDone({
+        id: goalIdParam,
+        isDone: isDone,
+      })
+    );
+  }, [isDone]);
 
   //Reset on component did mount
   useEffect(() => {
@@ -138,7 +160,18 @@ const DisplayTimer = ({ currentGoal, goalIdParam }) => {
   //if timer is not active, start
 
   return (
-    <div>
+    <Box>
+      <button
+        style={{
+          position: "absolute",
+          top: "50px",
+          left: "50%",
+          transform: "translateX(-50%)",
+        }}
+        onClick={handleReveal}
+      >
+        Reveal
+      </button>
       <Box
         sx={{
           display: "flex",
@@ -151,6 +184,12 @@ const DisplayTimer = ({ currentGoal, goalIdParam }) => {
           // height: "140px",
           // borderRadius: "100%",
           // padding: "2rem",
+
+          "@media (min-width:768px)": {
+            "& > h1": {
+              fontSize: "3rem",
+            },
+          },
         }}
       >
         {!isSessionDone ? (
@@ -186,7 +225,7 @@ const DisplayTimer = ({ currentGoal, goalIdParam }) => {
         setIsActive={_toggleIsActive}
         presetMin={presetMin}
       />
-    </div>
+    </Box>
   );
 };
 

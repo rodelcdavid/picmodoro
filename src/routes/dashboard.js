@@ -51,6 +51,7 @@ const Dashboard = () => {
     >
       <Typography
         variant="h6"
+        fontWeight="800"
         sx={{
           color: "#1e3c72",
           width: "100%",
@@ -65,14 +66,10 @@ const Dashboard = () => {
       <Box
         sx={{
           padding: "1.5rem",
-          // boxShadow: "0 10px 10px rgba(0,0,0,0.23)",
-          // border: "2px solid #000",
-          // backgroundColor: "#fff",
-          height: "70vh",
 
-          // width: ["20rem", "70rem"],
+          height: "calc(100vh - 122px)",
+
           width: "100%",
-          // minHeight: "450px",
           display: "grid",
           gridTemplateColumns: "repeat(auto-fill, minmax(200px, 1fr))",
           justifyItems: "center",
@@ -88,10 +85,6 @@ const Dashboard = () => {
             // borderRadius: "10px",
           },
           "::-webkit-scrollbar-thumb:hover": { background: "#555" },
-
-          "@media (min-height:550px)": {
-            height: "80vh",
-          },
         }}
       >
         {goalList.status === "fulfilled" ? (

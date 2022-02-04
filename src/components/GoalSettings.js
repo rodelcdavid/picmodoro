@@ -12,11 +12,6 @@ import {
 } from "@mui/material";
 import { Box } from "@mui/system";
 import React, { useEffect, useRef, useState } from "react";
-// import {
-//   // toggleIsRandom,
-//   // updateBlockers,
-//   // updatePresetMin,
-// } from "../features/settingsSlice";
 
 import {
   updateBlockers,
@@ -117,14 +112,17 @@ const GoalSettings = ({ setGuide, goalIdParam, currentGoal }) => {
       {/* Icon Button*/}
       <Box
         sx={{
-          marginLeft: "auto",
-          boxShadow: "0 5px 5px rgba(0,0,0,0.5)",
-          borderRadius: "100%",
-          backgroundColor: "#fff",
+          // marginLeft: "auto",
+          justifySelf: "flex-end",
+
+          // boxShadow: "0 5px 5px rgba(0,0,0,0.5)",
+          // borderRadius: "100%",
+          // backgroundColor: "#fff",
         }}
       >
         <Tooltip title="Settings">
           <IconButton
+            sx={{ color: "#2a5298" }}
             disabled={isActive ? true : false}
             onClick={() => {
               setOpen(true);

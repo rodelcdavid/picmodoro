@@ -272,6 +272,16 @@ export const goalSlice = createSlice({
     toggleIsRandom: (state, { payload }) => {
       state.currentGoal.is_random = payload.isRandom;
     },
+    updateIsDone: (state, { payload }) => {
+      state.currentGoal.is_done = payload.isDone;
+
+      if (payload.isDone) {
+        state.currentGoal.date_finished = new Date();
+      } else {
+        state.currentGoal.date_finished = null;
+      }
+    },
+
     resetCurrentGoal: (state, { payload }) => {
       state.currentGoal = {};
     },
@@ -372,6 +382,7 @@ export const {
   addGoal,
   updateBlockers,
   toggleIsRandom,
+  updateIsDone,
   updatePresetMin,
   deleteGoal,
   resetCurrentGoal,

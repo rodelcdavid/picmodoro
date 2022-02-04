@@ -62,6 +62,7 @@ const Goal = () => {
         const totalReveal = reveal.filter((bool) => bool === true).length;
         if (totalReveal === blockers.length) {
           dispatch(toggleIsDone(true));
+          console.log("toggle done true");
         } else {
           dispatch(toggleIsDone(false));
         }
@@ -120,45 +121,95 @@ const Goal = () => {
     return (
       <Box
         sx={{
-          textAlign: "center",
-          display: "grid",
-          gridTemplateRows: "1fr 3fr 1fr",
-          alignItems: "center",
-          width: ["100%", "450px"],
-          margin: "1rem auto",
-          // border: "solid 2px rgba(0,0,0,0.23)",
-          borderRadius: "20px",
-          boxShadow: "0 10px 15px rgba(0,0,0,0.5)",
-          backgroundColor: "#fff",
+          height: "calc(100vh - 72px)",
+          overflow: "auto",
         }}
       >
         <Box
           sx={{
+            textAlign: "center",
+            // display: "grid",
+            // gridTemplateRows: "1fr 3fr 1fr",
             display: "flex",
+            flexDirection: "column",
             alignItems: "center",
-            width: "350px",
-            margin: "0 auto",
-            position: "relative",
-            background:
-              "linear-gradient(to top, #1e3c72 0%, #1e3c72 1%, #2a5298 100%)",
-            borderRadius: "10px",
-            color: "#fff",
-            padding: "15px",
-            boxShadow: "0 5px 10px rgba(0,0,0,0.25)",
+            // width: ["100%", "450px"],
+            height: "95%",
+            width: "95%",
+            margin: "0.5rem auto",
+            // border: "solid 2px rgba(0,0,0,0.23)",
+            borderRadius: "20px",
+            boxShadow: "0 8px 8px rgba(0,0,0,0.5)",
+            backgroundColor: "#fff",
+            minHeight: "387px",
+
+            "@media (min-width:768px)": {
+              minHeight: "600px",
+            },
+
+            "@media (min-width:1260px)": {
+              minHeight: "500px",
+            },
           }}
         >
-          {/* <NewGoalButton /> */}
-          <BackButton />
-          <Details currentGoal={currentGoal} />
-          <GoalSettings
-            setGuide={setGuide}
-            currentGoal={currentGoal}
-            goalIdParam={goalIdParam}
-          />
-          <UpArrow guide={guide ? 1 : 0} />
+          <Box
+            sx={{
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "space-between",
+              // width: "350px",
+              width: "100%",
+              // margin: "0 auto",
+              position: "relative",
+              height: "15%",
+              // background:
+              //   "linear-gradient(to top, #1e3c72 0%, #1e3c72 1%, #2a5298 100%)",
+
+              // borderRadius: "10px",
+              color: "#1e3c72",
+              padding: "15px",
+              borderBottom: "1px solid #1e3c72",
+              // boxShadow: "0 5px 10px rgba(0,0,0,0.25)",
+            }}
+          >
+            <BackButton />
+            <Details currentGoal={currentGoal} />
+            <GoalSettings
+              setGuide={setGuide}
+              currentGoal={currentGoal}
+              goalIdParam={goalIdParam}
+            />
+            <UpArrow guide={guide ? 1 : 0} />
+          </Box>
+          <Box
+            sx={{
+              height: "85%",
+              width: "100%",
+              display: "flex",
+              flexDirection: "column",
+              justifyContent: "space-evenly",
+              alignItems: "center",
+
+              "@media (min-width:1260px)": {
+                flexDirection: "row",
+
+                "& > div": {
+                  width: "50%",
+                },
+              },
+            }}
+          >
+            <Box>
+              <ImageGrid currentGoal={currentGoal} />
+            </Box>
+            <Box>
+              <DisplayTimer
+                currentGoal={currentGoal}
+                goalIdParam={goalIdParam}
+              />
+            </Box>
+          </Box>
         </Box>
-        <ImageGrid currentGoal={currentGoal} />
-        <DisplayTimer currentGoal={currentGoal} goalIdParam={goalIdParam} />
       </Box>
     );
   }
