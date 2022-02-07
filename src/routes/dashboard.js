@@ -53,11 +53,14 @@ const Dashboard = () => {
         variant="h6"
         fontWeight="800"
         sx={{
-          color: "#1e3c72",
+          color: "rgba(0,0,0,0.87)",
           width: "100%",
-          textAlign: "center",
           padding: "0.5rem",
-          borderBottom: "2px solid #aaa",
+          borderBottom: "1px solid rgba(0,0,0,0.87)",
+          height: "75px",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
         }}
       >
         Dashboard
@@ -67,7 +70,7 @@ const Dashboard = () => {
         sx={{
           padding: "1.5rem",
 
-          height: "calc(100vh - 122px)",
+          height: "calc(100vh - 147px)",
 
           width: "100%",
           display: "grid",
@@ -98,6 +101,8 @@ const Dashboard = () => {
                   goalImage={goal.image_url}
                   blockers={goal.blockers}
                   key={goal.id}
+                  goal={goal}
+                  // can just prop drill the currentgoal
                 />
               );
             })}

@@ -27,15 +27,24 @@ const Details = ({ currentGoal }) => {
       sx={{
         // width: "100%",
         // margin: "0 auto",
+        color: "rgba(0,0,0,0.87)",
         justifySelf: "center",
+
+        "& h3": {
+          fontSize: goalName.length > 10 ? "1rem" : "1.2rem",
+        },
+
+        "@media (min-width:580px)": {
+          "& h3": {
+            fontSize: "1.2rem",
+          },
+        },
       }}
     >
-      <h3 style={{ fontSize: goalName.length > 10 ? "1rem" : "1.5rem" }}>
-        {goalName}
-      </h3>
+      <h3 style={{}}>{goalName}</h3>
       <p
         style={{
-          color: "#2a5298",
+          // color: "#2a5298",
           fontSize: "0.7rem",
           // fontWeight: "bolder",
           marginTop: "5px",

@@ -1,11 +1,12 @@
-import { useMediaQuery } from "@mui/material";
+import { Skeleton, useMediaQuery } from "@mui/material";
 import { Box } from "@mui/system";
-import React, { useCallback } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 
 const getGridValues = (numBlockers, wide) => {
-  const imgWidth = wide ? 550 : 275;
-  const imgHeight = wide ? 400 : 200;
+  //TODO: make this 3 sizes, 3 media q
+  const imgWidth = wide ? 476 : 280;
+  const imgHeight = wide ? 340 : 200;
 
   // const imgWidth = 350;
   // const imgHeight = 300;
@@ -58,10 +59,24 @@ const ImageGrid = ({ currentGoal }) => {
   // const { blockers } = useSelector((state) => state.settingsState);
 
   //this component rerenders on any pomodoro state change
-  const wide = useMediaQuery("(min-width:768px");
+  const wide = useMediaQuery("(min-width:580px");
 
   console.log("Image Grid");
   //Wrapped in useCallback, prevented rerender when duration settings changes
+
+  //preload image
+
+  const [loadedImage, setLoadedImage] = useState(false);
+  useEffect(() => {
+    const img = new Image();
+    console.log(currentGoal);
+
+    img.onload = () => {
+      setLoadedImage(true);
+    };
+    img.src = currentGoal.image_url;
+  }, [currentGoal]);
+
   const ImageBlocker = useCallback(() => {
     return (
       <>
@@ -69,8 +84,8 @@ const ImageGrid = ({ currentGoal }) => {
           <Box
             key={i}
             sx={{
-              border: isDone ? "none" : "solid 1px #1e3c72",
-              backgroundColor: blocker.reveal ? "transparent" : "#F6F5F5",
+              border: isDone ? "none" : "solid 1px rgba(0,0,0,0.6)",
+              backgroundColor: blocker.reveal ? "transparent" : "#fff",
               cursor: blocker.clickable ? "pointer" : "default",
             }}
           />
@@ -90,34 +105,49 @@ const ImageGrid = ({ currentGoal }) => {
 
   return (
     <Box
-      sx={{
-        display: "flex",
-        flexDirection: "column",
-        justifyContent: "center",
-        alignItems: "center",
-        textAlign: "center",
-      }}
+    // sx={{
+    //   display: "flex",
+    //   flexDirection: "column",
+    //   justifyContent: "center",
+    //   alignItems: "center",
+    //   textAlign: "center",
+    // }}
     >
-      <Box
-        style={{
-          //sx or style?
-          display: "grid",
-          gridTemplateColumns: `repeat( ${gridColumn}, ${gridColumnSize}px`,
-          gridTemplateRows: `repeat( ${gridRow}, ${gridRowSize}px )`,
-          width: imgWidth,
-          height: imgHeight,
-          background: `url(${goalImage})`,
-          backgroundSize: "cover",
-          backgroundRepeat: "no-repeat",
-          backgroundPosition: "center",
-          border: "solid 1px #1e3c72",
-          boxShadow: "0 5px 10px rgba(0,0,0,0.25)",
-          overflow: "hidden",
-          boxSizing: "content-box",
-        }}
-      >
-        <ImageBlocker />
-      </Box>
+      {loadedImage ? (
+        <Box
+          style={{
+            //sx or style?
+            display: "grid",
+            gridTemplateColumns: `repeat( ${gridColumn}, ${gridColumnSize}px`,
+            gridTemplateRows: `repeat( ${gridRow}, ${gridRowSize}px )`,
+            width: imgWidth,
+            height: imgHeight,
+            background: `url(${goalImage})`,
+            backgroundSize: "cover",
+            backgroundRepeat: "no-repeat",
+            backgroundPosition: "center",
+            border: "solid 1px rgba(0,0,0,0.6)",
+            boxShadow: "0 5px 10px rgba(0,0,0,0.25)",
+            overflow: "hidden",
+            boxSizing: "content-box",
+          }}
+        >
+          <ImageBlocker />
+        </Box>
+      ) : (
+        <Skeleton
+          sx={{
+            backgroundColor: "#fff",
+            border: "2px solid rgba(0,0,0,0.6)",
+            boxShadow: "0 5px 10px rgba(0,0,0,0.25)",
+            boxSizing: "content-box",
+          }}
+          variant="rectangular"
+          width={imgWidth}
+          height={imgHeight}
+          animation="wave"
+        />
+      )}
     </Box>
   );
 };

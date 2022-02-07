@@ -122,7 +122,7 @@ const GoalSettings = ({ setGuide, goalIdParam, currentGoal }) => {
       >
         <Tooltip title="Settings">
           <IconButton
-            sx={{ color: "#2a5298" }}
+            sx={{ color: "rgba(0,0,0,0.87)" }}
             disabled={isActive ? true : false}
             onClick={() => {
               setOpen(true);

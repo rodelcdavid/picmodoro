@@ -177,15 +177,15 @@ const DisplayTimer = ({ currentGoal, goalIdParam }) => {
           display: "flex",
           alignItems: "center",
           justifyContent: "center",
-          height: "50px",
-          color: "#1e3c72",
+          // height: "50px",
+          color: "rgba(0,0,0,0.87)",
           // backgroundColor: "#2a5298",
           // width: "140px",
           // height: "140px",
           // borderRadius: "100%",
           // padding: "2rem",
 
-          "@media (min-width:768px)": {
+          "@media (min-width:580px)": {
             "& > h1": {
               fontSize: "3rem",
             },
@@ -250,6 +250,7 @@ const TimerControls = ({
           }}
           variant="contained"
           color="error"
+          size="small"
         >
           Discard session
         </Button>
@@ -268,6 +269,7 @@ const TimerControls = ({
           }}
           variant="contained"
           color="success"
+          size="small"
         >
           New Session
         </Button>
@@ -294,6 +296,7 @@ const TimerControls = ({
           onClick={() => setIsActive(true)}
           variant="contained"
           color="primary"
+          size="small"
         >
           Start timer
         </Button>

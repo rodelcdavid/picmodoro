@@ -85,7 +85,7 @@ const Goal = () => {
       <>
         <Backdrop
           sx={{
-            color: "#fff",
+            color: "rgba(0,0,0,0.87)",
             zIndex: "1250",
             display: "flex",
             flexDirection: "column",
@@ -119,90 +119,72 @@ const Goal = () => {
   //can omit if statement for fulfilled
   if (currentGoalStatus === "fulfilled") {
     return (
-      <Box
-        sx={{
-          height: "calc(100vh - 72px)",
-          overflow: "auto",
-        }}
-      >
+      <Box>
         <Box
           sx={{
-            textAlign: "center",
-            // display: "grid",
-            // gridTemplateRows: "1fr 3fr 1fr",
             display: "flex",
-            flexDirection: "column",
             alignItems: "center",
-            // width: ["100%", "450px"],
-            height: "95%",
-            width: "95%",
-            margin: "0.5rem auto",
-            // border: "solid 2px rgba(0,0,0,0.23)",
-            borderRadius: "20px",
-            boxShadow: "0 8px 8px rgba(0,0,0,0.5)",
-            backgroundColor: "#fff",
-            minHeight: "387px",
+            justifyContent: "space-between",
+            textAlign: "center",
+            width: "100%",
+            position: "relative",
+            height: "75px",
+            color: "#1e3c72",
+            padding: "15px",
+            borderBottom: "1px solid rgba(0,0,0,0.87)",
+          }}
+        >
+          <BackButton />
+          <Details currentGoal={currentGoal} />
+          <GoalSettings
+            setGuide={setGuide}
+            currentGoal={currentGoal}
+            goalIdParam={goalIdParam}
+          />
+          <UpArrow guide={guide ? 1 : 0} />
+        </Box>
+        <Box
+          sx={{
+            height: "calc(100vh - 147px)",
+            overflow: "auto",
 
-            "@media (min-width:768px)": {
-              minHeight: "600px",
+            "::-webkit-scrollbar": {
+              width: "10px",
             },
-
-            "@media (min-width:1260px)": {
-              minHeight: "500px",
+            "::-webkit-scrollbar-thumb": {
+              background: "#888",
+              // borderRadius: "10px",
             },
+            "::-webkit-scrollbar-thumb:hover": { background: "#555" },
           }}
         >
           <Box
             sx={{
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "space-between",
-              // width: "350px",
-              width: "100%",
-              // margin: "0 auto",
-              position: "relative",
-              height: "15%",
-              // background:
-              //   "linear-gradient(to top, #1e3c72 0%, #1e3c72 1%, #2a5298 100%)",
-
-              // borderRadius: "10px",
-              color: "#1e3c72",
-              padding: "15px",
-              borderBottom: "1px solid #1e3c72",
-              // boxShadow: "0 5px 10px rgba(0,0,0,0.25)",
-            }}
-          >
-            <BackButton />
-            <Details currentGoal={currentGoal} />
-            <GoalSettings
-              setGuide={setGuide}
-              currentGoal={currentGoal}
-              goalIdParam={goalIdParam}
-            />
-            <UpArrow guide={guide ? 1 : 0} />
-          </Box>
-          <Box
-            sx={{
-              height: "85%",
-              width: "100%",
+              height: "100%",
+              minHeight: "300px",
+              textAlign: "center",
               display: "flex",
               flexDirection: "column",
-              justifyContent: "space-evenly",
               alignItems: "center",
+              justifyContent: "space-evenly",
 
-              "@media (min-width:1260px)": {
-                flexDirection: "row",
-
-                "& > div": {
-                  width: "50%",
-                },
+              "@media (min-width:580px)": {
+                minHeight: "450px",
               },
             }}
           >
+            {/* TODO: Move this logic to imagegrid */}
             <Box>
               <ImageGrid currentGoal={currentGoal} />
             </Box>
-            <Box>
+            <Box
+            // sx={{
+            //   padding: "0.5rem 3rem",
+            //   border: "1px solid rgba(0,0,0,0.87)",
+            //   // borderRadius: "10px",
+            //   width: "476px",
+            // }}
+            >
               <DisplayTimer
                 currentGoal={currentGoal}
                 goalIdParam={goalIdParam}

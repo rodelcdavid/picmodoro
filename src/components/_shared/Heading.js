@@ -61,7 +61,7 @@ const Heading = () => {
   const openPopOver = Boolean(anchorEl);
   const popOverId = openPopOver ? "simple-popover" : undefined;
 
-  const largeScreen = useMediaQuery("(min-width:560px");
+  const largeScreen = useMediaQuery("(min-width:580px");
 
   return (
     <Box

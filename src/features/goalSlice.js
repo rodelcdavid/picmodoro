@@ -150,6 +150,8 @@ export const saveSettingsAsync = createAsyncThunk(
         currentGoal: payload.currentGoal,
       };
 
+      console.log("to save slice", payload.currentGoal);
+
       const response = await axiosJWT.patch(
         `http://localhost:7000/${auth.id}/${payload.id}`,
         data,
@@ -160,7 +162,7 @@ export const saveSettingsAsync = createAsyncThunk(
           },
         }
       );
-
+      console.log("response", response.data);
       const goalToUpdate = response.data;
       return { goalToUpdate };
     } catch (err) {
@@ -275,11 +277,24 @@ export const goalSlice = createSlice({
     updateIsDone: (state, { payload }) => {
       state.currentGoal.is_done = payload.isDone;
 
-      if (payload.isDone) {
-        state.currentGoal.date_finished = new Date();
-      } else {
-        state.currentGoal.date_finished = null;
-      }
+      // if (payload.isDone) {
+      //   state.currentGoal.date_finished = new Date();
+      // } else {
+      //   state.currentGoal.date_finished = null;
+      // }
+    },
+
+    updateCurrentGoal: (state, { payload }) => {
+      state.currentGoal = payload.currentGoal;
+    },
+    changeImageUrl: (state, { payload }) => {
+      state.goalList.data = state.goalList.data.map((goal) => {
+        if (goal.id === payload.id) {
+          goal.image_url = payload.goalImage;
+        }
+        return goal;
+      });
+      // state.currentGoal.image_url = payload.goalImage;
     },
 
     resetCurrentGoal: (state, { payload }) => {
@@ -385,6 +400,8 @@ export const {
   updateIsDone,
   updatePresetMin,
   deleteGoal,
+  updateCurrentGoal,
+  changeImageUrl,
   resetCurrentGoal,
   resetCurrentGoalStatus,
   updateError,

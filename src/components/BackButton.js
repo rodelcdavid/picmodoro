@@ -19,7 +19,7 @@ const BackButton = () => {
     >
       <Tooltip title="Back to dashboard">
         <IconButton
-          sx={{ color: "#2a5298" }}
+          sx={{ color: "rgba(0,0,0,0.87)" }}
           disabled={isActive ? true : false}
           onClick={() => {
             navigate("/dashboard");

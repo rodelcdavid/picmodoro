@@ -4,25 +4,35 @@ import React, { useEffect, useRef, useState } from "react";
 import { Link as RouterLink } from "react-router-dom";
 import {
   Backdrop,
+  Button,
   CircularProgress,
   ClickAwayListener,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogTitle,
   Divider,
   IconButton,
   Menu,
   MenuItem,
   Popover,
   Popper,
+  TextField,
 } from "@mui/material";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import {
+  changeImageUrl,
   deleteGoal,
   deleteGoalAsync,
   saveNameAsync,
+  saveSettingsAsync,
+  updateCurrentGoal,
 } from "../features/goalSlice";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
+import LinkIcon from "@mui/icons-material/Link";
 
-const GoalCard = ({ id, goalName, goalImage, blockers }) => {
+const GoalCard = ({ id, goalName, goalImage, blockers, goal }) => {
   const reveal = blockers.map((blocker) => blocker.reveal);
   const totalReveal = reveal.filter((bool) => bool === true).length;
 
@@ -37,12 +47,24 @@ const GoalCard = ({ id, goalName, goalImage, blockers }) => {
   //Edit mode
   const [renameMode, setRenameMode] = useState(false);
 
+  const [selectedGoal, setSelectedGoal] = useState(goal);
+
   //Name
   const [name, setName] = useState(goalName);
+
+  //image url
+  const [inputURL, setInputURL] = useState(goalImage);
+  const [imgURL, setImgURL] = useState(goalImage);
+
+  //change image dialog
+  const [openChangeImage, setOpenChangeImage] = useState(false);
+
+  const { currentGoal, goalList } = useSelector((state) => state.goalState);
 
   const handlePopOver = (e) => {
     e.preventDefault();
     setAnchorEl(e.currentTarget);
+    // e.stopPropagation();
   };
 
   const handleClose = (e) => {
@@ -50,7 +72,7 @@ const GoalCard = ({ id, goalName, goalImage, blockers }) => {
     setAnchorEl(null);
   };
 
-  const handleDelete = (e) => {
+  const handleDeleteOption = (e) => {
     e.preventDefault();
     setOpenBackdrop(true);
     dispatch(deleteGoalAsync({ id: id }))
@@ -103,25 +125,68 @@ const GoalCard = ({ id, goalName, goalImage, blockers }) => {
     if (!firstLoad.current) {
       firstLoad.current = true;
     } else {
+      console.log(id);
       dispatch(saveNameAsync({ id: id, goalName: name }));
     }
-  }, [dispatch, name]);
+  }, [dispatch, id, name]);
+
+  const handleChangeImageOption = (e) => {
+    e.preventDefault();
+    setOpenChangeImage(true);
+
+    const goal = goalList.data.filter((goal) => {
+      return goal.id === id;
+    });
+
+    setSelectedGoal(goal[0]);
+
+    setAnchorEl(null);
+  };
+
+  const handleSaveChangeImage = () => {
+    //TODO: if image is valid
+    setImgURL(inputURL);
+    setSelectedGoal((prev) => {
+      return {
+        ...prev,
+        image_url: inputURL,
+      };
+    });
+    setOpenChangeImage(false);
+  };
+
+  useEffect(() => {
+    if (!firstLoad.current) {
+      firstLoad.current = true;
+    } else {
+      if (selectedGoal !== goal) {
+        dispatch(
+          saveSettingsAsync({
+            currentGoal: selectedGoal,
+            id: selectedGoal.id,
+          })
+        );
+      }
+    }
+  }, [dispatch, selectedGoal]);
 
   const open = Boolean(anchorEl);
   const popOverId = open ? "simple-popover" : undefined;
 
   return (
+    // TODO: shouldn't be background image, two separate divs instead
     <Box
       sx={{
         width: "200px",
         height: "200px",
         display: "flex",
         flexDirection: "column",
-        border: "solid 1px #aaa",
+        border: "solid 1px rgba(0,0,0,0.87)",
         borderRadius: "10px",
         justifyContent: "flex-end",
         alignItems: "center",
-        background: `url(${goalImage})`,
+        // background: `url(${goalImage})`,
+        background: `url(${imgURL})`,
         backgroundPosition: "center",
         backgroundSize: "cover",
         // boxShadow: "0 10px 15px rgba(0,0,0,0.5)",
@@ -136,11 +201,12 @@ const GoalCard = ({ id, goalName, goalImage, blockers }) => {
     >
       <Box
         sx={{
-          color: "#000",
+          color: "rgba(0,0,0,0.87)",
+
           // backgroundColor: "#1e3c72",
           backgroundColor: "#e5e5e5",
           width: "100%",
-          borderTop: "1px solid #aaa",
+          borderTop: "1px solid rgba(0,0,0,0.87)",
           padding: "1rem",
           maxHeight: "50px",
           display: "flex",
@@ -181,7 +247,7 @@ const GoalCard = ({ id, goalName, goalImage, blockers }) => {
         </p>
         <IconButton
           sx={{
-            color: "#000",
+            color: "rgba(0,0,0,0.87)",
             position: "absolute",
             right: 0,
             "&:hover": {
@@ -225,14 +291,60 @@ const GoalCard = ({ id, goalName, goalImage, blockers }) => {
               <EditIcon />
               Edit goal name
             </MenuItem>
+            <MenuItem onClick={handleChangeImageOption}>
+              <LinkIcon />
+              Change image URL
+            </MenuItem>
             {/* <p>Change goal image</p> */}
-            <MenuItem onClick={handleDelete}>
+            <MenuItem onClick={handleDeleteOption}>
               <DeleteIcon />
               Delete
             </MenuItem>
           </Box>
         </Menu>
       </Box>
+
+      {/* Change image dialog */}
+      <Dialog
+        open={openChangeImage}
+        onClose={(e) => {
+          // e.stopPropagation();
+          e.preventDefault();
+          setOpenChangeImage(false);
+        }}
+        onBackdropClick={() => setOpenChangeImage(false)}
+        fullWidth
+      >
+        <Box onClick={(e) => e.preventDefault()}>
+          <DialogTitle sx={{ bgcolor: "#1976D2", color: "white" }}>
+            Change image URL
+          </DialogTitle>
+          <DialogContent>
+            <Box
+              sx={{
+                marginTop: "1.5rem",
+              }}
+            >
+              <TextField
+                label="Goal Image URL"
+                value={inputURL}
+                onChange={(e) => setInputURL(e.target.value)}
+                fullWidth
+              />
+            </Box>
+          </DialogContent>
+          <DialogActions>
+            <Button onClick={() => setOpenChangeImage(false)}>Cancel</Button>
+            <Button
+              onClick={handleSaveChangeImage}
+              variant="contained"
+              color="primary"
+            >
+              Save
+            </Button>
+          </DialogActions>
+        </Box>
+      </Dialog>
 
       {/* Backdrop */}
       <Backdrop
