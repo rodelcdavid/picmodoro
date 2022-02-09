@@ -1,26 +1,18 @@
-import { Button, CircularProgress, Typography } from "@mui/material";
+import { CircularProgress, Typography } from "@mui/material";
 import { Box } from "@mui/system";
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useNavigate } from "react-router";
 
 import AddGoalButton from "../components/AddGoalButton";
 import GoalCard from "../components/GoalCard";
-import Greeting from "../components/Greeting";
 import {
   getGoalListAsync,
   resetCurrentGoal,
   resetCurrentGoalStatus,
-  updateError,
 } from "../features/goalSlice";
-import { resetTimerState } from "../features/timerSlice";
-import { updateUser } from "../features/authSlice";
-import { Wrapper } from "../utils/globalstyles";
 
 const Dashboard = () => {
-  const { id, name, email, isUserAuthenticated } = useSelector(
-    (state) => state.authState
-  );
+  const { id } = useSelector((state) => state.authState);
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -32,10 +24,8 @@ const Dashboard = () => {
     });
     dispatch(resetCurrentGoal());
     dispatch(resetCurrentGoalStatus());
-  }, [dispatch]);
-  const { goalList, fetchStatus, error } = useSelector(
-    (state) => state.goalState
-  );
+  }, [dispatch, id]);
+  const { goalList } = useSelector((state) => state.goalState);
 
   return (
     <Box

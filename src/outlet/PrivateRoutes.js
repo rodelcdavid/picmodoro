@@ -1,4 +1,3 @@
-import { Box } from "@mui/system";
 import { useSelector } from "react-redux";
 import { Navigate, Outlet, useLocation } from "react-router-dom";
 import Heading from "../components/_shared/Heading";

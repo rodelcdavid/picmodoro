@@ -2,7 +2,7 @@ import { TextField, Button, Typography } from "@mui/material";
 import { Box } from "@mui/system";
 import React, { useState } from "react";
 import { useDispatch } from "react-redux";
-import { Link as RouterLink, useNavigate, useLocation } from "react-router-dom";
+import { Link as RouterLink, useNavigate } from "react-router-dom";
 import { updateUser } from "../features/authSlice";
 import Logo from "./_shared/Logo";
 
@@ -13,9 +13,6 @@ const SignInForm = () => {
 
   const navigate = useNavigate();
   const dispatch = useDispatch();
-
-  let location = useLocation();
-  // let from = location.state?.from?.pathname || "/dashboard";
 
   const handleTest = (e) => {
     e.preventDefault();

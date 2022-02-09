@@ -1,12 +1,9 @@
 import { useEffect } from "react";
 
-import Heading from "./components/_shared/Heading";
-
 import { useDispatch, useSelector } from "react-redux";
 
 import Goal from "./routes/goal";
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
-import Home from "./routes/home";
 import SignIn from "./routes/signin";
 import Register from "./routes/register";
 import Dashboard from "./routes/dashboard";
@@ -53,7 +50,7 @@ function App() {
       }, 500);
       alert("Please relogin.");
     }
-  }, [error]);
+  }, [dispatch, error]);
 
   //change dashboard route to /:userid/dashboard
   //change goal route to /:userid/:goalid

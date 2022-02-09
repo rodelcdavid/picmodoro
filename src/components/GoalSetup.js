@@ -5,21 +5,14 @@ import placeholder from "../assets/placeholder.jpg";
 import { Box } from "@mui/system";
 import LoadingButton from "@mui/lab/LoadingButton";
 
-import { useSelector, useDispatch } from "react-redux";
-import {
-  // updateGoalName,
-  // updateGoalImage,
-  addGoal,
-  addGoalAsync,
-} from "../features/goalSlice";
+import { useDispatch } from "react-redux";
+import { addGoalAsync } from "../features/goalSlice";
 import {
   Backdrop,
-  Button,
   CircularProgress,
   TextField,
   Typography,
 } from "@mui/material";
-import { updateScreen } from "../features/screenSlice";
 
 const GoalSetup = () => {
   console.log("Form.js");
@@ -33,14 +26,9 @@ const GoalSetup = () => {
   const [openBackdrop, setOpenBackdrop] = useState(false);
 
   //Selectors
-  const { goalName, goalImage } = useSelector((state) => state.goalState);
-  const { goalList, addStatus } = useSelector((state) => state.goalState);
-  const { id: ownerId } = useSelector((state) => state.authState);
+
   //Dispatch
   const dispatch = useDispatch();
-  // const _updateGoalName = (name) => dispatch(updateGoalName(name));
-  // const _updateScreen = (value) => dispatch(updateScreen(value));
-  // const _updateGoalImage = (image) => dispatch(updateGoalImage(image));
 
   //Refs
   const nameFieldRef = useRef();

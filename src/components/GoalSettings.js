@@ -1,8 +1,6 @@
-import { KeyboardArrowDown, KeyboardArrowUp, Save } from "@mui/icons-material";
+import { KeyboardArrowDown, KeyboardArrowUp } from "@mui/icons-material";
 import {
-  Button,
   Dialog,
-  DialogActions,
   DialogContent,
   DialogTitle,
   Divider,
@@ -11,7 +9,7 @@ import {
   Tooltip,
 } from "@mui/material";
 import { Box } from "@mui/system";
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useState } from "react";
 
 import {
   updateBlockers,
@@ -80,8 +78,6 @@ const GoalSettings = ({ setGuide, goalIdParam, currentGoal }) => {
   const handleToggle = (e) => {
     _toggleIsRandom({ id: goalIdParam, isRandom: e.target.checked }); //can you refactor this to !isRandom?
   };
-
-  const handleSave = () => {};
 
   //you can just move the payload directly to the reducer instead, separate addBlockers, subtractBlockers
   const onPlus = () => {

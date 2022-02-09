@@ -1,5 +1,5 @@
-import { useState, useEffect, useRef } from "react";
-import { useParams, useNavigate } from "react-router-dom";
+import { useState, useEffect } from "react";
+import { useParams } from "react-router-dom";
 import Details from "../components/Details";
 
 import { Backdrop, Box, CircularProgress } from "@mui/material";
@@ -13,8 +13,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { toggleIsDone } from "../features/displayGridSlice";
 import GoalSettings from "../components/GoalSettings";
 import BackButton from "../components/BackButton";
-import { resetTimerState } from "../features/timerSlice";
-import { getCurrentGoalAsync, getGoalListAsync } from "../features/goalSlice";
+import { getCurrentGoalAsync } from "../features/goalSlice";
 
 const Goal = () => {
   console.log("Goal parent component");

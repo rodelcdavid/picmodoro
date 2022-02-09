@@ -6,27 +6,20 @@ import {
   Backdrop,
   Button,
   CircularProgress,
-  ClickAwayListener,
   Dialog,
   DialogActions,
   DialogContent,
   DialogTitle,
-  Divider,
   IconButton,
   Menu,
   MenuItem,
-  Popover,
-  Popper,
   TextField,
 } from "@mui/material";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import {
-  changeImageUrl,
-  deleteGoal,
   deleteGoalAsync,
   saveNameAsync,
   saveSettingsAsync,
-  updateCurrentGoal,
 } from "../features/goalSlice";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
@@ -58,8 +51,6 @@ const GoalCard = ({ id, goalName, goalImage, blockers, goal }) => {
 
   //change image dialog
   const [openChangeImage, setOpenChangeImage] = useState(false);
-
-  const { goalList } = useSelector((state) => state.goalState);
 
   const handlePopOver = (e) => {
     e.preventDefault();
@@ -121,24 +112,19 @@ const GoalCard = ({ id, goalName, goalImage, blockers, goal }) => {
   //this rerender too much
 
   const firstLoad = useRef(false);
-  // useEffect(() => {
-  //   if (!firstLoad.current) {
-  //     firstLoad.current = true;
-  //   } else {
-  //     console.log(id);
-  //     dispatch(saveNameAsync({ id: id, goalName: name }));
-  //   }
-  // }, [dispatch, id, name]);
+  useEffect(() => {
+    if (!firstLoad.current) {
+      firstLoad.current = true;
+    } else {
+      console.log(id);
+      dispatch(saveNameAsync({ id: id, goalName: name }));
+    }
+  }, [dispatch, id, name]);
 
   const handleChangeImageOption = (e) => {
     e.preventDefault();
     setOpenChangeImage(true);
 
-    // const goal = goalList.data.filter((goal) => {
-    //   return goal.id === id;
-    // });
-
-    // setSelectedGoal(goal[0]);
     setSelectedGoal(goal);
 
     setAnchorEl(null);
@@ -159,10 +145,6 @@ const GoalCard = ({ id, goalName, goalImage, blockers, goal }) => {
 
   //rerender when goal is included as dep because it always changes
   useEffect(() => {
-    // if (!firstLoad.current) {
-    //   firstLoad.current = true;
-    // } else {
-    //should be if imageurl changed
     if (selectedGoal && selectedGoal.image_url !== goalImage) {
       console.log("to save", selectedGoal);
       dispatch(
