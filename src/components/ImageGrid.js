@@ -65,14 +65,13 @@ const ImageGrid = ({ currentGoal }) => {
   //Wrapped in useCallback, prevented rerender when duration settings changes
 
   //preload image
-
-  const [loadedImage, setLoadedImage] = useState(false);
+  const [imagePreloaded, setImagePreloaded] = useState(false);
   useEffect(() => {
     const img = new Image();
     console.log(currentGoal);
 
     img.onload = () => {
-      setLoadedImage(true);
+      setImagePreloaded(true);
     };
     img.src = currentGoal.image_url;
   }, [currentGoal]);
@@ -113,7 +112,7 @@ const ImageGrid = ({ currentGoal }) => {
     //   textAlign: "center",
     // }}
     >
-      {loadedImage ? (
+      {imagePreloaded ? (
         <Box
           style={{
             //sx or style?

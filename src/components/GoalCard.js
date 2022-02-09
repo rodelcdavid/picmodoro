@@ -13,6 +13,7 @@ import {
   IconButton,
   Menu,
   MenuItem,
+  Skeleton,
   TextField,
 } from "@mui/material";
 import { useDispatch } from "react-redux";
@@ -26,6 +27,18 @@ const GoalCard = ({ id, goalName, goalImage, blockers, goal }) => {
   const totalReveal = reveal.filter((bool) => bool === true).length;
 
   const dispatch = useDispatch();
+
+  //preload image
+  //TODO: can pass this down as props? or use custom hooks
+  const [imagePreloaded, setImagePreloaded] = useState(false);
+  useEffect(() => {
+    const img = new Image();
+
+    img.onload = () => {
+      setImagePreloaded(true);
+    };
+    img.src = goal.image_url;
+  }, [goal]);
 
   //Popover
   const [anchorEl, setAnchorEl] = useState(null);
@@ -114,19 +127,6 @@ const GoalCard = ({ id, goalName, goalImage, blockers, goal }) => {
     }
   }, [renameMode]);
 
-  //save to database when name changes
-  //this rerender too much
-
-  const firstLoad = useRef(false);
-  // useEffect(() => {
-  //   if (!firstLoad.current) {
-  //     firstLoad.current = true;
-  //   } else {
-  //     console.log(id);
-  //     dispatch(saveNameAsync({ id: id, goalName: name }));
-  //   }
-  // }, [dispatch, id, name]);
-
   const handleChangeImageOption = (e) => {
     e.preventDefault();
     setOpenChangeImage(true);
@@ -171,7 +171,6 @@ const GoalCard = ({ id, goalName, goalImage, blockers, goal }) => {
   const popOverId = open ? "simple-popover" : undefined;
 
   return (
-    // TODO: shouldn't be background image, two separate divs instead
     <Box
       sx={{
         width: "200px",
@@ -180,13 +179,6 @@ const GoalCard = ({ id, goalName, goalImage, blockers, goal }) => {
         flexDirection: "column",
         border: "solid 1px rgba(0,0,0,0.87)",
         borderRadius: "10px",
-        justifyContent: "flex-end",
-        alignItems: "center",
-        // background: `url(${goalImage})`,
-        background: `url(${imgURL})`,
-        backgroundPosition: "center",
-        backgroundSize: "cover",
-        // boxShadow: "0 10px 15px rgba(0,0,0,0.5)",
         overflow: "hidden",
         textDecoration: "none",
         transition: "all ease-in 200ms",
@@ -196,110 +188,147 @@ const GoalCard = ({ id, goalName, goalImage, blockers, goal }) => {
       component={RouterLink}
       to={`/${id}`}
     >
-      <Box
-        sx={{
-          color: "rgba(0,0,0,0.87)",
-
-          // backgroundColor: "#1e3c72",
-          backgroundColor: "#e5e5e5",
-          width: "100%",
-          borderTop: "1px solid rgba(0,0,0,0.87)",
-          padding: "1rem",
-          maxHeight: "50px",
-          display: "flex",
-          flexDirection: "column",
-          justifyContent: "center",
-          alignItems: "flex-start",
-          position: "relative",
-        }}
-      >
-        {renameMode ? (
-          <div>
-            <input
-              style={{
-                width: "150px",
-                outline: "none",
-                fontWeight: "bolder",
-              }}
-              type="text"
-              ref={renameRef}
-              defaultValue={name}
-              onClick={(e) => e.preventDefault()}
-              onBlur={handleBlur}
-              onKeyDown={handleKeyDown}
-            />
-          </div>
-        ) : (
-          <h5
-            style={{
-              maxWidth: "150px",
-            }}
-          >
-            {name}
-          </h5>
-        )}
-
-        <p style={{ fontSize: "0.7rem" }}>
-          Progress: {totalReveal}/{blockers.length}
-        </p>
-        <IconButton
-          sx={{
-            color: "rgba(0,0,0,0.87)",
-            position: "absolute",
-            right: 0,
-            "&:hover": {
-              backgroundColor: "rgba(0,0,0,0.2)",
-            },
-          }}
-          onClick={handlePopOver}
-          // color="primary"
-          aria-label="more options"
-          component="span"
-        >
-          <MoreVertIcon />
-        </IconButton>
-        <Menu
-          id={popOverId}
-          open={open}
-          anchorEl={anchorEl}
-          onClose={handleClose}
-          anchorOrigin={{
-            vertical: "top",
-            horizontal: "right",
-          }}
-          transformOrigin={{
-            vertical: "top",
-            horizontal: "right",
-          }}
-        >
+      {imagePreloaded ? (
+        <>
           <Box
             sx={{
-              backgroundColor: "#fff",
-              fontSize: "0.9rem",
-              cursor: "pointer",
-              "& li": {
-                display: "flex",
-                gap: "10px",
-                padding: "1rem",
-              },
+              width: "100%",
+              height: "100%",
+              background: `url(${imgURL})`,
+              backgroundPosition: "center",
+              backgroundSize: "cover",
+            }}
+          />
+          <Box
+            sx={{
+              color: "rgba(0,0,0,0.87)",
+              backgroundColor: "#e5e5e5",
+              width: "100%",
+              borderTop: "1px solid rgba(0,0,0,0.87)",
+              padding: "1rem",
+              maxHeight: "50px",
+              display: "flex",
+              flexDirection: "column",
+              justifyContent: "center",
+              alignItems: "flex-start",
+              position: "relative",
             }}
           >
-            <MenuItem onClick={handleRenameOption}>
-              <EditIcon />
-              Edit goal name
-            </MenuItem>
-            <MenuItem onClick={handleChangeImageOption}>
-              <LinkIcon />
-              Change image URL
-            </MenuItem>
-            {/* <p>Change goal image</p> */}
-            <MenuItem onClick={handleDeleteOption}>
-              <DeleteIcon />
-              Delete
-            </MenuItem>
+            {renameMode ? (
+              <div>
+                <input
+                  style={{
+                    width: "150px",
+                    outline: "none",
+                    fontWeight: "bolder",
+                  }}
+                  type="text"
+                  ref={renameRef}
+                  defaultValue={name}
+                  onClick={(e) => e.preventDefault()}
+                  onBlur={handleBlur}
+                  onKeyDown={handleKeyDown}
+                />
+              </div>
+            ) : (
+              <h5
+                style={{
+                  maxWidth: "150px",
+                }}
+              >
+                {name}
+              </h5>
+            )}
+
+            <p style={{ fontSize: "0.7rem" }}>
+              Progress: {totalReveal}/{blockers.length}
+            </p>
+            <IconButton
+              sx={{
+                color: "rgba(0,0,0,0.87)",
+                position: "absolute",
+                right: 0,
+                "&:hover": {
+                  backgroundColor: "rgba(0,0,0,0.2)",
+                },
+              }}
+              onClick={handlePopOver}
+              // color="primary"
+              aria-label="more options"
+              component="span"
+            >
+              <MoreVertIcon />
+            </IconButton>
+            <Menu
+              id={popOverId}
+              open={open}
+              anchorEl={anchorEl}
+              onClose={handleClose}
+              anchorOrigin={{
+                vertical: "top",
+                horizontal: "right",
+              }}
+              transformOrigin={{
+                vertical: "top",
+                horizontal: "right",
+              }}
+            >
+              <Box
+                sx={{
+                  backgroundColor: "#fff",
+                  fontSize: "0.9rem",
+                  cursor: "pointer",
+                  "& li": {
+                    display: "flex",
+                    gap: "10px",
+                    padding: "1rem",
+                  },
+                }}
+              >
+                <MenuItem onClick={handleRenameOption}>
+                  <EditIcon />
+                  Edit goal name
+                </MenuItem>
+                <MenuItem onClick={handleChangeImageOption}>
+                  <LinkIcon />
+                  Change image URL
+                </MenuItem>
+                {/* <p>Change goal image</p> */}
+                <MenuItem onClick={handleDeleteOption}>
+                  <DeleteIcon />
+                  Delete
+                </MenuItem>
+              </Box>
+            </Menu>
           </Box>
-        </Menu>
-      </Box>
+        </>
+      ) : (
+        <>
+          <Skeleton
+            variant="rectangular"
+            width="100%"
+            height="100%"
+            animation="wave"
+          />
+          <Box
+            sx={{
+              backgroundColor: "#e5e5e5",
+              width: "100%",
+              borderTop: "1px solid rgba(0,0,0,0.87)",
+              padding: "1rem",
+              maxHeight: "50px",
+              display: "flex",
+              flexDirection: "column",
+              justifyContent: "center",
+              alignItems: "flex-start",
+              position: "relative",
+            }}
+          >
+            <Skeleton width="150px" animation="wave" />
+            <Skeleton width="100px" animation="wave" />
+          </Box>
+        </>
+      )}
 
       {/* Change image dialog */}
       <Dialog
