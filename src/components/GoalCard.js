@@ -47,7 +47,7 @@ const GoalCard = ({ id, goalName, goalImage, blockers, goal }) => {
   //Edit mode
   const [renameMode, setRenameMode] = useState(false);
 
-  const [selectedGoal, setSelectedGoal] = useState(goal);
+  const [selectedGoal, setSelectedGoal] = useState(null);
 
   //Name
   const [name, setName] = useState(goalName);
@@ -59,7 +59,7 @@ const GoalCard = ({ id, goalName, goalImage, blockers, goal }) => {
   //change image dialog
   const [openChangeImage, setOpenChangeImage] = useState(false);
 
-  const { currentGoal, goalList } = useSelector((state) => state.goalState);
+  const { goalList } = useSelector((state) => state.goalState);
 
   const handlePopOver = (e) => {
     e.preventDefault();
@@ -121,24 +121,25 @@ const GoalCard = ({ id, goalName, goalImage, blockers, goal }) => {
   //this rerender too much
 
   const firstLoad = useRef(false);
-  useEffect(() => {
-    if (!firstLoad.current) {
-      firstLoad.current = true;
-    } else {
-      console.log(id);
-      dispatch(saveNameAsync({ id: id, goalName: name }));
-    }
-  }, [dispatch, id, name]);
+  // useEffect(() => {
+  //   if (!firstLoad.current) {
+  //     firstLoad.current = true;
+  //   } else {
+  //     console.log(id);
+  //     dispatch(saveNameAsync({ id: id, goalName: name }));
+  //   }
+  // }, [dispatch, id, name]);
 
   const handleChangeImageOption = (e) => {
     e.preventDefault();
     setOpenChangeImage(true);
 
-    const goal = goalList.data.filter((goal) => {
-      return goal.id === id;
-    });
+    // const goal = goalList.data.filter((goal) => {
+    //   return goal.id === id;
+    // });
 
-    setSelectedGoal(goal[0]);
+    // setSelectedGoal(goal[0]);
+    setSelectedGoal(goal);
 
     setAnchorEl(null);
   };
@@ -152,23 +153,27 @@ const GoalCard = ({ id, goalName, goalImage, blockers, goal }) => {
         image_url: inputURL,
       };
     });
+
     setOpenChangeImage(false);
   };
 
+  //rerender when goal is included as dep because it always changes
   useEffect(() => {
-    if (!firstLoad.current) {
-      firstLoad.current = true;
-    } else {
-      if (selectedGoal !== goal) {
-        dispatch(
-          saveSettingsAsync({
-            currentGoal: selectedGoal,
-            id: selectedGoal.id,
-          })
-        );
-      }
+    // if (!firstLoad.current) {
+    //   firstLoad.current = true;
+    // } else {
+    //should be if imageurl changed
+    if (selectedGoal && selectedGoal.image_url !== goalImage) {
+      console.log("to save", selectedGoal);
+      dispatch(
+        saveSettingsAsync({
+          currentGoal: selectedGoal,
+          id: selectedGoal.id,
+        })
+      );
     }
-  }, [dispatch, selectedGoal]);
+    // }
+  }, [dispatch, selectedGoal, goalImage]);
 
   const open = Boolean(anchorEl);
   const popOverId = open ? "simple-popover" : undefined;
