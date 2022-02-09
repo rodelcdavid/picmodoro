@@ -16,11 +16,7 @@ import {
   TextField,
 } from "@mui/material";
 import { useDispatch } from "react-redux";
-import {
-  deleteGoalAsync,
-  saveNameAsync,
-  saveSettingsAsync,
-} from "../features/goalSlice";
+import { deleteGoalAsync, saveSettingsAsync } from "../features/goalSlice";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
 import LinkIcon from "@mui/icons-material/Link";
@@ -55,6 +51,7 @@ const GoalCard = ({ id, goalName, goalImage, blockers, goal }) => {
   const handlePopOver = (e) => {
     e.preventDefault();
     setAnchorEl(e.currentTarget);
+    setSelectedGoal(goal);
     // e.stopPropagation();
   };
 
@@ -75,26 +72,35 @@ const GoalCard = ({ id, goalName, goalImage, blockers, goal }) => {
 
   const renameRef = useRef();
 
-  const handleRename = (e) => {
-    e.preventDefault();
-  };
-
   const handleRenameOption = (e) => {
     e.preventDefault();
     setRenameMode(true);
-
     setAnchorEl(null);
   };
 
   const handleBlur = (e) => {
+    const inputName = e.target.value;
     setRenameMode(false);
-    setName(e.target.value);
+    setName(inputName);
+    setSelectedGoal((prev) => {
+      return {
+        ...prev,
+        goal_name: inputName,
+      };
+    });
   };
 
   const handleKeyDown = (e) => {
+    const inputName = e.target.value;
     if (e.keyCode === 13) {
       setRenameMode(false);
-      setName(e.target.value);
+      setName(inputName);
+      setSelectedGoal((prev) => {
+        return {
+          ...prev,
+          goal_name: inputName,
+        };
+      });
     }
     if (e.keyCode === 27) {
       setRenameMode(false);
@@ -112,20 +118,18 @@ const GoalCard = ({ id, goalName, goalImage, blockers, goal }) => {
   //this rerender too much
 
   const firstLoad = useRef(false);
-  useEffect(() => {
-    if (!firstLoad.current) {
-      firstLoad.current = true;
-    } else {
-      console.log(id);
-      dispatch(saveNameAsync({ id: id, goalName: name }));
-    }
-  }, [dispatch, id, name]);
+  // useEffect(() => {
+  //   if (!firstLoad.current) {
+  //     firstLoad.current = true;
+  //   } else {
+  //     console.log(id);
+  //     dispatch(saveNameAsync({ id: id, goalName: name }));
+  //   }
+  // }, [dispatch, id, name]);
 
   const handleChangeImageOption = (e) => {
     e.preventDefault();
     setOpenChangeImage(true);
-
-    setSelectedGoal(goal);
 
     setAnchorEl(null);
   };
@@ -145,17 +149,23 @@ const GoalCard = ({ id, goalName, goalImage, blockers, goal }) => {
 
   //rerender when goal is included as dep because it always changes
   useEffect(() => {
-    if (selectedGoal && selectedGoal.image_url !== goalImage) {
-      console.log("to save", selectedGoal);
-      dispatch(
-        saveSettingsAsync({
-          currentGoal: selectedGoal,
-          id: selectedGoal.id,
-        })
-      );
+    if (selectedGoal) {
+      if (
+        selectedGoal.image_url !== goalImage ||
+        selectedGoal.goal_name !== goalName
+      ) {
+        console.log("to save", selectedGoal);
+        dispatch(
+          saveSettingsAsync({
+            currentGoal: selectedGoal,
+            id: selectedGoal.id,
+          })
+        );
+      }
     }
+
     // }
-  }, [dispatch, selectedGoal, goalImage]);
+  }, [dispatch, selectedGoal, goalImage, goalName]);
 
   const open = Boolean(anchorEl);
   const popOverId = open ? "simple-popover" : undefined;
@@ -214,7 +224,7 @@ const GoalCard = ({ id, goalName, goalImage, blockers, goal }) => {
               type="text"
               ref={renameRef}
               defaultValue={name}
-              onClick={handleRename}
+              onClick={(e) => e.preventDefault()}
               onBlur={handleBlur}
               onKeyDown={handleKeyDown}
             />

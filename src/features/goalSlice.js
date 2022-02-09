@@ -150,8 +150,6 @@ export const saveSettingsAsync = createAsyncThunk(
         currentGoal: payload.currentGoal,
       };
 
-      console.log("to save slice", payload.currentGoal);
-
       const response = await axiosJWT.patch(
         `http://localhost:7000/${auth.id}/${payload.id}`,
         data,
@@ -162,7 +160,6 @@ export const saveSettingsAsync = createAsyncThunk(
           },
         }
       );
-      console.log("response", response.data);
       const goalToUpdate = response.data;
       return { goalToUpdate };
     } catch (err) {
@@ -203,43 +200,6 @@ export const getCurrentGoalAsync = createAsyncThunk(
         console.log("There was a problem connecting to the server.");
       } else {
         console.log("Error", err);
-      }
-    }
-  }
-);
-
-//why does auth fails when client recompile?
-export const saveNameAsync = createAsyncThunk(
-  "goals/saveNameAsync",
-  async (payload) => {
-    try {
-      const accessToken = JSON.parse(localStorage.getItem("accessToken"));
-      const auth = JSON.parse(localStorage.getItem("auth"));
-
-      const data = {
-        goalName: payload.goalName,
-      };
-
-      const response = await axiosJWT.patch(
-        `http://localhost:7000/${auth.id}/${payload.id}/rename`,
-        data,
-        {
-          headers: {
-            authorization: "Bearer " + accessToken,
-            "Content-Type": "application/json",
-          },
-        }
-      );
-
-      const goalToUpdate = response.data;
-      return { goalToUpdate };
-    } catch (err) {
-      if (err.response?.status === 401) {
-        return Promise.reject(err);
-      } else if (err.request) {
-        console.log("There was a problem connecting to the server.");
-      } else {
-        console.log("Error");
       }
     }
   }
@@ -372,28 +332,11 @@ export const goalSlice = createSlice({
       state.currentGoalStatus = "rejected";
       state.error = "Invalid token";
     },
-    [saveNameAsync.fulfilled]: (state, { payload }) => {
-      console.log("rename fulfilled");
-      const index = state.goalList.data.findIndex(
-        (goal) => goal.id === payload.goalToUpdate.id
-      );
-      state.goalList.data[index] = payload.goalToUpdate;
-    },
-    [saveNameAsync.pending]: (state, { payload }) => {
-      // state.addStatus = "pending";
-
-      console.log("renaming...");
-    },
-    [saveNameAsync.rejected]: (state, { payload }) => {
-      state.error = "Invalid token";
-    },
   },
 });
 
 // Action creators are generated for each case reducer function
 export const {
-  // updateGoalName,
-  // updateGoalImage,
   addGoal,
   updateBlockers,
   toggleIsRandom,
