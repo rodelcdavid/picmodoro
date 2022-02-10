@@ -94,6 +94,7 @@ const Heading = () => {
           marginLeft: "auto",
           display: "flex",
           alignItems: "center",
+          cursor: "pointer",
         }}
         onClick={handlePopOver}
       >

@@ -14,7 +14,7 @@ const globalStyles = (
         minHeight: "100vh",
         maxWidth: "100%",
         backgroundColor: "#e5e5e5",
-        overflow: "hidden",
+        // overflow: "hidden",
 
         // overflowY: "scroll",
         // backgroundImage:

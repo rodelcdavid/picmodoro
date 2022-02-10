@@ -130,140 +130,141 @@ const GoalSetup = () => {
   }, [inputName]);
 
   return (
-    <Box
-      sx={{
-        display: "flex",
-        flexDirection: "column",
-        justifyContent: "center",
-        alignItems: "center",
-        // width: "calc(100vw - 2rem)",
-        width: ["350px", "450px"],
-        // maxWidth: "400px",
-        // padding: "0.5rem",
-        // boxShadow: "0 10px 15px rgba(0,0,0,0.5)",
-        // boxShadow: 3, why is this not working
-        // borderRadius: "20px",
-        // marginTop: "1rem",
-        backgroundColor: "#fff",
-      }}
-    >
-      <Box sx={{ display: "flex", flexDirection: "column", width: "100%" }}>
-        {/* Input Name */}
-        <Typography variant="h6">
-          <Box sx={{ color: "#4EC127", fontWeight: "bolder" }} component="span">
-            Step 1:{" "}
-          </Box>
-          What is your goal?
-        </Typography>
-        <Box sx={{ width: "100%", alignSelf: "center", marginTop: "5px" }}>
-          <TextField
-            error={nameError ? true : false}
-            className="name-field"
-            fullWidth
-            inputRef={nameFieldRef}
-            id="outlined-name"
-            label="Enter goal name"
-            value={inputName}
-            onChange={nameHandler}
-            helperText={
-              nameError
-                ? "Please enter your goal name."
-                : "Ex. Finish Atomic Habits book, Score A+ on Math"
-            }
-          />
+    // <Box
+    //   sx={{
+    //     display: "flex",
+    //     flexDirection: "column",
+    //     justifyContent: "center",
+    //     alignItems: "center",
+    //     // width: "calc(100vw - 2rem)",
+    //     width: ["350px", "450px"],
+    //     // maxWidth: "400px",
+    //     // padding: "0.5rem",
+    //     // boxShadow: "0 10px 15px rgba(0,0,0,0.5)",
+    //     // boxShadow: 3, why is this not working
+    //     // borderRadius: "20px",
+    //     // marginTop: "1rem",
+    //     backgroundColor: "#fff",
+    //   }}
+    // >
+    <Box sx={{ display: "flex", flexDirection: "column", width: "100%" }}>
+      {/* Input Name */}
+      <Typography variant="h6">
+        <Box sx={{ color: "#4EC127", fontWeight: "bolder" }} component="span">
+          Step 1:{" "}
         </Box>
-
-        {/* Upload Image */}
-        <Typography variant="h6">
-          <Box sx={{ color: "#4EC127", fontWeight: "bolder" }} component="span">
-            Step 2:{" "}
-          </Box>
-          What image will represent this goal?
-        </Typography>
-
-        <Box
-          sx={{
-            display: "flex",
-            flexDirection: "column",
-            alignItems: "center",
-            marginTop: "5px",
-          }}
-        >
-          <TextField
-            error={imageError ? true : false}
-            className="name-field" //can ommit this
-            fullWidth
-            id="outlined-error-helper-text"
-            label="Enter image url"
-            value={inputUrl}
-            onChange={(e) => setInputUrl(e.target.value)}
-            helperText={
-              imageError
-                ? "Please enter a valid image url."
-                : "Ex. https://source.unsplash.com/random/300x200"
-            }
-            inputRef={imageFieldRef}
-          />
-          {!loading ? (
-            <Box
-              sx={{
-                border: "solid 1px rgba(0,0,0,0.23)",
-                width: "100%",
-                // maxHeight: "300px",
-              }}
-              component="img"
-              src={isImageValid ? inputUrl : placeholder}
-              alt=""
-            />
-          ) : (
-            <Box
-              sx={{
-                border: "solid 1px rgba(0,0,0,0.23)",
-                width: "100%",
-                height: "200px",
-                display: "flex",
-                justifyContent: "center",
-                alignItems: "center",
-              }}
-            >
-              <CircularProgress />
-            </Box>
-          )}
-        </Box>
-
-        {/* Submit Button */}
-
-        <Typography variant="h6">
-          <Box sx={{ color: "#4EC127", fontWeight: "bolder" }} component="span">
-            Step 3:{" "}
-          </Box>
-          Submit and start!
-        </Typography>
-        <LoadingButton
-          loading={loading || loadingButton ? true : false}
-          // loadingPosition="start"
-          sx={{ alignSelf: "center", width: "40%" }}
-          onClick={onSubmit}
-          variant="contained"
-          component={RouterLink}
-          to={`/dashboard`} //! change to id
-        >
-          Submit
-        </LoadingButton>
-        <Backdrop
-          sx={{
-            color: "#fff",
-            zIndex: "1250",
-            display: "flex",
-            flexDirection: "column",
-          }}
-          open={openBackdrop}
-          // onClick={handleClose}
-        >
-          <CircularProgress color="inherit" />
-        </Backdrop>
+        What is your goal?
+      </Typography>
+      <Box sx={{ width: "100%", alignSelf: "center", marginTop: "5px" }}>
+        <TextField
+          error={nameError ? true : false}
+          className="name-field"
+          fullWidth
+          inputRef={nameFieldRef}
+          id="outlined-name"
+          label="Enter goal name"
+          value={inputName}
+          onChange={nameHandler}
+          helperText={
+            nameError
+              ? "Please enter your goal name."
+              : "Ex. Finish Atomic Habits book, Score A+ on Math"
+          }
+        />
       </Box>
+
+      {/* Upload Image */}
+      <Typography variant="h6">
+        <Box sx={{ color: "#4EC127", fontWeight: "bolder" }} component="span">
+          Step 2:{" "}
+        </Box>
+        What image will represent this goal?
+      </Typography>
+
+      <Box
+        sx={{
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
+          marginTop: "5px",
+        }}
+      >
+        <TextField
+          sx={{ overflow: "auto" }}
+          error={imageError ? true : false}
+          className="name-field" //can ommit this
+          fullWidth
+          id="outlined-error-helper-text"
+          label="Enter image url"
+          value={inputUrl}
+          onChange={(e) => setInputUrl(e.target.value)}
+          helperText={
+            imageError
+              ? "Please enter a valid image url."
+              : "Ex. https://source.unsplash.com/random/300x200"
+          }
+          inputRef={imageFieldRef}
+        />
+        {!loading ? (
+          <Box
+            sx={{
+              border: "solid 1px rgba(0,0,0,0.23)",
+              width: "100%",
+              // maxHeight: "300px",
+            }}
+            component="img"
+            src={isImageValid ? inputUrl : placeholder}
+            alt=""
+          />
+        ) : (
+          <Box
+            sx={{
+              border: "solid 1px rgba(0,0,0,0.23)",
+              width: "100%",
+              height: "200px",
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+            }}
+          >
+            <CircularProgress />
+          </Box>
+        )}
+      </Box>
+
+      {/* Submit Button */}
+
+      <Typography variant="h6">
+        <Box sx={{ color: "#4EC127", fontWeight: "bolder" }} component="span">
+          Step 3:{" "}
+        </Box>
+        Submit and start!
+      </Typography>
+      <LoadingButton
+        loading={loading || loadingButton ? true : false}
+        // loadingPosition="start"
+        sx={{ alignSelf: "center", width: "40%" }}
+        onClick={onSubmit}
+        variant="contained"
+        component={RouterLink}
+        to={`/dashboard`} //! change to id
+      >
+        Submit
+      </LoadingButton>
+      <Backdrop
+        sx={{
+          color: "#fff",
+          zIndex: "1250",
+          display: "flex",
+          flexDirection: "column",
+        }}
+        open={openBackdrop}
+        // onClick={handleClose}
+      >
+        <CircularProgress color="inherit" />
+      </Backdrop>
     </Box>
+    // </Box>
   );
 };
 

@@ -69,15 +69,6 @@ const Dashboard = () => {
           gridGap: "30px",
           overflowY: "scroll",
           position: "relative",
-          //SCROLLBAR BUT NOT FOR MOBILE??
-          "::-webkit-scrollbar": {
-            width: "10px",
-          },
-          "::-webkit-scrollbar-thumb": {
-            background: "#888",
-            // borderRadius: "10px",
-          },
-          "::-webkit-scrollbar-thumb:hover": { background: "#555" },
         }}
       >
         {goalList.status === "fulfilled" ? (

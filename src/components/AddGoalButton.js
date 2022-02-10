@@ -42,16 +42,17 @@ const AddGoalButton = () => {
         +
       </Box>
       <Dialog
+        fullWidth
         open={open}
         onClose={handleClose}
         aria-labelledby="alert-dialog-title"
         aria-describedby="alert-dialog-description"
       >
         <DialogTitle
-          sx={{ bgcolor: "#1976D2", color: "white" }}
+          sx={{ bgcolor: "#1976D2", color: "#fff" }}
           id="alert-dialog-title"
         >
-          {"Add New Picmodoro Goal"}
+          {"Add New Goal"}
         </DialogTitle>
         <Divider />
         <DialogContent>

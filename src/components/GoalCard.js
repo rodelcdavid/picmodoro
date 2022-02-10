@@ -183,7 +183,7 @@ const GoalCard = ({ id, goalName, goalImage, blockers, goal }) => {
         textDecoration: "none",
         transition: "all ease-in 200ms",
 
-        "&:hover": { boxShadow: "0 5px 5px rgba(0,0,0,0.5)" },
+        "&:hover": { boxShadow: "0 3px 10px rgba(0,0,0,0.5)" },
       }}
       component={RouterLink}
       to={`/${id}`}
@@ -325,7 +325,7 @@ const GoalCard = ({ id, goalName, goalImage, blockers, goal }) => {
             }}
           >
             <Skeleton width="150px" animation="wave" />
-            <Skeleton width="100px" animation="wave" />
+            <Skeleton width="80px" animation="wave" />
           </Box>
         </>
       )}
