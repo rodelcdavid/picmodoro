@@ -24,13 +24,16 @@ const Heading = () => {
   const handleLogout = async (e) => {
     // e.preventDefault();
     const refreshToken = JSON.parse(localStorage.getItem("refreshToken"));
-    const response = await fetch("http://localhost:7000/logout", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        token: refreshToken,
-      }),
-    });
+    const response = await fetch(
+      "https://desolate-lake-70726.herokuapp.com//logout",
+      {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          token: refreshToken,
+        }),
+      }
+    );
 
     if (response.ok) {
       localStorage.removeItem("accessToken");

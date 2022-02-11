@@ -1,6 +1,13 @@
-import { Dialog, DialogContent, DialogTitle, Divider } from "@mui/material";
+import {
+  Dialog,
+  DialogContent,
+  DialogTitle,
+  Divider,
+  Typography,
+} from "@mui/material";
 import { Box } from "@mui/system";
 import React, { useState } from "react";
+import AddCircleIcon from "@mui/icons-material/AddCircle";
 
 import GoalSetup from "./GoalSetup";
 
@@ -19,15 +26,16 @@ const AddGoalButton = () => {
       <Box
         sx={{
           width: "200px",
-          height: "200px",
+          height: "220px",
           display: "flex",
           flexDirection: "column",
           border: "solid 1px rgba(0,0,0,0.87)",
           borderRadius: "10px",
           justifyContent: "center",
           alignItems: "center",
+          gap: "10px",
           fontWeight: "bolder",
-          fontSize: "5rem",
+          fontSize: "2rem",
           cursor: "pointer",
 
           transition: "all ease-in 200ms",
@@ -39,7 +47,8 @@ const AddGoalButton = () => {
         component="button"
         onClick={handleAdd}
       >
-        +
+        <AddCircleIcon fontSize="1rem" />
+        <Typography variant="body1">Add New Goal</Typography>
       </Box>
       <Dialog
         fullWidth

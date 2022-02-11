@@ -13,9 +13,12 @@ const refreshToken = async () => {
   try {
     const refreshToken = JSON.parse(localStorage.getItem("refreshToken"));
 
-    const res = await axios.post("http://localhost:7000/refresh", {
-      token: refreshToken,
-    }); //get refreshtoken from localstorage
+    const res = await axios.post(
+      "https://desolate-lake-70726.herokuapp.com//refresh",
+      {
+        token: refreshToken,
+      }
+    ); //get refreshtoken from localstorage
 
     if (res.status === 200) {
       //update user with tokens
@@ -56,7 +59,7 @@ export const getGoalListAsync = createAsyncThunk(
       const accessToken = JSON.parse(localStorage.getItem("accessToken"));
 
       const response = await axiosJWT.get(
-        `http://localhost:7000/${payload.id}/goal-list`,
+        `https://desolate-lake-70726.herokuapp.com//${payload.id}/goal-list`,
         {
           headers: { authorization: `Bearer ${accessToken}` },
         }
@@ -88,7 +91,7 @@ export const addGoalAsync = createAsyncThunk(
       };
 
       const response = await axiosJWT.post(
-        `http://localhost:7000/${auth.id}/${payload.id}`,
+        `https://desolate-lake-70726.herokuapp.com//${auth.id}/${payload.id}`,
         data,
         {
           headers: {
@@ -120,7 +123,7 @@ export const deleteGoalAsync = createAsyncThunk(
       const auth = JSON.parse(localStorage.getItem("auth"));
 
       const response = await axiosJWT.delete(
-        `http://localhost:7000/${auth.id}/${payload.id}`,
+        `https://desolate-lake-70726.herokuapp.com//${auth.id}/${payload.id}`,
         {
           headers: { authorization: "Bearer " + accessToken },
         }
@@ -151,7 +154,7 @@ export const saveSettingsAsync = createAsyncThunk(
       };
 
       const response = await axiosJWT.patch(
-        `http://localhost:7000/${auth.id}/${payload.id}`,
+        `https://desolate-lake-70726.herokuapp.com//${auth.id}/${payload.id}`,
         data,
         {
           headers: {
@@ -182,7 +185,7 @@ export const getCurrentGoalAsync = createAsyncThunk(
       const auth = JSON.parse(localStorage.getItem("auth"));
 
       const response = await axiosJWT.get(
-        `http://localhost:7000/${auth.id}/${payload.id}`,
+        `https://desolate-lake-70726.herokuapp.com//${auth.id}/${payload.id}`,
         {
           headers: { authorization: `Bearer ${accessToken}` },
         }

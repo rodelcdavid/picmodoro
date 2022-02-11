@@ -25,7 +25,6 @@ const DisplayTimer = ({ currentGoal, goalIdParam }) => {
   //Local state
 
   //Selectors
-  //TODO: Reset these when changing to different goal
   const { minutes, seconds, isActive, isSessionDone } = useSelector(
     (state) => state.timerState
   );

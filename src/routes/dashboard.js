@@ -58,7 +58,7 @@ const Dashboard = () => {
 
       <Box
         sx={{
-          padding: "1.5rem",
+          padding: "1rem 1.5rem",
 
           height: "calc(100vh - 147px)",
 
@@ -66,8 +66,8 @@ const Dashboard = () => {
           display: "grid",
           gridTemplateColumns: "repeat(auto-fill, minmax(200px, 1fr))",
           justifyItems: "center",
-          gridGap: "30px",
-          overflowY: "scroll",
+          gridGap: "25px",
+          overflowY: "auto",
           position: "relative",
         }}
       >

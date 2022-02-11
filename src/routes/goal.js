@@ -77,7 +77,6 @@ const Goal = () => {
   //Update if isDone
   //Triggered when you change settings or when timer is finished
   //you can just put this as a local state
-  //TODO: Update database when isDone
 
   if (currentGoalStatus === "pending") {
     return (

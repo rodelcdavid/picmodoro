@@ -1,4 +1,4 @@
-import { TextField, Button, Typography } from "@mui/material";
+import { TextField, Button, Typography, Snackbar, Alert } from "@mui/material";
 import { Box } from "@mui/system";
 import React, { useState } from "react";
 import { useDispatch } from "react-redux";
@@ -11,58 +11,86 @@ const SignInForm = () => {
   const [password, setPassword] = useState("");
   const [error, setError] = useState(false);
 
+  const [openSnackbar, setOpenSnackbar] = useState(false);
+
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
   const handleTest = (e) => {
     e.preventDefault();
-    dispatch(
-      updateUser({
-        id: 1,
-        name: "Tester",
-        email: "tester@gmail.com",
-        isUserAuthenticated: true,
-      })
-    );
-    navigate("/dashboard");
+    // dispatch(
+    //   updateUser({
+    //     id: 1,
+    //     name: "Tester",
+    //     email: "tester@gmail.com",
+    //     isUserAuthenticated: true,
+    //   })
+    // );
+    // navigate("/dashboard");
+    // setEmail("tester@test.com");
+    // setPassword("tester");
+    // handleSignIn(e);
   };
 
-  const handleSignIn = async (e) => {
+  const handleSignIn = (e, type) => {
     e.preventDefault();
-    try {
-      const res = await fetch("http://localhost:7000/signin", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          email,
-          password,
-        }),
-      });
 
-      if (res.ok) {
-        const { user, accessToken, refreshToken } = await res.json();
-        setError(false);
-        dispatch(
-          updateUser({
-            id: user.id,
-            name: user.name,
-            email: user.email,
-            isUserAuthenticated: true,
-          })
+    const signIn = async () => {
+      try {
+        const res = await fetch(
+          "https://desolate-lake-70726.herokuapp.com//signin",
+          {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+              email: inputEmail,
+              password: inputPassword,
+            }),
+          }
         );
-        localStorage.accessToken = JSON.stringify(accessToken);
-        localStorage.refreshToken = JSON.stringify(refreshToken);
-        // console.log("TOKENS IN SIGNIN", accessToken, refreshToken);
-        //Redirect to dashboard
-        // navigate(from, { replace: true });
-        navigate("/dashboard");
-      } else {
-        // alert(await res.json());
-        setError(true);
+
+        if (res.ok) {
+          const { user, accessToken, refreshToken } = await res.json();
+          setError(false);
+          dispatch(
+            updateUser({
+              id: user.id,
+              name: user.name,
+              email: user.email,
+              isUserAuthenticated: true,
+            })
+          );
+          localStorage.accessToken = JSON.stringify(accessToken);
+          localStorage.refreshToken = JSON.stringify(refreshToken);
+          // console.log("TOKENS IN SIGNIN", accessToken, refreshToken);
+          //Redirect to dashboard
+          // navigate(from, { replace: true });
+          navigate("/dashboard");
+        } else {
+          // alert(await res.json());
+          setError(true);
+        }
+      } catch {
+        alert("There was a problem connecting to the server.");
+        return;
       }
-    } catch {
-      alert("There was a problem connecting to the server.");
-      return;
+    };
+
+    let inputEmail, inputPassword;
+    if (type === "user") {
+      inputEmail = email;
+      inputPassword = password;
+      signIn();
+    } else {
+      setError(false);
+      inputEmail = "awesometester@test.com";
+      inputPassword = "tester";
+      setEmail(inputEmail);
+      setPassword(inputPassword);
+      setOpenSnackbar(true);
+      setTimeout(() => {
+        signIn();
+      }, 2000);
     }
   };
 
@@ -150,6 +178,7 @@ const SignInForm = () => {
           sx={{ marginTop: "10px" }}
           fullWidth
           label="Email address"
+          value={email}
           onChange={(e) => setEmail(e.target.value)}
         />
         <TextField
@@ -157,6 +186,7 @@ const SignInForm = () => {
           type="password"
           fullWidth
           label="Password"
+          value={password}
           onChange={(e) => setPassword(e.target.value)}
         >
           Password
@@ -167,7 +197,7 @@ const SignInForm = () => {
           to="/dashboard"
           variant="contained"
           component={RouterLink}
-          onClick={handleSignIn}
+          onClick={(e) => handleSignIn(e, "user")}
         >
           Sign In
         </Button>
@@ -177,7 +207,7 @@ const SignInForm = () => {
           variant="contained"
           color="warning"
           component={RouterLink}
-          onClick={handleTest}
+          onClick={(e) => handleSignIn(e, "tester")}
         >
           Test
         </Button>
@@ -196,6 +226,21 @@ const SignInForm = () => {
           </Box>
         </p>
       </Box>
+      <Snackbar
+        open={openSnackbar}
+        autoHideDuration={3000}
+        anchorOrigin={{ horizontal: "center", vertical: "top" }}
+        onClose={() => setOpenSnackbar(false)}
+      >
+        <Alert
+          // onClose={() => setOpenSnackbar(false)}
+          variant="filled"
+          severity="success"
+          sx={{ width: "100%" }}
+        >
+          Welcome and happy testing!
+        </Alert>
+      </Snackbar>
     </Box>
   );
 };

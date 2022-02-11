@@ -21,6 +21,7 @@ import { deleteGoalAsync, saveSettingsAsync } from "../features/goalSlice";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
 import LinkIcon from "@mui/icons-material/Link";
+import placeholder from "../assets/placeholder.jpg";
 
 const GoalCard = ({ id, goalName, goalImage, blockers, goal }) => {
   const reveal = blockers.map((blocker) => blocker.reveal);
@@ -37,6 +38,7 @@ const GoalCard = ({ id, goalName, goalImage, blockers, goal }) => {
     img.onload = () => {
       setImagePreloaded(true);
     };
+
     img.src = goal.image_url;
   }, [goal]);
 
@@ -127,24 +129,54 @@ const GoalCard = ({ id, goalName, goalImage, blockers, goal }) => {
     }
   }, [renameMode]);
 
+  const [urlError, setUrlError] = useState(false);
+  const [loadingImage, setLoadingImage] = useState(false);
+  const isImageValid = (url) => {
+    const img = new Image();
+
+    img.onload = () => {
+      setUrlError(false);
+      setLoadingImage(false);
+    };
+
+    img.onerror = () => {
+      setUrlError(true);
+    };
+    img.src = url;
+  };
+
+  const firstLoad = useRef(false);
+  useEffect(() => {
+    if (firstLoad.current === false) {
+      firstLoad.current = true;
+    } else {
+      setLoadingImage(true);
+      isImageValid(inputURL);
+    }
+  }, [inputURL]);
+
   const handleChangeImageOption = (e) => {
     e.preventDefault();
+    setInputURL(goalImage);
+    setUrlError(false);
     setOpenChangeImage(true);
-
     setAnchorEl(null);
   };
 
   const handleSaveChangeImage = () => {
     //TODO: if image is valid
-    setImgURL(inputURL);
-    setSelectedGoal((prev) => {
-      return {
-        ...prev,
-        image_url: inputURL,
-      };
-    });
 
-    setOpenChangeImage(false);
+    if (!urlError) {
+      setImgURL(inputURL);
+      setSelectedGoal((prev) => {
+        return {
+          ...prev,
+          image_url: inputURL,
+        };
+      });
+
+      setOpenChangeImage(false);
+    }
   };
 
   //rerender when goal is included as dep because it always changes
@@ -174,7 +206,7 @@ const GoalCard = ({ id, goalName, goalImage, blockers, goal }) => {
     <Box
       sx={{
         width: "200px",
-        height: "200px",
+        height: "220px",
         display: "flex",
         flexDirection: "column",
         border: "solid 1px rgba(0,0,0,0.87)",
@@ -188,147 +220,131 @@ const GoalCard = ({ id, goalName, goalImage, blockers, goal }) => {
       component={RouterLink}
       to={`/${id}`}
     >
-      {imagePreloaded ? (
-        <>
+      <>
+        {imagePreloaded ? (
           <Box
             sx={{
               width: "100%",
+              // height: "calc(100% - 65px)",
               height: "100%",
               background: `url(${imgURL})`,
               backgroundPosition: "center",
               backgroundSize: "cover",
             }}
           />
-          <Box
-            sx={{
-              color: "rgba(0,0,0,0.87)",
-              backgroundColor: "#e5e5e5",
-              width: "100%",
-              borderTop: "1px solid rgba(0,0,0,0.87)",
-              padding: "1rem",
-              maxHeight: "50px",
-              display: "flex",
-              flexDirection: "column",
-              justifyContent: "center",
-              alignItems: "flex-start",
-              position: "relative",
-            }}
-          >
-            {renameMode ? (
-              <div>
-                <input
-                  style={{
-                    width: "150px",
-                    outline: "none",
-                    fontWeight: "bolder",
-                  }}
-                  type="text"
-                  ref={renameRef}
-                  defaultValue={name}
-                  onClick={(e) => e.preventDefault()}
-                  onBlur={handleBlur}
-                  onKeyDown={handleKeyDown}
-                />
-              </div>
-            ) : (
-              <h5
-                style={{
-                  maxWidth: "150px",
-                }}
-              >
-                {name}
-              </h5>
-            )}
-
-            <p style={{ fontSize: "0.7rem" }}>
-              Progress: {totalReveal}/{blockers.length}
-            </p>
-            <IconButton
-              sx={{
-                color: "rgba(0,0,0,0.87)",
-                position: "absolute",
-                right: 0,
-                "&:hover": {
-                  backgroundColor: "rgba(0,0,0,0.2)",
-                },
-              }}
-              onClick={handlePopOver}
-              // color="primary"
-              aria-label="more options"
-              component="span"
-            >
-              <MoreVertIcon />
-            </IconButton>
-            <Menu
-              id={popOverId}
-              open={open}
-              anchorEl={anchorEl}
-              onClose={handleClose}
-              anchorOrigin={{
-                vertical: "top",
-                horizontal: "right",
-              }}
-              transformOrigin={{
-                vertical: "top",
-                horizontal: "right",
-              }}
-            >
-              <Box
-                sx={{
-                  backgroundColor: "#fff",
-                  fontSize: "0.9rem",
-                  cursor: "pointer",
-                  "& li": {
-                    display: "flex",
-                    gap: "10px",
-                    padding: "1rem",
-                  },
-                }}
-              >
-                <MenuItem onClick={handleRenameOption}>
-                  <EditIcon />
-                  Edit goal name
-                </MenuItem>
-                <MenuItem onClick={handleChangeImageOption}>
-                  <LinkIcon />
-                  Change image URL
-                </MenuItem>
-                {/* <p>Change goal image</p> */}
-                <MenuItem onClick={handleDeleteOption}>
-                  <DeleteIcon />
-                  Delete
-                </MenuItem>
-              </Box>
-            </Menu>
-          </Box>
-        </>
-      ) : (
-        <>
+        ) : (
           <Skeleton
             variant="rectangular"
             width="100%"
             height="100%"
             animation="wave"
           />
-          <Box
+        )}
+
+        <Box
+          sx={{
+            color: "rgba(0,0,0,0.87)",
+            backgroundColor: "#e5e5e5",
+            width: "100%",
+            borderTop: "1px solid rgba(0,0,0,0.87)",
+            padding: "0.7rem 1rem",
+            // maxHeight: "50px",
+            minHeight: "70px",
+            display: "flex",
+            flexDirection: "column",
+            justifyContent: "space-around",
+            alignItems: "flex-start",
+            position: "relative",
+          }}
+        >
+          {renameMode ? (
+            <input
+              style={{
+                width: "150px",
+                outline: "none",
+                fontWeight: "bolder",
+              }}
+              type="text"
+              ref={renameRef}
+              defaultValue={name}
+              onClick={(e) => e.preventDefault()}
+              onBlur={handleBlur}
+              onKeyDown={handleKeyDown}
+            />
+          ) : (
+            <h5
+              style={{
+                maxWidth: "150px",
+              }}
+            >
+              {name}
+            </h5>
+          )}
+
+          <p style={{ fontSize: "0.7rem" }}>
+            Progress: {totalReveal}/{blockers.length}
+          </p>
+          <IconButton
             sx={{
-              backgroundColor: "#e5e5e5",
-              width: "100%",
-              borderTop: "1px solid rgba(0,0,0,0.87)",
-              padding: "1rem",
-              maxHeight: "50px",
-              display: "flex",
-              flexDirection: "column",
-              justifyContent: "center",
-              alignItems: "flex-start",
-              position: "relative",
+              color: "rgba(0,0,0,0.87)",
+              position: "absolute",
+              top: "50%",
+              transform: "translateY(-50%)",
+              right: 0,
+              "&:hover": {
+                backgroundColor: "rgba(0,0,0,0.2)",
+              },
+            }}
+            onClick={handlePopOver}
+            // color="primary"
+            aria-label="more options"
+            component="span"
+          >
+            <MoreVertIcon />
+          </IconButton>
+          <Menu
+            id={popOverId}
+            open={open}
+            anchorEl={anchorEl}
+            onClose={handleClose}
+            anchorOrigin={{
+              vertical: "top",
+              horizontal: "right",
+            }}
+            transformOrigin={{
+              vertical: "top",
+              horizontal: "right",
             }}
           >
-            <Skeleton width="150px" animation="wave" />
-            <Skeleton width="80px" animation="wave" />
-          </Box>
-        </>
-      )}
+            <Box
+              sx={{
+                backgroundColor: "#fff",
+                fontSize: "0.9rem",
+                cursor: "pointer",
+                "& li": {
+                  display: "flex",
+                  gap: "10px",
+                  padding: "1rem",
+                },
+              }}
+            >
+              <MenuItem onClick={handleRenameOption}>
+                <EditIcon />
+                Edit goal name
+              </MenuItem>
+              <MenuItem onClick={handleChangeImageOption}>
+                <LinkIcon />
+                Change image URL
+              </MenuItem>
+              {/* <p>Change goal image</p> */}
+              <MenuItem onClick={handleDeleteOption}>
+                <DeleteIcon />
+                Delete
+              </MenuItem>
+            </Box>
+          </Menu>
+        </Box>
+      </>
 
       {/* Change image dialog */}
       <Dialog
@@ -338,7 +354,7 @@ const GoalCard = ({ id, goalName, goalImage, blockers, goal }) => {
           e.preventDefault();
           setOpenChangeImage(false);
         }}
-        onBackdropClick={() => setOpenChangeImage(false)}
+        // onBackdropClick={() => setOpenChangeImage(false)}
         fullWidth
       >
         <Box onClick={(e) => e.preventDefault()}>
@@ -356,6 +372,12 @@ const GoalCard = ({ id, goalName, goalImage, blockers, goal }) => {
                 value={inputURL}
                 onChange={(e) => setInputURL(e.target.value)}
                 fullWidth
+                error={urlError}
+                helperText={
+                  urlError
+                    ? "Please enter a valid image url."
+                    : "Ex. https://source.unsplash.com/random/300x200"
+                }
               />
             </Box>
           </DialogContent>
@@ -365,6 +387,7 @@ const GoalCard = ({ id, goalName, goalImage, blockers, goal }) => {
               onClick={handleSaveChangeImage}
               variant="contained"
               color="primary"
+              disabled={loadingImage ? true : false}
             >
               Save
             </Button>
