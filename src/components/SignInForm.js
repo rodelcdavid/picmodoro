@@ -228,7 +228,7 @@ const SignInForm = () => {
       </Box>
       <Snackbar
         open={openSnackbar}
-        autoHideDuration={3000}
+        // autoHideDuration={3000}
         anchorOrigin={{ horizontal: "center", vertical: "top" }}
         onClose={() => setOpenSnackbar(false)}
       >
