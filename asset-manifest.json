@@ -1,21 +1,21 @@
 {
   "files": {
-    "main.js": "/picmodoro/static/js/main.3346d627.chunk.js",
-    "main.js.map": "/picmodoro/static/js/main.3346d627.chunk.js.map",
-    "runtime-main.js": "/picmodoro/static/js/runtime-main.9b18ccf5.js",
-    "runtime-main.js.map": "/picmodoro/static/js/runtime-main.9b18ccf5.js.map",
-    "static/js/2.b477a39f.chunk.js": "/picmodoro/static/js/2.b477a39f.chunk.js",
-    "static/js/2.b477a39f.chunk.js.map": "/picmodoro/static/js/2.b477a39f.chunk.js.map",
-    "static/js/3.c04c22f7.chunk.js": "/picmodoro/static/js/3.c04c22f7.chunk.js",
-    "static/js/3.c04c22f7.chunk.js.map": "/picmodoro/static/js/3.c04c22f7.chunk.js.map",
-    "index.html": "/picmodoro/index.html",
-    "static/js/2.b477a39f.chunk.js.LICENSE.txt": "/picmodoro/static/js/2.b477a39f.chunk.js.LICENSE.txt",
-    "static/js/main.3346d627.chunk.js.LICENSE.txt": "/picmodoro/static/js/main.3346d627.chunk.js.LICENSE.txt",
-    "static/media/pomodoro.e1763d73.png": "/picmodoro/static/media/pomodoro.e1763d73.png"
+    "main.js": "/my-app/static/js/main.c81777d3.chunk.js",
+    "main.js.map": "/my-app/static/js/main.c81777d3.chunk.js.map",
+    "runtime-main.js": "/my-app/static/js/runtime-main.529e1cc1.js",
+    "runtime-main.js.map": "/my-app/static/js/runtime-main.529e1cc1.js.map",
+    "static/js/2.156580b1.chunk.js": "/my-app/static/js/2.156580b1.chunk.js",
+    "static/js/2.156580b1.chunk.js.map": "/my-app/static/js/2.156580b1.chunk.js.map",
+    "static/js/3.e4214135.chunk.js": "/my-app/static/js/3.e4214135.chunk.js",
+    "static/js/3.e4214135.chunk.js.map": "/my-app/static/js/3.e4214135.chunk.js.map",
+    "index.html": "/my-app/index.html",
+    "static/js/2.156580b1.chunk.js.LICENSE.txt": "/my-app/static/js/2.156580b1.chunk.js.LICENSE.txt",
+    "static/js/main.c81777d3.chunk.js.LICENSE.txt": "/my-app/static/js/main.c81777d3.chunk.js.LICENSE.txt",
+    "static/media/pomodoro.e1763d73.png": "/my-app/static/media/pomodoro.e1763d73.png"
   },
   "entrypoints": [
-    "static/js/runtime-main.9b18ccf5.js",
-    "static/js/2.b477a39f.chunk.js",
-    "static/js/main.3346d627.chunk.js"
+    "static/js/runtime-main.529e1cc1.js",
+    "static/js/2.156580b1.chunk.js",
+    "static/js/main.c81777d3.chunk.js"
   ]
 }
