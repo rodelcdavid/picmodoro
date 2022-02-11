@@ -52,6 +52,13 @@ function App() {
     }
   }, [dispatch, error]);
 
+  //wake up heroku server on componentdidmount
+  useEffect(() => {
+    fetch("https://desolate-lake-70726.herokuapp.com/")
+      .then((res) => res.json())
+      .then(console.log());
+  }, []);
+
   //change dashboard route to /:userid/dashboard
   //change goal route to /:userid/:goalid
   //!add browserrouter basename for github pages
