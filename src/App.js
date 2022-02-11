@@ -57,7 +57,8 @@ function App() {
   //!add browserrouter basename for github pages
   return (
     <>
-      <BrowserRouter basename="/picmodoro">
+      {/* <BrowserRouter basename="/picmodoro"> */}
+      <BrowserRouter>
         <Routes>
           <Route
             path="/"
