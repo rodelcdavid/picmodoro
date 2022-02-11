@@ -14,7 +14,7 @@ const refreshToken = async () => {
     const refreshToken = JSON.parse(localStorage.getItem("refreshToken"));
 
     const res = await axios.post(
-      "https://desolate-lake-70726.herokuapp.com//refresh",
+      "https://desolate-lake-70726.herokuapp.com/refresh",
       {
         token: refreshToken,
       }
@@ -59,7 +59,7 @@ export const getGoalListAsync = createAsyncThunk(
       const accessToken = JSON.parse(localStorage.getItem("accessToken"));
 
       const response = await axiosJWT.get(
-        `https://desolate-lake-70726.herokuapp.com//${payload.id}/goal-list`,
+        `https://desolate-lake-70726.herokuapp.com/${payload.id}/goal-list`,
         {
           headers: { authorization: `Bearer ${accessToken}` },
         }
@@ -91,7 +91,7 @@ export const addGoalAsync = createAsyncThunk(
       };
 
       const response = await axiosJWT.post(
-        `https://desolate-lake-70726.herokuapp.com//${auth.id}/${payload.id}`,
+        `https://desolate-lake-70726.herokuapp.com/${auth.id}/${payload.id}`,
         data,
         {
           headers: {
@@ -123,7 +123,7 @@ export const deleteGoalAsync = createAsyncThunk(
       const auth = JSON.parse(localStorage.getItem("auth"));
 
       const response = await axiosJWT.delete(
-        `https://desolate-lake-70726.herokuapp.com//${auth.id}/${payload.id}`,
+        `https://desolate-lake-70726.herokuapp.com/${auth.id}/${payload.id}`,
         {
           headers: { authorization: "Bearer " + accessToken },
         }
@@ -154,7 +154,7 @@ export const saveSettingsAsync = createAsyncThunk(
       };
 
       const response = await axiosJWT.patch(
-        `https://desolate-lake-70726.herokuapp.com//${auth.id}/${payload.id}`,
+        `https://desolate-lake-70726.herokuapp.com/${auth.id}/${payload.id}`,
         data,
         {
           headers: {
@@ -185,7 +185,7 @@ export const getCurrentGoalAsync = createAsyncThunk(
       const auth = JSON.parse(localStorage.getItem("auth"));
 
       const response = await axiosJWT.get(
-        `https://desolate-lake-70726.herokuapp.com//${auth.id}/${payload.id}`,
+        `https://desolate-lake-70726.herokuapp.com/${auth.id}/${payload.id}`,
         {
           headers: { authorization: `Bearer ${accessToken}` },
         }

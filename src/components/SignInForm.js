@@ -38,7 +38,7 @@ const SignInForm = () => {
     const signIn = async () => {
       try {
         const res = await fetch(
-          "https://desolate-lake-70726.herokuapp.com//signin",
+          "https://desolate-lake-70726.herokuapp.com/signin",
           {
             method: "POST",
             headers: { "Content-Type": "application/json" },

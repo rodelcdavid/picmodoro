@@ -25,7 +25,7 @@ const Heading = () => {
     // e.preventDefault();
     const refreshToken = JSON.parse(localStorage.getItem("refreshToken"));
     const response = await fetch(
-      "https://desolate-lake-70726.herokuapp.com//logout",
+      "https://desolate-lake-70726.herokuapp.com/logout",
       {
         method: "POST",
         headers: { "Content-Type": "application/json" },
