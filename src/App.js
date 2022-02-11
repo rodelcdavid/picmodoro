@@ -3,7 +3,7 @@ import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
 import Goal from "./routes/goal";
-import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
+import { HashRouter, Routes, Route, Navigate } from "react-router-dom";
 import SignIn from "./routes/signin";
 import Register from "./routes/register";
 import Dashboard from "./routes/dashboard";
@@ -57,7 +57,7 @@ function App() {
   //!add browserrouter basename for github pages
   return (
     <>
-      <BrowserRouter basename="/picmodoro">
+      <HashRouter basename="/picmodoro">
         {/* <BrowserRouter> */}
         <Routes>
           <Route
@@ -79,7 +79,7 @@ function App() {
           <Route path="*" element={<NotFound />} />
         </Routes>
         {/* <Footer /> */}
-      </BrowserRouter>
+      </HashRouter>
     </>
   );
 }
