@@ -89,7 +89,6 @@ const RegisterForm = () => {
               isUserAuthenticated: true,
             })
           );
-          // console.log("TOKENS", accessToken, refreshToken);
           localStorage.accessToken = JSON.stringify(accessToken);
           localStorage.refreshToken = JSON.stringify(refreshToken);
           navigate("/dashboard");
@@ -202,10 +201,7 @@ const RegisterForm = () => {
           <Button
             type="submit"
             sx={{ marginTop: "0.2rem", width: "100%" }}
-            // to="/dashboard"
             variant="contained"
-            // component={RouterLink}
-            // onClick={onRegister}
           >
             Register
           </Button>

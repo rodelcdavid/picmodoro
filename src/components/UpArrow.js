@@ -1,6 +1,5 @@
 import { styled } from "@mui/system";
 
-//try to use sx instead
 const UpArrow = styled("div")`
   @keyframes uparrow {
     0% {

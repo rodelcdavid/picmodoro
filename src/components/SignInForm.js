@@ -18,18 +18,6 @@ const SignInForm = () => {
 
   const handleTest = (e) => {
     e.preventDefault();
-    // dispatch(
-    //   updateUser({
-    //     id: 1,
-    //     name: "Tester",
-    //     email: "tester@gmail.com",
-    //     isUserAuthenticated: true,
-    //   })
-    // );
-    // navigate("/dashboard");
-    // setEmail("tester@test.com");
-    // setPassword("tester");
-    // handleSignIn(e);
   };
 
   const handleSignIn = (e, type) => {
@@ -62,12 +50,9 @@ const SignInForm = () => {
           );
           localStorage.accessToken = JSON.stringify(accessToken);
           localStorage.refreshToken = JSON.stringify(refreshToken);
-          // console.log("TOKENS IN SIGNIN", accessToken, refreshToken);
-          //Redirect to dashboard
-          // navigate(from, { replace: true });
+
           navigate("/dashboard");
         } else {
-          // alert(await res.json());
           setError(true);
         }
       } catch {
@@ -77,6 +62,8 @@ const SignInForm = () => {
     };
 
     let inputEmail, inputPassword;
+
+    /* User login or tester */
     if (type === "user") {
       inputEmail = email;
       inputPassword = password;
@@ -153,9 +140,7 @@ const SignInForm = () => {
           padding: "2rem",
           borderRadius: "10px",
 
-          "@media (min-width:950px)": {
-            // width: "400px",
-          },
+          "@media (min-width:950px)": {},
         }}
       >
         <h2 style={{ textAlign: "center", color: "#1976D2" }}>Sign In</h2>
@@ -228,16 +213,10 @@ const SignInForm = () => {
       </Box>
       <Snackbar
         open={openSnackbar}
-        // autoHideDuration={3000}
         anchorOrigin={{ horizontal: "center", vertical: "top" }}
         onClose={() => setOpenSnackbar(false)}
       >
-        <Alert
-          // onClose={() => setOpenSnackbar(false)}
-          variant="filled"
-          severity="success"
-          sx={{ width: "100%" }}
-        >
+        <Alert variant="filled" severity="success" sx={{ width: "100%" }}>
           Welcome and happy testing!
         </Alert>
       </Snackbar>

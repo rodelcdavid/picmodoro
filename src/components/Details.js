@@ -7,12 +7,9 @@ const Details = ({ currentGoal }) => {
   const reveal = blockers.map((blocker) => blocker.reveal);
   const totalReveal = reveal.filter((bool) => bool === true).length;
 
-  console.log("Details Component");
   return (
     <Box
       sx={{
-        // width: "100%",
-        // margin: "0 auto",
         color: "rgba(0,0,0,0.87)",
         justifySelf: "center",
 
@@ -30,9 +27,7 @@ const Details = ({ currentGoal }) => {
       <h3 style={{}}>{goalName}</h3>
       <p
         style={{
-          // color: "#2a5298",
           fontSize: "0.7rem",
-          // fontWeight: "bolder",
           marginTop: "5px",
         }}
       >

@@ -22,7 +22,6 @@ const Heading = () => {
   const dispatch = useDispatch();
 
   const handleLogout = async (e) => {
-    // e.preventDefault();
     const refreshToken = JSON.parse(localStorage.getItem("refreshToken"));
     const response = await fetch(
       "https://desolate-lake-70726.herokuapp.com/logout",
@@ -49,12 +48,10 @@ const Heading = () => {
   const [anchorEl, setAnchorEl] = useState(null);
 
   const handlePopOver = (e) => {
-    // e.preventDefault();
     setAnchorEl(e.currentTarget);
   };
 
   const handleClosePopOver = (e) => {
-    // e.preventDefault();
     setAnchorEl(null);
   };
 
@@ -68,8 +65,7 @@ const Heading = () => {
       sx={{
         display: "flex",
         padding: "1rem",
-        // position: "fixed",
-        // top: 0,
+
         width: "100%",
         height: "72px",
         color: "#fff",
@@ -77,9 +73,6 @@ const Heading = () => {
         backgroundImage:
           "linear-gradient(to top, #1e3c72 0%, #1e3c72 1%, #2a5298 100%)",
       }}
-      // component={RouterLink}
-      //to="/" dashboard for now
-      // to="/dashboard"
     >
       <Box
         sx={{ textDecoration: "none" }}

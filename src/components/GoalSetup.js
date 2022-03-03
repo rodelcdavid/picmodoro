@@ -15,7 +15,6 @@ import {
 } from "@mui/material";
 
 const GoalSetup = () => {
-  console.log("Form.js");
   const [inputUrl, setInputUrl] = useState("");
   const [inputName, setInputName] = useState("");
   const [isImageValid, setIsImageValid] = useState(true);
@@ -36,7 +35,6 @@ const GoalSetup = () => {
 
   //Handlers
   const nameHandler = (e) => {
-    // _updateGoalName(e.target.value); //state should update only onSubmit
     setInputName(e.target.value);
   };
 
@@ -55,8 +53,6 @@ const GoalSetup = () => {
     }
 
     if (inputName.length && isImageValid) {
-      // _updateScreen(1);
-      //add new goal action
       setLoadingButton(true);
       setOpenBackdrop(true);
 
@@ -64,15 +60,12 @@ const GoalSetup = () => {
 
       dispatch(
         addGoalAsync({
-          // ownerId: ownerId,
           id: id,
           goalName: inputName,
           goalImage: inputUrl,
         })
       )
         .then(() => {
-          // console.log("Still triggered?");
-          //this triggers an error when user is redirected to signin on invalid token
           setTimeout(() => {
             setOpenBackdrop(false);
             navigate(`/${id}`);
@@ -81,17 +74,6 @@ const GoalSetup = () => {
         .catch(() =>
           console.log("There was a problem connecting to the server")
         );
-
-      // if (status === "fulfilled") {
-      //   console.log("addstatus", status);
-
-      //   navigate(`/${id}`);
-      // }
-      // setTimeout(() => {
-      //   navigate(`/${id}`);
-      // }, 1000);
-
-      //navigate goal id if fulfilled
     }
   };
 
@@ -101,20 +83,15 @@ const GoalSetup = () => {
     const image = new Image();
     image.src = inputUrl;
     image.onload = function () {
-      //need to have spinner before this
       if (this.width > 0) {
-        // _updateGoalImage(inputUrl); //state should update only onsubmit
         setLoading(false);
-        // dispatch(updateGoalImage(inputUrl));
         setIsImageValid(true);
         setImageError(false);
       }
     };
     image.onerror = function (e) {
       console.log("error", e);
-      // _updateGoalImage(placeholder);
       setLoading(false);
-      // dispatch(updateGoalImage(placeholder));
       setIsImageValid(false);
     };
 
@@ -130,23 +107,6 @@ const GoalSetup = () => {
   }, [inputName]);
 
   return (
-    // <Box
-    //   sx={{
-    //     display: "flex",
-    //     flexDirection: "column",
-    //     justifyContent: "center",
-    //     alignItems: "center",
-    //     // width: "calc(100vw - 2rem)",
-    //     width: ["350px", "450px"],
-    //     // maxWidth: "400px",
-    //     // padding: "0.5rem",
-    //     // boxShadow: "0 10px 15px rgba(0,0,0,0.5)",
-    //     // boxShadow: 3, why is this not working
-    //     // borderRadius: "20px",
-    //     // marginTop: "1rem",
-    //     backgroundColor: "#fff",
-    //   }}
-    // >
     <Box sx={{ display: "flex", flexDirection: "column", width: "100%" }}>
       {/* Input Name */}
       <Typography variant="h6">
@@ -192,7 +152,6 @@ const GoalSetup = () => {
         <TextField
           sx={{ overflow: "auto" }}
           error={imageError ? true : false}
-          className="name-field" //can ommit this
           fullWidth
           id="outlined-error-helper-text"
           label="Enter image url"
@@ -210,7 +169,6 @@ const GoalSetup = () => {
             sx={{
               border: "solid 1px rgba(0,0,0,0.23)",
               width: "100%",
-              // maxHeight: "300px",
             }}
             component="img"
             src={isImageValid ? inputUrl : placeholder}
@@ -242,12 +200,11 @@ const GoalSetup = () => {
       </Typography>
       <LoadingButton
         loading={loading || loadingButton ? true : false}
-        // loadingPosition="start"
         sx={{ alignSelf: "center", width: "40%" }}
         onClick={onSubmit}
         variant="contained"
         component={RouterLink}
-        to={`/dashboard`} //! change to id
+        to={`/dashboard`}
       >
         Submit
       </LoadingButton>
@@ -259,12 +216,10 @@ const GoalSetup = () => {
           flexDirection: "column",
         }}
         open={openBackdrop}
-        // onClick={handleClose}
       >
         <CircularProgress color="inherit" />
       </Backdrop>
     </Box>
-    // </Box>
   );
 };
 

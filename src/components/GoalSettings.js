@@ -24,15 +24,7 @@ import SettingsIcon from "@mui/icons-material/Settings";
 import CloseIcon from "@mui/icons-material/Close";
 import { useDispatch, useSelector } from "react-redux";
 
-//You can break this down again to minimize rerender on settings change
 const GoalSettings = ({ setGuide, goalIdParam, currentGoal }) => {
-  // const { goalList } = useSelector((state) => state.goalState);
-
-  // const currentGoal = goalList.filter((goal) => {
-  //   return goal.id === goalIdParam;
-  // });
-
-  // const { isRandom, blockers, presetMin, isDone } = currentGoal[0];
   const {
     is_random: isRandom,
     blockers,
@@ -40,31 +32,17 @@ const GoalSettings = ({ setGuide, goalIdParam, currentGoal }) => {
     is_done: isDone,
   } = currentGoal;
 
-  // const renderCount = useRef(0);
-  // renderCount.current += 1;
-  // console.log("Settings rendered:", renderCount.current);
-  //where should guide state live
-  //Local state
   const [open, setOpen] = useState(false);
 
   //Selectors
-  // const { isRandom, blockers, presetMin } = useSelector(
-  //   (state) => state.settingsState
-  // );
-
-  // const { isDone } = useSelector((state) => state.displayGridState);
 
   const { isActive } = useSelector((state) => state.timerState);
 
   //Dispatch
   const dispatch = useDispatch();
   const _toggleIsRandom = (payload) => dispatch(toggleIsRandom(payload));
-
-  // const _updateBlockers = (blockers) => dispatch(updateBlockers(blockers));
   const _updateBlockers = (payload) => dispatch(updateBlockers(payload));
-
   const _updatePresetMin = (payload) => dispatch(updatePresetMin(payload));
-  // const _updatePresetMin = (payload) => console.log(payload);
 
   //Handlers
 
@@ -76,16 +54,14 @@ const GoalSettings = ({ setGuide, goalIdParam, currentGoal }) => {
   };
 
   const handleToggle = (e) => {
-    _toggleIsRandom({ id: goalIdParam, isRandom: e.target.checked }); //can you refactor this to !isRandom?
+    _toggleIsRandom({ id: goalIdParam, isRandom: e.target.checked });
   };
 
-  //you can just move the payload directly to the reducer instead, separate addBlockers, subtractBlockers
   const onPlus = () => {
     _updateBlockers({
       id: goalIdParam,
       blockers: [...blockers, { clickable: false, reveal: false }],
     });
-    // _updateBlockers([...blockers, { clickable: false, reveal: false }]);
   };
 
   const onMinus = () => {
@@ -99,7 +75,6 @@ const GoalSettings = ({ setGuide, goalIdParam, currentGoal }) => {
 
   //useEffects
   useEffect(() => {
-    // _updateMinutes(presetMin);
     dispatch(updateMinutes(presetMin));
   }, [presetMin, dispatch]);
 
@@ -108,12 +83,7 @@ const GoalSettings = ({ setGuide, goalIdParam, currentGoal }) => {
       {/* Icon Button*/}
       <Box
         sx={{
-          // marginLeft: "auto",
           justifySelf: "flex-end",
-
-          // boxShadow: "0 5px 5px rgba(0,0,0,0.5)",
-          // borderRadius: "100%",
-          // backgroundColor: "#fff",
         }}
       >
         <Tooltip title="Settings">
@@ -159,7 +129,6 @@ const GoalSettings = ({ setGuide, goalIdParam, currentGoal }) => {
           </Box>
           <Divider />
 
-          {/* Here */}
           <DialogContent sx={{ textAlign: "center", padding: "1rem" }}>
             {/* Random */}
             <h5>Random Reveal</h5>
@@ -230,7 +199,6 @@ const GoalSettings = ({ setGuide, goalIdParam, currentGoal }) => {
                     id: goalIdParam,
                     presetMin: presetMin + 5,
                   });
-                  // _updatePresetMin(presetMin + 5);
                 }}
               >
                 <KeyboardArrowUp />
@@ -238,17 +206,6 @@ const GoalSettings = ({ setGuide, goalIdParam, currentGoal }) => {
             </Box>
           </DialogContent>
           <Divider />
-          {/* <DialogActions sx={{ display: "flex", justifyContent: "center" }}>
-            <Button
-              startIcon={<Save />}
-              variant="contained"
-              color="error"
-              onClick={handleSave}
-            >
-              Save
-            </Button>
-          </DialogActions> */}
-          {/* Here */}
         </Box>
       </Dialog>
     </div>

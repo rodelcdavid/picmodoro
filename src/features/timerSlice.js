@@ -1,8 +1,8 @@
 import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
-  minutes: 0, //can use reselect or thunk middleware to access presetMin state
-  seconds: 0, //set to 25
+  minutes: 0,
+  seconds: 0,
   isActive: false,
   isSessionDone: false,
 };
@@ -24,7 +24,6 @@ export const timerSlice = createSlice({
       state.isSessionDone = payload;
     },
     resetTimerState: (state, { payload }) => {
-      //?IS there a shorter way to do this?
       state.minutes = 0;
       state.seconds = 0;
       state.isActive = false;

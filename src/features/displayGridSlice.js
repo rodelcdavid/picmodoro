@@ -1,7 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
-  // reveal: [false],
   isDone: false,
 };
 
@@ -9,9 +8,6 @@ export const displayGridSlice = createSlice({
   name: "displayGrid",
   initialState,
   reducers: {
-    // updateReveal: (state, { payload }) => {
-    //   state.reveal = payload;
-    // },
     toggleIsDone: (state, { payload }) => {
       state.isDone = payload;
     },

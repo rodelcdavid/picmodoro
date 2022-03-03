@@ -40,7 +40,6 @@ const AddGoalButton = () => {
 
           transition: "all ease-in 200ms",
           backgroundColor: "#e5e5e5",
-          // color: "#1e3c72",
           color: "rgba(0,0,0,0.87)",
           "&:hover": { boxShadow: "0 5px 10px rgba(0,0,0,0.5)" },
         }}

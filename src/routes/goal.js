@@ -20,30 +20,13 @@ const Goal = () => {
   let urlParams = useParams();
   const goalIdParam = urlParams.goalid;
 
-  //Fetch state from server
-  //  base on goalid, get state from redux for now base on goalid
-  // const { goalList } = useSelector((state) => state.goalState);
-
-  //can i pass this down as props?
-  //or useSelector each component and just props goalidparam
-  //should i put all the state in just one goalList array
-  // const currentGoal = goalList.find((goal) => {
-  //   return goal.id === goalIdParam;
-  // });
-
   //Local state
-  //this should be included in redux
   const [guide, setGuide] = useState(true);
 
-  //Selectors
-  // const { blockers } = useSelector((state) => state.settingsState);
   //Dispatch
   const dispatch = useDispatch();
 
-  //FIXME: Error on refresh, currentGoal is undefined
   useEffect(() => {
-    //if accessToken is invalid, set userauthenticated to false => signin
-
     dispatch(getCurrentGoalAsync({ id: goalIdParam })).catch(() =>
       console.log("There was a problem connecting to the server")
     );
@@ -61,7 +44,6 @@ const Goal = () => {
         const totalReveal = reveal.filter((bool) => bool === true).length;
         if (totalReveal === blockers.length) {
           dispatch(toggleIsDone(true));
-          console.log("toggle done true");
         } else {
           dispatch(toggleIsDone(false));
         }
@@ -73,10 +55,6 @@ const Goal = () => {
       }
     }
   }, [blockers, dispatch, currentGoal]);
-
-  //Update if isDone
-  //Triggered when you change settings or when timer is finished
-  //you can just put this as a local state
 
   if (currentGoalStatus === "pending") {
     return (
@@ -162,18 +140,10 @@ const Goal = () => {
               },
             }}
           >
-            {/* TODO: Move this logic to imagegrid */}
             <Box>
               <ImageGrid currentGoal={currentGoal} />
             </Box>
-            <Box
-            // sx={{
-            //   padding: "0.5rem 3rem",
-            //   border: "1px solid rgba(0,0,0,0.87)",
-            //   // borderRadius: "10px",
-            //   width: "476px",
-            // }}
-            >
+            <Box>
               <DisplayTimer
                 currentGoal={currentGoal}
                 goalIdParam={goalIdParam}
@@ -184,7 +154,6 @@ const Goal = () => {
       </Box>
     );
   }
-  //Fix this, nothing is returned if it doesn't match any currentgoalstatus
   return <h1>Loading</h1>;
 };
 

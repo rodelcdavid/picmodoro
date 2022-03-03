@@ -8,10 +8,6 @@ const getGridValues = (numBlockers, wide) => {
   const imgWidth = wide ? 476 : 280;
   const imgHeight = wide ? 340 : 200;
 
-  // const imgWidth = 350;
-  // const imgHeight = 300;
-  // const imgWidth = 250;
-  // const imgHeight = 200;
   let gridColumn, gridRow;
 
   for (let i = 10; i > 1; i--) {
@@ -50,19 +46,12 @@ const getGridValues = (numBlockers, wide) => {
 };
 
 const ImageGrid = ({ currentGoal }) => {
-  // const { is_done: isDone, image_url: goalImage, blockers } = currentGoal;
   const { image_url: goalImage, blockers } = currentGoal;
 
   //Selectors
   const { isDone } = useSelector((state) => state.displayGridState);
-  // const { goalImage } = useSelector((state) => state.goalState);
-  // const { blockers } = useSelector((state) => state.settingsState);
 
-  //this component rerenders on any pomodoro state change
   const wide = useMediaQuery("(min-width:580px");
-
-  console.log("Image Grid");
-  //Wrapped in useCallback, prevented rerender when duration settings changes
 
   //preload image
   const [imagePreloaded, setImagePreloaded] = useState(false);
@@ -103,15 +92,7 @@ const ImageGrid = ({ currentGoal }) => {
   } = getGridValues(blockers.length, wide);
 
   return (
-    <Box
-    // sx={{
-    //   display: "flex",
-    //   flexDirection: "column",
-    //   justifyContent: "center",
-    //   alignItems: "center",
-    //   textAlign: "center",
-    // }}
-    >
+    <Box>
       {imagePreloaded ? (
         <Box
           style={{

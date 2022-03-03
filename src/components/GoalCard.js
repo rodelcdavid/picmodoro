@@ -67,7 +67,6 @@ const GoalCard = ({ id, goalName, goalImage, blockers, goal }) => {
     e.preventDefault();
     setAnchorEl(e.currentTarget);
     setSelectedGoal(goal);
-    // e.stopPropagation();
   };
 
   const handleClose = (e) => {
@@ -79,7 +78,6 @@ const GoalCard = ({ id, goalName, goalImage, blockers, goal }) => {
     e.preventDefault();
     setOpenBackdrop(true);
     dispatch(deleteGoalAsync({ id: id }))
-      // .then(() => setOpenBackdrop(false))
       .catch(() =>
         console.log("There was a problem connecting to the server.")
       );
@@ -186,7 +184,6 @@ const GoalCard = ({ id, goalName, goalImage, blockers, goal }) => {
         selectedGoal.image_url !== goalImage ||
         selectedGoal.goal_name !== goalName
       ) {
-        console.log("to save", selectedGoal);
         dispatch(
           saveSettingsAsync({
             currentGoal: selectedGoal,
@@ -225,7 +222,6 @@ const GoalCard = ({ id, goalName, goalImage, blockers, goal }) => {
           <Box
             sx={{
               width: "100%",
-              // height: "calc(100% - 65px)",
               height: "100%",
               background: `url(${imgURL})`,
               backgroundPosition: "center",
@@ -248,7 +244,6 @@ const GoalCard = ({ id, goalName, goalImage, blockers, goal }) => {
             width: "100%",
             borderTop: "1px solid rgba(0,0,0,0.87)",
             padding: "0.7rem 1rem",
-            // maxHeight: "50px",
             minHeight: "70px",
             display: "flex",
             flexDirection: "column",
@@ -296,7 +291,6 @@ const GoalCard = ({ id, goalName, goalImage, blockers, goal }) => {
               },
             }}
             onClick={handlePopOver}
-            // color="primary"
             aria-label="more options"
             component="span"
           >
@@ -336,7 +330,6 @@ const GoalCard = ({ id, goalName, goalImage, blockers, goal }) => {
                 <LinkIcon />
                 Change image URL
               </MenuItem>
-              {/* <p>Change goal image</p> */}
               <MenuItem onClick={handleDeleteOption}>
                 <DeleteIcon />
                 Delete
@@ -350,11 +343,9 @@ const GoalCard = ({ id, goalName, goalImage, blockers, goal }) => {
       <Dialog
         open={openChangeImage}
         onClose={(e) => {
-          // e.stopPropagation();
           e.preventDefault();
           setOpenChangeImage(false);
         }}
-        // onBackdropClick={() => setOpenChangeImage(false)}
         fullWidth
       >
         <Box onClick={(e) => e.preventDefault()}>
@@ -404,7 +395,6 @@ const GoalCard = ({ id, goalName, goalImage, blockers, goal }) => {
           flexDirection: "column",
         }}
         open={openBackdrop}
-        // onClick={handleClose}
       >
         <CircularProgress color="inherit" />
       </Backdrop>

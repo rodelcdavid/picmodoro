@@ -1,13 +1,9 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 
-//id params, token headers
-//endpoint should be /dashboard/:ownerId
 import axios from "axios";
 import jwt_decode from "jwt-decode";
 
 export const axiosJWT = axios.create();
-
-// const auth = JSON.parse(localStorage.getItem("auth"));
 
 const refreshToken = async () => {
   try {
@@ -18,7 +14,7 @@ const refreshToken = async () => {
       {
         token: refreshToken,
       }
-    ); //get refreshtoken from localstorage
+    );
 
     if (res.status === 200) {
       //update user with tokens
@@ -36,7 +32,7 @@ axiosJWT.interceptors.request.use(
   async (config) => {
     const accessToken = localStorage.getItem("accessToken");
     let currentDate = new Date();
-    const decodedToken = jwt_decode(accessToken); //get accesstoken from localstorage
+    const decodedToken = jwt_decode(accessToken);
 
     if (decodedToken.exp * 1000 < currentDate.getTime()) {
       const data = await refreshToken();
@@ -213,7 +209,6 @@ const initialState = {
     data: [],
     status: "",
   },
-  // goalList: [],
   currentGoal: {},
   currentGoalStatus: "pending",
   fetchStatus: "",
@@ -225,9 +220,6 @@ export const goalSlice = createSlice({
   name: "goals",
   initialState,
   reducers: {
-    //updateGoalName: => receive goalid, update goalname of that goalid
-    //updateGoalImage: => receive goalid, update goalname of that goalid
-    //addblockers => receive goalid, add new blocker
     updateBlockers: (state, { payload }) => {
       state.currentGoal.blockers = payload.blockers;
     },
@@ -239,12 +231,6 @@ export const goalSlice = createSlice({
     },
     updateIsDone: (state, { payload }) => {
       state.currentGoal.is_done = payload.isDone;
-
-      // if (payload.isDone) {
-      //   state.currentGoal.date_finished = new Date();
-      // } else {
-      //   state.currentGoal.date_finished = null;
-      // }
     },
 
     updateCurrentGoal: (state, { payload }) => {
@@ -257,7 +243,6 @@ export const goalSlice = createSlice({
         }
         return goal;
       });
-      // state.currentGoal.image_url = payload.goalImage;
     },
 
     resetCurrentGoal: (state, { payload }) => {
@@ -269,7 +254,6 @@ export const goalSlice = createSlice({
     updateError: (state, { payload }) => {
       state.error = payload;
     },
-    //toggleisDone => receive goalid, update isDone of that goalid
   },
   extraReducers: {
     [getGoalListAsync.fulfilled]: (state, { payload }) => {
@@ -311,15 +295,12 @@ export const goalSlice = createSlice({
       state.goalList.data[index] = payload.goalToUpdate;
     },
     [saveSettingsAsync.pending]: (state, { payload }) => {
-      // state.addStatus = "pending";
-
       console.log("saving...");
     },
     [saveSettingsAsync.rejected]: (state, { payload }) => {
       state.error = "Invalid token";
     },
     [getCurrentGoalAsync.pending]: (state, { payload }) => {
-      // state.addStatus = "pending";
       state.currentGoalStatus = "pending";
       console.log("getting current goal...");
     },

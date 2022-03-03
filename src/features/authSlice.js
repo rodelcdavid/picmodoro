@@ -2,11 +2,6 @@ import { createSlice } from "@reduxjs/toolkit";
 import { prevAuth } from "../utils/getLocalStorage";
 
 const initialState = {
-  //currentUser:{},
-  //error:"",
-  //isUserAuthenticated:false,
-  //loading: false
-
   id: prevAuth.id,
   name: prevAuth.name,
   email: prevAuth.email,

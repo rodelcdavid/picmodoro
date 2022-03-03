@@ -10,11 +10,8 @@ const BackButton = () => {
   return (
     <Box
       sx={{
-        // marginRight: "auto",
         justifySelf: "flex-start",
-        // boxShadow: "0 5px 5px rgba(0,0,0,0.5)",
         borderRadius: "100%",
-        // backgroundColor: "#fff",
       }}
     >
       <Tooltip title="Back to dashboard">

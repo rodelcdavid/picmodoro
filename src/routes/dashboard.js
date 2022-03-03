@@ -16,11 +16,8 @@ const Dashboard = () => {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    console.log("dashboard useeffect");
     dispatch(getGoalListAsync({ id: id })).catch((err) => {
-      //should catch be here? make a way so that undefined goallist will still run
-
-      console.log("There was an error"); //the error here is that the goallist in goallistasync fulfilled is undefined
+      console.log("There was an error");
     });
     dispatch(resetCurrentGoal());
     dispatch(resetCurrentGoalStatus());
@@ -32,10 +29,7 @@ const Dashboard = () => {
       sx={{
         display: "flex",
         flexDirection: "column",
-        // justifyContent: "center",
         alignItems: "center",
-        // padding: "0.5rem",
-        // marginTop: "0.5rem",
         height: "100%",
       }}
     >
@@ -83,7 +77,6 @@ const Dashboard = () => {
                   blockers={goal.blockers}
                   key={goal.id}
                   goal={goal}
-                  // can just prop drill the currentgoal
                 />
               );
             })}

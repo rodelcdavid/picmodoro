@@ -22,7 +22,6 @@ const DisplayTimer = ({ currentGoal, goalIdParam }) => {
   console.log("DisplayTimer.js");
 
   const { blockers, is_random: isRandom, preset_min: presetMin } = currentGoal;
-  //Local state
 
   //Selectors
   const { minutes, seconds, isActive, isSessionDone } = useSelector(
@@ -42,15 +41,12 @@ const DisplayTimer = ({ currentGoal, goalIdParam }) => {
 
   //Handlers
 
-  //Simulate reveal TODO:To be deleted
+  //Simulate reveal
   const handleReveal = () => {
-    // dispatch(updateMinutes(0));
-    // dispatch(updateSeconds(5));
     onReveal();
     dispatch(toggleIsSessionDone(true));
   };
-  // wrap in useCallback to include in useeffect dependency?
-  //can i move this out of this component?
+
   const onReveal = () => {
     const reveal = blockers.map((blocker) => blocker.reveal);
 
@@ -65,8 +61,6 @@ const DisplayTimer = ({ currentGoal, goalIdParam }) => {
 
       const randomIndex = Math.floor(Math.random() * unrevealed.length);
 
-      //Move this to the reducer instead, passthe required index as payload
-      //random: unrevealed[randomIndex], normal: reveal.indexOf(false)
       _updateBlockers({
         id: goalIdParam,
         blockers: blockers.map((blocker, i) =>
@@ -95,7 +89,6 @@ const DisplayTimer = ({ currentGoal, goalIdParam }) => {
         : `Picmodoro (${timerMinutes}:${timerSeconds})`;
   }, [timerMinutes, timerSeconds, isSessionDone, isActive]);
 
-  //Countdown Timer -> This also should be triggered by onClick, not by useEffect
   useEffect(() => {
     let interval = null;
 
@@ -110,17 +103,13 @@ const DisplayTimer = ({ currentGoal, goalIdParam }) => {
         let s = Math.floor((distance % (1000 * 60)) / 1000);
         let m = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
 
-        // _updateMinutes(m);
-        // _updateSeconds(s);
         dispatch(updateMinutes(m));
         dispatch(updateSeconds(s));
 
         if (distance < 0) {
-          // _toggleIsActive(false);
           dispatch(toggleIsActive(false));
           onReveal();
           dispatch(toggleIsSessionDone(true));
-          // _toggleIsSessionDone(true);
         }
       }, 100);
     } else {
@@ -129,7 +118,7 @@ const DisplayTimer = ({ currentGoal, goalIdParam }) => {
     return () => {
       clearInterval(interval);
     };
-  }, [isActive, presetMin, dispatch]); //too many dependencies
+  }, [isActive, presetMin, dispatch]);
 
   //Save to database when session ended
   useEffect(() => {
@@ -153,14 +142,10 @@ const DisplayTimer = ({ currentGoal, goalIdParam }) => {
     dispatch(resetTimerState());
     _updateMinutes(presetMin);
   }, [dispatch]);
-  //if timer is active, discard
-  //if timer is not active && issessiondone, reset
-  //if timer is not active && isDone congrats
-  //if timer is not active, start
 
   return (
     <Box>
-      <button
+      {/* <button
         style={{
           position: "absolute",
           top: "50px",
@@ -170,19 +155,13 @@ const DisplayTimer = ({ currentGoal, goalIdParam }) => {
         onClick={handleReveal}
       >
         Reveal
-      </button>
+      </button> */}
       <Box
         sx={{
           display: "flex",
           alignItems: "center",
           justifyContent: "center",
-          // height: "50px",
           color: "rgba(0,0,0,0.87)",
-          // backgroundColor: "#2a5298",
-          // width: "140px",
-          // height: "140px",
-          // borderRadius: "100%",
-          // padding: "2rem",
 
           "@media (min-width:580px)": {
             "& > h1": {
