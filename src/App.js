@@ -54,7 +54,7 @@ function App() {
 
   //wake up heroku server on componentdidmount
   useEffect(() => {
-    fetch("https://desolate-lake-70726.herokuapp.com/")
+    fetch("http://localhost:7000/")
       .then((res) => res.json())
       .then(console.log());
   }, []);

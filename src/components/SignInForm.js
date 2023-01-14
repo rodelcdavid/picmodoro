@@ -25,17 +25,14 @@ const SignInForm = () => {
 
     const signIn = async () => {
       try {
-        const res = await fetch(
-          "https://desolate-lake-70726.herokuapp.com/signin",
-          {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({
-              email: inputEmail,
-              password: inputPassword,
-            }),
-          }
-        );
+        const res = await fetch("http://localhost:7000/signin", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            email: inputEmail,
+            password: inputPassword,
+          }),
+        });
 
         if (res.ok) {
           const { user, accessToken, refreshToken } = await res.json();
@@ -165,6 +162,11 @@ const SignInForm = () => {
           label="Email address"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
+          onKeyDown={(e) => {
+            if (e.key === "Enter") {
+              handleSignIn(e, "user");
+            }
+          }}
         />
         <TextField
           sx={{ marginTop: "10px" }}
@@ -173,6 +175,11 @@ const SignInForm = () => {
           label="Password"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
+          onKeyDown={(e) => {
+            if (e.key === "Enter") {
+              handleSignIn(e, "user");
+            }
+          }}
         >
           Password
         </TextField>

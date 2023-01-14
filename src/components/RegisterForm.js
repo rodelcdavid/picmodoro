@@ -22,9 +22,7 @@ const schema = yup.object({
       async (email) => {
         return new Promise(async (resolve, reject) => {
           try {
-            const res = await fetch(
-              `https://desolate-lake-70726.herokuapp.com/check/${email}`
-            );
+            const res = await fetch(`http://localhost:7000/check/${email}`);
             if (res.ok) {
               resolve(true);
             } else {
@@ -65,18 +63,15 @@ const RegisterForm = () => {
       const { name, email, password } = data;
 
       try {
-        const res = await fetch(
-          "https://desolate-lake-70726.herokuapp.com/register",
-          {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({
-              name,
-              email,
-              password,
-            }),
-          }
-        );
+        const res = await fetch("http://localhost:7000/register", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            name,
+            email,
+            password,
+          }),
+        });
 
         if (res.ok) {
           const { user, refreshToken, accessToken } = await res.json();
