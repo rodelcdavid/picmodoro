@@ -77,10 +77,9 @@ const GoalCard = ({ id, goalName, goalImage, blockers, goal }) => {
   const handleDeleteOption = (e) => {
     e.preventDefault();
     setOpenBackdrop(true);
-    dispatch(deleteGoalAsync({ id: id }))
-      .catch(() =>
-        console.log("There was a problem connecting to the server.")
-      );
+    dispatch(deleteGoalAsync({ id: id })).catch(() =>
+      console.log("There was a problem connecting to the server.")
+    );
   };
 
   const renameRef = useRef();
@@ -206,13 +205,15 @@ const GoalCard = ({ id, goalName, goalImage, blockers, goal }) => {
         height: "220px",
         display: "flex",
         flexDirection: "column",
-        border: "solid 1px rgba(0,0,0,0.87)",
+        border: "solid 1px rgba(0,0,0,0.2)",
+
         borderRadius: "10px",
         overflow: "hidden",
         textDecoration: "none",
         transition: "all ease-in 200ms",
+        boxShadow: "5px 5px 8px rgba(0,0,0,0.3)",
 
-        "&:hover": { boxShadow: "0 3px 10px rgba(0,0,0,0.5)" },
+        "&:hover": { boxShadow: "3px 5px 15px #284E91" },
       }}
       component={RouterLink}
       to={`/${id}`}
@@ -240,9 +241,11 @@ const GoalCard = ({ id, goalName, goalImage, blockers, goal }) => {
         <Box
           sx={{
             color: "rgba(0,0,0,0.87)",
-            backgroundColor: "#e5e5e5",
+            // color: "#fff",
             width: "100%",
-            borderTop: "1px solid rgba(0,0,0,0.87)",
+            backgroundColor: "#e5e5e5",
+            // backgroundColor: "#4DC126",
+            borderTop: "1px solid rgba(0,0,0,0.2)",
             padding: "0.7rem 1rem",
             minHeight: "70px",
             display: "flex",
@@ -250,6 +253,7 @@ const GoalCard = ({ id, goalName, goalImage, blockers, goal }) => {
             justifyContent: "space-around",
             alignItems: "flex-start",
             position: "relative",
+            boxShadow: "0 2px 4px rgba(0,0,0,0.5)",
           }}
         >
           {renameMode ? (

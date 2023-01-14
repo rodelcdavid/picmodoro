@@ -107,7 +107,9 @@ const Goal = () => {
             height: "75px",
             color: "#1e3c72",
             padding: "15px",
-            borderBottom: "1px solid rgba(0,0,0,0.87)",
+            // borderBottom: "1px solid rgba(0,0,0,0.87)",
+            // boxShadow: "0px 3px 5px rgba(0,0,0,0.5)",
+            borderBottom: "1px solid rgba(0,0,0,0.2)",
           }}
         >
           <BackButton />

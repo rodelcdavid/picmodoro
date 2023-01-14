@@ -29,7 +29,7 @@ const AddGoalButton = () => {
           height: "220px",
           display: "flex",
           flexDirection: "column",
-          border: "solid 1px rgba(0,0,0,0.87)",
+          border: "1px solid rgba(0,0,0,0.2)",
           borderRadius: "10px",
           justifyContent: "center",
           alignItems: "center",
@@ -41,13 +41,17 @@ const AddGoalButton = () => {
           transition: "all ease-in 200ms",
           backgroundColor: "#e5e5e5",
           color: "rgba(0,0,0,0.87)",
-          "&:hover": { boxShadow: "0 5px 10px rgba(0,0,0,0.5)" },
+          boxShadow: "5px 5px 8px rgba(0,0,0,0.3)",
+
+          "&:hover": { boxShadow: "3px 5px 15px #284E91" },
         }}
         component="button"
         onClick={handleAdd}
       >
-        <AddCircleIcon fontSize="1rem" />
-        <Typography variant="body1">Add New Goal</Typography>
+        <AddCircleIcon fontSize="1rem" sx={{ color: "#284E91" }} />
+        <Typography variant="body1" fontWeight="bolder">
+          New Goal
+        </Typography>
       </Box>
       <Dialog
         fullWidth

@@ -9,10 +9,12 @@ const globalStyles = (
         padding: 0,
         boxSizing: "border-box",
       },
+
       body: {
         fontFamily: "'Montserrat', sans-serif",
         minHeight: "100vh",
         maxWidth: "100%",
+
         backgroundColor: "#e5e5e5",
         // overflow: "hidden",
 

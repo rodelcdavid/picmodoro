@@ -98,7 +98,7 @@ const GoalSettings = ({ setGuide, goalIdParam, currentGoal }) => {
             aria-label="settings picture"
             component="span"
           >
-            <SettingsIcon />
+            <SettingsIcon sx={{ color: "#284E91" }} />
           </IconButton>
         </Tooltip>
       </Box>

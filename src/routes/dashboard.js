@@ -40,7 +40,10 @@ const Dashboard = () => {
           color: "rgba(0,0,0,0.87)",
           width: "100%",
           padding: "0.5rem",
-          borderBottom: "1px solid rgba(0,0,0,0.87)",
+          border: "1px solid rgba(0,0,0,0.2)",
+          // borderBottom: "1px solid rgba(0,0,0,0.87)",
+          // boxShadow: "0px 3px 5px rgba(0,0,0,0.5)",
+
           height: "75px",
           display: "flex",
           alignItems: "center",
@@ -63,6 +66,17 @@ const Dashboard = () => {
           gridGap: "25px",
           overflowY: "auto",
           position: "relative",
+
+          "&::-webkit-scrollbar": {
+            height: "7px",
+            width: "7px",
+          },
+          "&::-webkit-scrollbar-track": {
+            background: "#f1f1f1",
+          },
+          "&::-webkit-scrollbar-thumb": {
+            background: "#888",
+          },
         }}
       >
         {goalList.status === "fulfilled" ? (

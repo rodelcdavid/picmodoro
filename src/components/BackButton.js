@@ -25,7 +25,7 @@ const BackButton = () => {
           aria-label="back picture"
           component="span"
         >
-          <ArrowBackIcon />
+          <ArrowBackIcon sx={{ color: "#284E91" }} />
         </IconButton>
       </Tooltip>
     </Box>
