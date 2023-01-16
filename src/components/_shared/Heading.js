@@ -11,7 +11,7 @@ import pomodoro from "../../assets/pomodoro.png";
 import { Link as RouterLink } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
-import { updateUser } from "../../features/authSlice";
+import { updateUser } from "../../features/slices/authSlice";
 import Logo from "./Logo";
 import LogoutIcon from "@mui/icons-material/Logout";
 import HelpIcon from "@mui/icons-material/Help";

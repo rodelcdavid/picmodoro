@@ -17,11 +17,15 @@ import {
   TextField,
 } from "@mui/material";
 import { useDispatch } from "react-redux";
-import { deleteGoalAsync, saveSettingsAsync } from "../features/goalSlice";
+
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
 import LinkIcon from "@mui/icons-material/Link";
 import placeholder from "../assets/placeholder.jpg";
+import {
+  deleteGoalAsync,
+  saveSettingsAsync,
+} from "../features/asyncActions/goalAsyncActions";
 
 const GoalCard = ({ id, goalName, goalImage, blockers, goal }) => {
   const reveal = blockers.map((blocker) => blocker.reveal);
@@ -334,7 +338,7 @@ const GoalCard = ({ id, goalName, goalImage, blockers, goal }) => {
                 <LinkIcon />
                 Change image URL
               </MenuItem>
-              <MenuItem onClick={handleDeleteOption}>
+              <MenuItem onClick={handleDeleteOption} sx={{ color: "#EA3712" }}>
                 <DeleteIcon />
                 Delete
               </MenuItem>

@@ -11,18 +11,17 @@ import {
 import { Box } from "@mui/system";
 import React, { useEffect, useState } from "react";
 
-import {
-  updateBlockers,
-  toggleIsRandom,
-  updatePresetMin,
-  saveSettingsAsync,
-} from "../features/goalSlice";
-
-import { updateMinutes } from "../features/timerSlice";
+import { updateMinutes } from "../features/slices/timerSlice";
 
 import SettingsIcon from "@mui/icons-material/Settings";
 import CloseIcon from "@mui/icons-material/Close";
 import { useDispatch, useSelector } from "react-redux";
+import {
+  toggleIsRandom,
+  updateBlockers,
+  updatePresetMin,
+} from "../features/slices/goalSlice";
+import { saveSettingsAsync } from "../features/asyncActions/goalAsyncActions";
 
 const GoalSettings = ({ setGuide, goalIdParam, currentGoal }) => {
   const {

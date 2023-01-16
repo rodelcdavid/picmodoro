@@ -1,5 +1,4 @@
-import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-
+import { createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
 import jwt_decode from "jwt-decode";
 
@@ -9,12 +8,9 @@ const refreshToken = async () => {
   try {
     const refreshToken = JSON.parse(localStorage.getItem("refreshToken"));
 
-    const res = await axios.post(
-      "http://localhost:7000/refresh",
-      {
-        token: refreshToken,
-      }
-    );
+    const res = await axios.post("http://localhost:7000/refresh", {
+      token: refreshToken,
+    });
 
     if (res.status === 200) {
       //update user with tokens
@@ -203,135 +199,3 @@ export const getCurrentGoalAsync = createAsyncThunk(
     }
   }
 );
-
-const initialState = {
-  goalList: {
-    data: [],
-    status: "",
-  },
-  currentGoal: {},
-  currentGoalStatus: "pending",
-  fetchStatus: "",
-  addStatus: "",
-  error: "",
-};
-
-export const goalSlice = createSlice({
-  name: "goals",
-  initialState,
-  reducers: {
-    updateBlockers: (state, { payload }) => {
-      state.currentGoal.blockers = payload.blockers;
-    },
-    updatePresetMin: (state, { payload }) => {
-      state.currentGoal.preset_min = payload.presetMin;
-    },
-    toggleIsRandom: (state, { payload }) => {
-      state.currentGoal.is_random = payload.isRandom;
-    },
-    updateIsDone: (state, { payload }) => {
-      state.currentGoal.is_done = payload.isDone;
-    },
-
-    updateCurrentGoal: (state, { payload }) => {
-      state.currentGoal = payload.currentGoal;
-    },
-    changeImageUrl: (state, { payload }) => {
-      state.goalList.data = state.goalList.data.map((goal) => {
-        if (goal.id === payload.id) {
-          goal.image_url = payload.goalImage;
-        }
-        return goal;
-      });
-    },
-
-    resetCurrentGoal: (state, { payload }) => {
-      state.currentGoal = {};
-    },
-    resetCurrentGoalStatus: (state, { payload }) => {
-      state.currentGoalStatus = "pending";
-    },
-    updateError: (state, { payload }) => {
-      state.error = payload;
-    },
-  },
-  extraReducers: {
-    [getGoalListAsync.fulfilled]: (state, { payload }) => {
-      state.goalList.data = payload.goalList;
-      state.goalList.status = "fulfilled";
-    },
-    [getGoalListAsync.pending]: (state, { payload }) => {
-      state.goalList.status = "pending";
-      state.fetchStatus = "pending";
-    },
-    [getGoalListAsync.rejected]: (state, { payload }) => {
-      state.error = "Invalid token";
-    },
-    [addGoalAsync.fulfilled]: (state, { payload }) => {
-      state.goalList.data.unshift(payload.goal);
-      state.addStatus = "fulfilled";
-    },
-    [addGoalAsync.pending]: (state, { payload }) => {
-      state.addStatus = "pending";
-    },
-    [addGoalAsync.rejected]: (state, { payload }) => {
-      state.error = "Invalid token";
-    },
-    [deleteGoalAsync.fulfilled]: (state, { payload }) => {
-      state.goalList.data = state.goalList.data.filter(
-        (goal) => goal.id !== payload.goalToDelete.id
-      );
-    },
-    [deleteGoalAsync.pending]: (state, { payload }) => {
-      console.log("deleting...");
-    },
-    [deleteGoalAsync.rejected]: (state, { payload }) => {
-      state.error = "Invalid token";
-    },
-    [saveSettingsAsync.fulfilled]: (state, { payload }) => {
-      const index = state.goalList.data.findIndex(
-        (goal) => goal.id === payload.goalToUpdate.id
-      );
-      state.goalList.data[index] = payload.goalToUpdate;
-    },
-    [saveSettingsAsync.pending]: (state, { payload }) => {
-      console.log("saving...");
-    },
-    [saveSettingsAsync.rejected]: (state, { payload }) => {
-      state.error = "Invalid token";
-    },
-    [getCurrentGoalAsync.pending]: (state, { payload }) => {
-      state.currentGoalStatus = "pending";
-      console.log("getting current goal...");
-    },
-    [getCurrentGoalAsync.fulfilled]: (state, { payload }) => {
-      if (Object.keys(payload.currentGoal).length) {
-        state.currentGoal = payload.currentGoal;
-        state.currentGoalStatus = "fulfilled";
-      } else {
-        state.currentGoalStatus = "not found";
-      }
-    },
-    [getCurrentGoalAsync.rejected]: (state, { payload }) => {
-      state.currentGoalStatus = "rejected";
-      state.error = "Invalid token";
-    },
-  },
-});
-
-// Action creators are generated for each case reducer function
-export const {
-  addGoal,
-  updateBlockers,
-  toggleIsRandom,
-  updateIsDone,
-  updatePresetMin,
-  deleteGoal,
-  updateCurrentGoal,
-  changeImageUrl,
-  resetCurrentGoal,
-  resetCurrentGoalStatus,
-  updateError,
-} = goalSlice.actions;
-
-export default goalSlice.reducer;

@@ -3,7 +3,7 @@ import { Box } from "@mui/system";
 import React from "react";
 import { useDispatch } from "react-redux";
 import { Link as RouterLink, useNavigate } from "react-router-dom";
-import { updateUser } from "../features/authSlice";
+import { updateUser } from "../features/slices/authSlice";
 
 import { useForm, Controller } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
