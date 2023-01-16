@@ -6,13 +6,13 @@ import { Box } from "@mui/system";
 import LoadingButton from "@mui/lab/LoadingButton";
 
 import { useDispatch } from "react-redux";
-import { addGoalAsync } from "../features/goalSlice";
 import {
   Backdrop,
   CircularProgress,
   TextField,
   Typography,
 } from "@mui/material";
+import { addGoalAsync } from "../features/asyncActions/goalAsyncActions";
 
 const GoalSetup = () => {
   const [inputUrl, setInputUrl] = useState("");

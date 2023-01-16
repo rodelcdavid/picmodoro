@@ -10,10 +10,11 @@ import DisplayTimer from "../components/DisplayTimer";
 import UpArrow from "../components/UpArrow";
 
 import { useSelector, useDispatch } from "react-redux";
-import { toggleIsDone } from "../features/displayGridSlice";
+import { toggleIsDone } from "../features/slices/displayGridSlice";
 import GoalSettings from "../components/GoalSettings";
 import BackButton from "../components/BackButton";
-import { getCurrentGoalAsync } from "../features/goalSlice";
+import { getCurrentGoalAsync } from "../features/asyncActions/goalAsyncActions";
+// import { getCurrentGoalAsync } from "../features/goalSlice";
 
 const Goal = () => {
   console.log("Goal parent component");

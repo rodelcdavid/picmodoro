@@ -10,13 +10,11 @@ import {
   toggleIsSessionDone,
   updateMinutes,
   updateSeconds,
-} from "../features/timerSlice";
+} from "../features/slices/timerSlice";
+import { saveSettingsAsync } from "../features/asyncActions/goalAsyncActions";
+import { updateBlockers, updateIsDone } from "../features/slices/goalSlice";
 
-import {
-  saveSettingsAsync,
-  updateBlockers,
-  updateIsDone,
-} from "../features/goalSlice";
+
 
 const DisplayTimer = ({ currentGoal, goalIdParam }) => {
   console.log("DisplayTimer.js");

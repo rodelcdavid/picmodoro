@@ -3,7 +3,7 @@ import { Box } from "@mui/system";
 import React, { useState } from "react";
 import { useDispatch } from "react-redux";
 import { Link as RouterLink, useNavigate } from "react-router-dom";
-import { updateUser } from "../features/authSlice";
+import { updateUser } from "../features/slices/authSlice";
 import Logo from "./_shared/Logo";
 
 const SignInForm = () => {
@@ -23,7 +23,8 @@ const SignInForm = () => {
   const handleSignIn = (e, type) => {
     e.preventDefault();
 
-    const signIn = async () => {
+    //should put this signin async in authslice
+    const signIn = async (email, pass) => {
       try {
         const res = await fetch("http://localhost:7000/signin", {
           method: "POST",
@@ -64,7 +65,7 @@ const SignInForm = () => {
     if (type === "user") {
       inputEmail = email;
       inputPassword = password;
-      signIn();
+      signIn(inputEmail, inputPassword);
     } else {
       setError(false);
       inputEmail = "awesometester@test.com";
@@ -73,7 +74,7 @@ const SignInForm = () => {
       setPassword(inputPassword);
       setOpenSnackbar(true);
       setTimeout(() => {
-        signIn();
+        signIn(inputEmail, inputPassword);
       }, 2000);
     }
   };

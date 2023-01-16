@@ -6,10 +6,10 @@ import { useDispatch, useSelector } from "react-redux";
 import AddGoalButton from "../components/AddGoalButton";
 import GoalCard from "../components/GoalCard";
 import {
-  getGoalListAsync,
   resetCurrentGoal,
   resetCurrentGoalStatus,
-} from "../features/goalSlice";
+} from "../features/slices/goalSlice";
+import { getGoalListAsync } from "../features/asyncActions/goalAsyncActions";
 
 const Dashboard = () => {
   const { id } = useSelector((state) => state.authState);

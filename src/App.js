@@ -11,9 +11,10 @@ import NotFound from "./components/_shared/NotFound";
 import PrivateRoutes from "./outlet/PrivateRoutes";
 import PublicRoutes from "./outlet/PublicRoutes";
 
-import { updateUser } from "./features/authSlice";
-import { updateError } from "./features/goalSlice";
+import { updateUser } from "./features/slices/authSlice";
+
 import Footer from "./components/_shared/Footer";
+import { updateError } from "./features/slices/goalSlice";
 
 function App() {
   //Selectors
