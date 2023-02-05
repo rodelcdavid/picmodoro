@@ -8,6 +8,7 @@ import { updateUser } from "../features/slices/authSlice";
 import { useForm, Controller } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
+import { registerAsync } from "../features/asyncActions/authAsyncActions";
 
 //Validation
 const schema = yup.object({
@@ -56,42 +57,10 @@ const RegisterForm = () => {
 
   const dispatch = useDispatch();
 
-  const navigate = useNavigate();
-
   const onRegister = async (data) => {
     if (data) {
       const { name, email, password } = data;
-
-      try {
-        const res = await fetch("http://localhost:7000/register", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
-            name,
-            email,
-            password,
-          }),
-        });
-
-        if (res.ok) {
-          const { user, refreshToken, accessToken } = await res.json();
-
-          dispatch(
-            updateUser({
-              id: user.id,
-              name: user.name,
-              email: user.email,
-              isUserAuthenticated: true,
-            })
-          );
-          localStorage.accessToken = JSON.stringify(accessToken);
-          localStorage.refreshToken = JSON.stringify(refreshToken);
-          navigate("/dashboard");
-        }
-      } catch {
-        alert("There was a problem connecting to the server.");
-        return;
-      }
+      dispatch(registerAsync({ name, email, password }));
     }
   };
 

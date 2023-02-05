@@ -44,6 +44,11 @@ const GoalCard = ({ id, goalName, goalImage, blockers, goal }) => {
     };
 
     img.src = goal.image_url;
+
+    return () => {
+      img.onload = null;
+      img.src = null;
+    };
   }, [goal]);
 
   //Popover
