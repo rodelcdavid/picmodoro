@@ -98,6 +98,11 @@ const GoalSetup = () => {
     if (inputUrl.length) {
       setImageError(false);
     }
+
+    return () => {
+      image.onload = null;
+      image.onerror = null;
+    };
   }, [inputUrl]);
 
   useEffect(() => {
