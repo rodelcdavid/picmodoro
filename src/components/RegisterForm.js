@@ -9,6 +9,7 @@ import { useForm, Controller } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 import { registerAsync } from "../features/asyncActions/authAsyncActions";
+import api from "../api/picmodoroApi";
 
 //Validation
 const schema = yup.object({
@@ -23,7 +24,7 @@ const schema = yup.object({
       async (email) => {
         return new Promise(async (resolve, reject) => {
           try {
-            const res = await fetch(`http://localhost:7000/check/${email}`);
+            const res = await fetch(`${api}/check/${email}`);
             if (res.ok) {
               resolve(true);
             } else {

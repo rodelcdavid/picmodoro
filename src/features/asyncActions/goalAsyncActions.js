@@ -1,6 +1,7 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
 import jwt_decode from "jwt-decode";
+import api from "../../api/picmodoroApi";
 
 export const axiosJWT = axios.create();
 
@@ -8,7 +9,7 @@ const refreshToken = async () => {
   try {
     const refreshToken = JSON.parse(localStorage.getItem("refreshToken"));
 
-    const res = await axios.post("http://localhost:7000/refresh", {
+    const res = await axios.post(`${api}/refresh`, {
       token: refreshToken,
     });
 
@@ -50,12 +51,9 @@ export const getGoalListAsync = createAsyncThunk(
     try {
       const accessToken = JSON.parse(localStorage.getItem("accessToken"));
 
-      const response = await axiosJWT.get(
-        `http://localhost:7000/${payload.id}/goal-list`,
-        {
-          headers: { authorization: `Bearer ${accessToken}` },
-        }
-      );
+      const response = await axiosJWT.get(`${api}/${payload.id}/goal-list`, {
+        headers: { authorization: `Bearer ${accessToken}` },
+      });
       const goalList = response.data;
       return { goalList };
     } catch (err) {
@@ -83,7 +81,7 @@ export const addGoalAsync = createAsyncThunk(
       };
 
       const response = await axiosJWT.post(
-        `http://localhost:7000/${auth.id}/${payload.id}`,
+        `${api}/${auth.id}/${payload.id}`,
         data,
         {
           headers: {
@@ -115,7 +113,7 @@ export const deleteGoalAsync = createAsyncThunk(
       const auth = JSON.parse(localStorage.getItem("auth"));
 
       const response = await axiosJWT.delete(
-        `http://localhost:7000/${auth.id}/${payload.id}`,
+        `${api}/${auth.id}/${payload.id}`,
         {
           headers: { authorization: "Bearer " + accessToken },
         }
@@ -146,7 +144,7 @@ export const saveSettingsAsync = createAsyncThunk(
       };
 
       const response = await axiosJWT.patch(
-        `http://localhost:7000/${auth.id}/${payload.id}`,
+        `${api}/${auth.id}/${payload.id}`,
         data,
         {
           headers: {
@@ -176,12 +174,9 @@ export const getCurrentGoalAsync = createAsyncThunk(
       const accessToken = JSON.parse(localStorage.getItem("accessToken"));
       const auth = JSON.parse(localStorage.getItem("auth"));
 
-      const response = await axiosJWT.get(
-        `http://localhost:7000/${auth.id}/${payload.id}`,
-        {
-          headers: { authorization: `Bearer ${accessToken}` },
-        }
-      );
+      const response = await axiosJWT.get(`${api}/${auth.id}/${payload.id}`, {
+        headers: { authorization: `Bearer ${accessToken}` },
+      });
       const currentGoal = response.data;
       return { currentGoal };
     } catch (err) {

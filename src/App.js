@@ -15,6 +15,7 @@ import { updateUser } from "./features/slices/authSlice";
 
 import Footer from "./components/_shared/Footer";
 import { updateError } from "./features/slices/goalSlice";
+import api from "./api/picmodoroApi";
 
 function App() {
   //Selectors
@@ -55,7 +56,7 @@ function App() {
 
   //wake up heroku server on componentdidmount
   useEffect(() => {
-    fetch("http://localhost:7000/")
+    fetch(api)
       .then((res) => res.json())
       .then(console.log());
   }, []);

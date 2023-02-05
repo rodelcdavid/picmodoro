@@ -1,10 +1,11 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
+import api from "../../api/picmodoroApi";
 
 export const signInAsync = createAsyncThunk(
   "auth/signInAsync",
   async (payload) => {
     try {
-      const res = await fetch("http://localhost:7000/signin", {
+      const res = await fetch(`${api}/signin`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
@@ -30,7 +31,7 @@ export const registerAsync = createAsyncThunk(
   "auth/registerAsync",
   async (payload) => {
     try {
-      const res = await fetch("http://localhost:7000/register", {
+      const res = await fetch(`${api}/register`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
@@ -56,7 +57,7 @@ export const logoutAsync = createAsyncThunk(
   "auth/logoutAsync",
   async (payload) => {
     try {
-      const response = await fetch("http://localhost:7000/logout", {
+      const response = await fetch(`${api}/logout`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
