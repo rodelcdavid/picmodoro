@@ -15,6 +15,7 @@ import { updateUser } from "../../features/slices/authSlice";
 import Logo from "./Logo";
 import LogoutIcon from "@mui/icons-material/Logout";
 import HelpIcon from "@mui/icons-material/Help";
+import { logoutAsync } from "../../features/asyncActions/authAsyncActions";
 
 const Heading = () => {
   const { name } = useSelector((state) => state.authState);
@@ -23,35 +24,17 @@ const Heading = () => {
 
   const handleLogout = async (e) => {
     const refreshToken = JSON.parse(localStorage.getItem("refreshToken"));
-    const response = await fetch("http://localhost:7000/logout", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        token: refreshToken,
-      }),
-    });
-
-    if (response.ok) {
-      localStorage.removeItem("accessToken");
-      localStorage.removeItem("refreshToken");
-
-      setTimeout(() => {
-        dispatch(updateUser({ isUserAuthenticated: false }));
-        setAnchorEl(null);
-      }, 500);
-    }
+    dispatch(logoutAsync({ refreshToken }));
   };
 
+  // tester popover
   const [anchorEl, setAnchorEl] = useState(null);
-
   const handlePopOver = (e) => {
     setAnchorEl(e.currentTarget);
   };
-
   const handleClosePopOver = (e) => {
     setAnchorEl(null);
   };
-
   const openPopOver = Boolean(anchorEl);
   const popOverId = openPopOver ? "simple-popover" : undefined;
 

@@ -1,19 +1,21 @@
 import { TextField, Button, Typography, Snackbar, Alert } from "@mui/material";
 import { Box } from "@mui/system";
 import React, { useState } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { Link as RouterLink, useNavigate } from "react-router-dom";
-import { updateUser } from "../features/slices/authSlice";
+import { updateError, updateUser } from "../features/slices/authSlice";
 import Logo from "./_shared/Logo";
+import { signInAsync } from "../features/asyncActions/authAsyncActions";
 
 const SignInForm = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [error, setError] = useState(false);
+  // const [error, setError] = useState(false);
 
   const [openSnackbar, setOpenSnackbar] = useState(false);
 
-  const navigate = useNavigate();
+  const { error } = useSelector((state) => state.authState);
+
   const dispatch = useDispatch();
 
   const handleTest = (e) => {
@@ -23,58 +25,35 @@ const SignInForm = () => {
   const handleSignIn = (e, type) => {
     e.preventDefault();
 
-    //should put this signin async in authslice
-    const signIn = async (email, pass) => {
-      try {
-        const res = await fetch("http://localhost:7000/signin", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
-            email: inputEmail,
-            password: inputPassword,
-          }),
-        });
-
-        if (res.ok) {
-          const { user, accessToken, refreshToken } = await res.json();
-          setError(false);
-          dispatch(
-            updateUser({
-              id: user.id,
-              name: user.name,
-              email: user.email,
-              isUserAuthenticated: true,
-            })
-          );
-          localStorage.accessToken = JSON.stringify(accessToken);
-          localStorage.refreshToken = JSON.stringify(refreshToken);
-
-          navigate("/dashboard");
-        } else {
-          setError(true);
-        }
-      } catch {
-        alert("There was a problem connecting to the server.");
-        return;
-      }
-    };
-
     let inputEmail, inputPassword;
 
     /* User login or tester */
     if (type === "user") {
       inputEmail = email;
       inputPassword = password;
-      signIn(inputEmail, inputPassword);
+      dispatch(
+        signInAsync({
+          email: inputEmail,
+          password: inputPassword,
+        })
+      );
+      // signIn(inputEmail, inputPassword);
     } else {
-      setError(false);
+      // setError(false);
+      dispatch(updateError(""));
       inputEmail = "awesometester@test.com";
       inputPassword = "tester";
       setEmail(inputEmail);
       setPassword(inputPassword);
       setOpenSnackbar(true);
       setTimeout(() => {
-        signIn(inputEmail, inputPassword);
+        dispatch(
+          signInAsync({
+            email: inputEmail,
+            password: inputPassword,
+          })
+        );
+        // signIn(inputEmail, inputPassword);
       }, 2000);
     }
   };
@@ -142,7 +121,7 @@ const SignInForm = () => {
         }}
       >
         <h2 style={{ textAlign: "center", color: "#1976D2" }}>Sign In</h2>
-        {error && (
+        {error === "Wrong Credentials" && (
           <Box
             style={{
               color: "black",
