@@ -57,7 +57,6 @@ const ImageGrid = ({ currentGoal }) => {
   const [imagePreloaded, setImagePreloaded] = useState(false);
   useEffect(() => {
     const img = new Image();
-    console.log(currentGoal);
 
     img.onload = () => {
       setImagePreloaded(true);

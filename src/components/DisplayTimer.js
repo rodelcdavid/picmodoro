@@ -14,11 +14,7 @@ import {
 import { saveSettingsAsync } from "../features/asyncActions/goalAsyncActions";
 import { updateBlockers, updateIsDone } from "../features/slices/goalSlice";
 
-
-
 const DisplayTimer = ({ currentGoal, goalIdParam }) => {
-  console.log("DisplayTimer.js");
-
   const { blockers, is_random: isRandom, preset_min: presetMin } = currentGoal;
 
   //Selectors

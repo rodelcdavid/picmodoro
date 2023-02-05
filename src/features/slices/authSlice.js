@@ -19,7 +19,6 @@ export const authSlice = createSlice({
   initialState,
   reducers: {
     updateUser: (state, { payload }) => {
-      console.log(payload);
       state.id = payload.id;
       state.name = payload.name;
       state.email = payload.email;

@@ -17,7 +17,6 @@ import { getCurrentGoalAsync } from "../features/asyncActions/goalAsyncActions";
 // import { getCurrentGoalAsync } from "../features/goalSlice";
 
 const Goal = () => {
-  console.log("Goal parent component");
   let urlParams = useParams();
   const goalIdParam = urlParams.goalid;
 

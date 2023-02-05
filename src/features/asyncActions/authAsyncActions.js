@@ -43,7 +43,6 @@ export const registerAsync = createAsyncThunk(
 
       if (res.ok) {
         const { user, refreshToken, accessToken } = await res.json();
-        console.log(user, refreshToken, accessToken);
         return { user, refreshToken, accessToken };
       }
     } catch {
