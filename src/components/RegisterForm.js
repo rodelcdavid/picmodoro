@@ -99,7 +99,7 @@ const RegisterForm = () => {
                 {...field}
                 sx={{ marginTop: "5px" }}
                 fullWidth
-                id="outlined-error-helper-text"
+                id="outlined-error-helper-text-name"
                 label="Name *"
                 error={errors.name ? true : false}
                 helperText={errors.name?.message || " "}
@@ -116,7 +116,7 @@ const RegisterForm = () => {
                 {...field}
                 sx={{ marginTop: "5px" }}
                 fullWidth
-                id="outlined-error-helper-text"
+                id="outlined-error-helper-text-email"
                 label="Email address *"
                 error={errors.email ? true : false}
                 helperText={errors.email?.message || " "}
@@ -134,7 +134,7 @@ const RegisterForm = () => {
                 sx={{ marginTop: "5px" }}
                 fullWidth
                 type="password"
-                id="outlined-error-helper-text"
+                id="outlined-error-helper-text-password"
                 label="Password *"
                 error={errors.password ? true : false}
                 helperText={errors.password?.message || " "}
@@ -152,7 +152,7 @@ const RegisterForm = () => {
                 sx={{ marginTop: "5px" }}
                 fullWidth
                 type="password"
-                id="outlined-error-helper-text"
+                id="outlined-error-helper-text-confirm"
                 label="Confirm password *"
                 error={errors?.passwordConfirmation ? true : false}
                 helperText={errors.passwordConfirmation?.message || " "}
