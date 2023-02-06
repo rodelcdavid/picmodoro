@@ -14,4 +14,4 @@ I created this project to showcase my abilities in fullstack development and als
 
 You can view the API of this web app here:
 
-- [bookxmovie-api](https://github.com/rodelcdavid/bookxmovie-api)
+- [picmodoro-api](https://github.com/rodelcdavid/picmodoro-api)
