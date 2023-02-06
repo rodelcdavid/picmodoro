@@ -108,10 +108,6 @@ const Heading = () => {
             },
           }}
         >
-          <MenuItem>
-            <HelpIcon />
-            Help
-          </MenuItem>
           <MenuItem onClick={handleLogout}>
             <LogoutIcon />
             Logout
